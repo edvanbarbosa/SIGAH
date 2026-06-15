@@ -75,10 +75,10 @@ Criar a camada de comunicação com o backend.
 ## Etapa 4 — Hooks Utilitários (`lib/hooks/`)
 
 ### Passo 4.1 · `lib/hooks/useProgram.ts`
-- [ ] Reexportar o hook de `contexts/ProgramContext` (ponto central de importação)
+- [x] Reexportar o hook de `contexts/ProgramContext` (ponto central de importação)
 
 ### Passo 4.2 · `lib/hooks/usePermissions.ts`
-- [ ] Hook que combina `useUser()` + `useProgram()` para checar permissões contextuais
+- [x] Hook que combina `useUser()` + `useProgram()` para checar permissões contextuais
 
 ---
 
