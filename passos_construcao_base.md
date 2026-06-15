@@ -40,15 +40,15 @@ Criar os contratos TypeScript que serão usados em toda a aplicação.
 Criar os providers React que distribuem estado global.
 
 ### Passo 2.1 · `contexts/ProgramContext.tsx`
-- [ ] Criar `ProgramProvider` — recebe `ProgramUIConfig` e distribui via Context
-- [ ] Criar hook `useProgram()` — retorna a config do programa ativo
+- [x] Criar `ProgramProvider` — recebe `ProgramUIConfig` e distribui via Context
+- [x] Criar hook `useProgram()` — retorna a config do programa ativo
   - Lança erro se usado fora do provider
-- [ ] Incluir feature flags de UI acessíveis via `useProgram().enabledSections`
+- [x] Incluir feature flags de UI acessíveis via `useProgram().enabledSections`
 
 ### Passo 2.2 · `contexts/UserContext.tsx`
-- [ ] Criar `UserProvider` — gerencia dados do usuário autenticado
-- [ ] Criar hook `useUser()` — retorna perfil, permissões e status de autenticação
-- [ ] Criar hook `usePermissions()` — atalho para checagem de permissões por ação/recurso
+- [x] Criar `UserProvider` — gerencia dados do usuário autenticado
+- [x] Criar hook `useUser()` — retorna perfil, permissões e status de autenticação
+- [x] Criar hook `usePermissions()` — atalho para checagem de permissões por ação/recurso
 
 ---
 
