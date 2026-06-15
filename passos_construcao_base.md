@@ -128,34 +128,34 @@ Montar o roteamento dinâmico por programa conforme a árvore definida no docume
 
 ---
 
-## Etapa 7 — Componentes de Domínio (`components/`)
+## Etapa 7 — Componentes de Domínio (`components/`) ✅
 
 ### Passo 7.1 · `components/forms/` — Formulários Modulares
-- [ ] `FamilyForm.tsx` — cadastro orientado à família
+- [x] `FamilyForm.tsx` — cadastro orientado à família
   - Seções condicionais controladas por feature flags do programa
   - Usar React Hook Form (⚠ Risco 3 — performance / re-renderização)
-- [ ] `PropertyForm.tsx` — cadastro orientado ao imóvel
+- [x] `PropertyForm.tsx` — cadastro orientado ao imóvel
   - Ativado/desativado por programa via `useProgram()`
 
 ### Passo 7.2 · `components/display/` — Exibição de Dados da API
-- [ ] `ScoringPanel.tsx` — recebe pontuação **já calculada** pelo backend e exibe
-- [ ] `QuotaDisplay.tsx` — exibe distribuição de cotas
-- [ ] `DeadlineStatus.tsx` — exibe indicador de prazos processuais
-- [ ] `IntegrationStatus.tsx` — exibe status de integração com bases externas (CadÚnico)
+- [x] `ScoringPanel.tsx` — recebe pontuação **já calculada** pelo backend e exibe
+- [x] `QuotaDisplay.tsx` — exibe distribuição de cotas
+- [x] `DeadlineStatus.tsx` — exibe indicador de prazos processuais
+- [x] `IntegrationStatus.tsx` — exibe status de integração com bases externas (CadÚnico)
 
 ### Passo 7.3 · `components/timeline/`
-- [ ] `ProcessTimeline.tsx` — linha do tempo do processo do candidato
-- [ ] `AuditLog.tsx` — histórico de ações/auditoria
+- [x] `ProcessTimeline.tsx` — linha do tempo do processo do candidato
+- [x] `AuditLog.tsx` — histórico de ações/auditoria
 
 ### Passo 7.4 · `components/layout/FeatureGate.tsx` ⭐
-- [ ] Componente que mostra/oculta children com base em feature flags do programa
-- [ ] Props: `feature: string`, `fallback?: ReactNode`
-- [ ] Usa `useProgram()` para ler `enabledSections`
-- [ ] ⚠ Risco 2: FeatureGate **não é proteção real** — backend valida independentemente
+- [x] Componente que mostra/oculta children com base em feature flags do programa
+- [x] Props: `feature: string`, `fallback?: ReactNode`
+- [x] Usa `useProgram()` para ler `enabledSections`
+- [x] ⚠ Risco 2: FeatureGate **não é proteção real** — backend valida independentemente
 
 ### Passo 7.5 · `components/ui/`
-- [ ] `DocumentUpload.tsx` — upload de documentos com preview
-- [ ] `ConsentBanner.tsx` — banner LGPD para coleta de aceite (RF 040)
+- [x] `DocumentUpload.tsx` — upload de documentos com preview
+- [x] `ConsentBanner.tsx` — banner LGPD para coleta de aceite (RF 040)
 
 ---
 
