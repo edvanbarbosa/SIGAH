@@ -85,12 +85,12 @@ Criar a camada de comunicação com o backend.
 ## Etapa 5 — Validações e Formatadores (`lib/validations/` e `lib/formatters/`)
 
 ### Passo 5.1 · `lib/validations/`
-- [ ] Criar validações de formato: CPF, telefone, CEP, e-mail
-- [ ] **Apenas formato** — sem lógica de elegibilidade (é responsabilidade do backend)
+- [x] Criar validações de formato: CPF, telefone, CEP, e-mail
+- [x] **Apenas formato** — sem lógica de elegibilidade (é responsabilidade do backend)
 
 ### Passo 5.2 · `lib/formatters/`
-- [ ] Formatadores de CPF, moeda (BRL), data, telefone
-- [ ] Formatador de status/etapa processual para exibição
+- [x] Formatadores de CPF, moeda (BRL), data, telefone
+- [x] Formatador de status/etapa processual para exibição
 
 ---
 
