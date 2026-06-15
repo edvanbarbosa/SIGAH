@@ -99,32 +99,32 @@ Criar a camada de comunicação com o backend.
 Montar o roteamento dinâmico por programa conforme a árvore definida no documento.
 
 ### Passo 6.1 · `app/page.tsx` (Landing / Seleção de Programa)
-- [ ] Tela de entrada que lista programas disponíveis
-- [ ] Redireciona para `/{programId}/dashboard` ao selecionar
+- [x] Tela de entrada que lista programas disponíveis
+- [x] Redireciona para `/{programId}/dashboard` ao selecionar
 
 ### Passo 6.2 · `app/auth/`
-- [ ] `app/auth/login/page.tsx` — tela de login
-- [ ] `app/auth/recuperar/page.tsx` — recuperação de acesso
+- [x] `app/auth/login/page.tsx` — tela de login
+- [x] `app/auth/recuperar/page.tsx` — recuperação de acesso
 
 ### Passo 6.3 · `app/[programId]/layout.tsx` ⭐ (Layout raiz por programa)
-- [ ] Buscar `ProgramUIConfig` do backend via `fetchProgramConfig(programId)`
-- [ ] Usar cache `stale-while-revalidate` do Next.js (⚠ Risco 1 — latência)
-- [ ] Envolver children com `<ProgramProvider config={...}>` e `<UserProvider>`
-- [ ] Proteger rotas autenticadas (redirecionar para `/auth/login` se não autenticado)
+- [x] Buscar `ProgramUIConfig` do backend via `fetchProgramConfig(programId)`
+- [x] Usar cache `stale-while-revalidate` do Next.js (⚠ Risco 1 — latência)
+- [x] Envolver children com `<ProgramProvider config={...}>` e `<UserProvider>`
+- [x] Proteger rotas autenticadas (redirecionar para `/auth/login` se não autenticado)
 
 ### Passo 6.4 · Páginas dentro de `app/[programId]/`
-- [ ] `dashboard/page.tsx` — painel principal do programa
-- [ ] `cadastro/page.tsx` — listagem de cadastros
-- [ ] `cadastro/[familiaId]/page.tsx` — detalhes de um cadastro
-- [ ] `classificacao/page.tsx` — exibe lista e status vindos da API
-- [ ] `sorteio/page.tsx`
-- [ ] `suplencia/page.tsx`
-- [ ] `convocacao/page.tsx`
-- [ ] `[candidatoId]/page.tsx` — detalhes de candidato
-- [ ] `empreendimentos/page.tsx`
-- [ ] `unidades/page.tsx`
-- [ ] `auditoria/logs/page.tsx`
-- [ ] `relatorios/page.tsx`
+- [x] `dashboard/page.tsx` — painel principal do programa
+- [x] `cadastro/page.tsx` — listagem de cadastros
+- [x] `cadastro/[familiaId]/page.tsx` — detalhes de um cadastro
+- [x] `classificacao/page.tsx` — exibe lista e status vindos da API
+- [x] `sorteio/page.tsx`
+- [x] `suplencia/page.tsx`
+- [x] `convocacao/page.tsx`
+- [x] `[candidatoId]/page.tsx` — detalhes de candidato
+- [x] `empreendimentos/page.tsx`
+- [x] `unidades/page.tsx`
+- [x] `auditoria/logs/page.tsx`
+- [x] `relatorios/page.tsx`
 
 ---
 
