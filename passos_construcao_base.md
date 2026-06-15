@@ -57,18 +57,18 @@ Criar os providers React que distribuem estado global.
 Criar a camada de comunicação com o backend.
 
 ### Passo 3.1 · `lib/api/client.ts`
-- [ ] Criar instância base do fetch/axios com base URL configurável
-- [ ] Interceptor de autenticação (token JWT no header)
-- [ ] Tratamento centralizado de erros (`ApiError`)
+- [x] Criar instância base do fetch/axios com base URL configurável
+- [x] Interceptor de autenticação (token JWT no header)
+- [x] Tratamento centralizado de erros (`ApiError`)
 
 ### Passo 3.2 · `lib/api/programs.ts`
-- [ ] Função `fetchProgramConfig(programId): Promise<ProgramUIConfig>`
+- [x] Função `fetchProgramConfig(programId): Promise<ProgramUIConfig>`
   - Cache stale-while-revalidate (⚠ atenção ao risco 1 do documento)
-- [ ] Função `fetchPrograms(): Promise<ProgramUIConfig[]>`
+- [x] Função `fetchPrograms(): Promise<ProgramUIConfig[]>`
 
 ### Passo 3.3 · `lib/api/families.ts`
-- [ ] Funções CRUD para cadastros familiares
-- [ ] Função de consulta de status de integração CadÚnico
+- [x] Funções CRUD para cadastros familiares
+- [x] Função de consulta de status de integração CadÚnico
 
 ---
 
