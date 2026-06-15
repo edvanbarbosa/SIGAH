@@ -116,7 +116,7 @@ export function FamilyForm({ initialData, onSubmit }: FamilyFormProps) {
 
       {/* SEÇÃO 1: Responsável Familiar */}
       <div className="space-y-4">
-        <h3 className="text-sm font-bold text-slate-700 border-l-4 border-blue-600 pl-2">
+        <h3 className="text-sm font-bold text-slate-700 border-l-4 border-primary pl-2">
           1. Responsável Familiar ({config.labels.beneficiario})
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -126,7 +126,7 @@ export function FamilyForm({ initialData, onSubmit }: FamilyFormProps) {
               type="text"
               required
               {...register("responsavel.nomeCompleto")}
-              className="mt-1 block w-full px-3 py-2 text-sm border border-slate-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full px-3 py-2 text-sm border border-slate-300 rounded-md focus:ring-primary focus:border-primary"
             />
           </div>
           <div>
@@ -135,7 +135,7 @@ export function FamilyForm({ initialData, onSubmit }: FamilyFormProps) {
               type="text"
               required
               {...register("responsavel.cpf")}
-              className="mt-1 block w-full px-3 py-2 text-sm border border-slate-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full px-3 py-2 text-sm border border-slate-300 rounded-md focus:ring-primary focus:border-primary"
             />
           </div>
           <div>
@@ -144,7 +144,7 @@ export function FamilyForm({ initialData, onSubmit }: FamilyFormProps) {
               type="date"
               required
               {...register("responsavel.dataNascimento")}
-              className="mt-1 block w-full px-3 py-2 text-sm border border-slate-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full px-3 py-2 text-sm border border-slate-300 rounded-md focus:ring-primary focus:border-primary"
             />
           </div>
           <div>
@@ -153,7 +153,7 @@ export function FamilyForm({ initialData, onSubmit }: FamilyFormProps) {
               type="number"
               required
               {...register("responsavel.rendaMensal", { valueAsNumber: true })}
-              className="mt-1 block w-full px-3 py-2 text-sm border border-slate-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full px-3 py-2 text-sm border border-slate-300 rounded-md focus:ring-primary focus:border-primary"
             />
           </div>
         </div>
@@ -161,7 +161,7 @@ export function FamilyForm({ initialData, onSubmit }: FamilyFormProps) {
 
       {/* SEÇÃO 2: Endereço */}
       <div className="space-y-4">
-        <h3 className="text-sm font-bold text-slate-700 border-l-4 border-blue-600 pl-2">
+        <h3 className="text-sm font-bold text-slate-700 border-l-4 border-primary pl-2">
           2. Endereço Residencial
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -215,7 +215,7 @@ export function FamilyForm({ initialData, onSubmit }: FamilyFormProps) {
 
       {/* SEÇÃO 3: Membros da Família (Composição Familiar) */}
       <div className="space-y-4">
-        <div className="flex items-center justify-between border-l-4 border-blue-600 pl-2">
+        <div className="flex items-center justify-between border-l-4 border-primary pl-2">
           <h3 className="text-sm font-bold text-slate-700">
             3. Composição Familiar (Membros Dependentes)
           </h3>
@@ -237,7 +237,7 @@ export function FamilyForm({ initialData, onSubmit }: FamilyFormProps) {
                 isResponsavel: false,
               })
             }
-            className="flex items-center space-x-1 text-xs font-bold text-blue-600 hover:text-blue-500"
+            className="flex items-center space-x-1 text-xs font-bold text-primary hover:opacity-90"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>Adicionar Dependente</span>
@@ -300,7 +300,7 @@ export function FamilyForm({ initialData, onSubmit }: FamilyFormProps) {
       {/* SEÇÃO CONDICIONAL: Integração CadÚnico */}
       {config.enabledSections.integracaoCadUnico && (
         <div className="space-y-4">
-          <h3 className="text-sm font-bold text-slate-700 border-l-4 border-blue-600 pl-2">
+          <h3 className="text-sm font-bold text-slate-700 border-l-4 border-primary pl-2">
             4. Informações do Cadastro Único (CadÚnico)
           </h3>
           <div className="p-4 border border-slate-100 rounded-lg bg-slate-50 flex items-center space-x-4">
@@ -309,7 +309,7 @@ export function FamilyForm({ initialData, onSubmit }: FamilyFormProps) {
                 <input
                   type="checkbox"
                   {...register("dadosSocioeconomicos.isInscritoCadUnico")}
-                  className="rounded text-blue-600 focus:ring-blue-500 h-4 w-4"
+                  className="rounded text-primary focus:ring-primary h-4 w-4"
                 />
                 <span className="text-xs font-semibold text-slate-700">A família encontra-se inscrita no Cadastro Único (CadÚnico)</span>
               </label>
@@ -331,7 +331,7 @@ export function FamilyForm({ initialData, onSubmit }: FamilyFormProps) {
       )}
 
       {/* SEÇÃO 5: Renda Familiar Consolidada */}
-      <div className="p-4 border border-blue-100 rounded-lg bg-blue-50/50 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="p-4 border border-primary/20 rounded-lg bg-primary/5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
           <h4 className="text-sm font-bold text-slate-800">Resumo de Renda Consolidado</h4>
           <p className="text-[10px] text-slate-500 mt-0.5">Calculado automaticamente com base na renda dos membros.</p>
@@ -366,11 +366,11 @@ export function FamilyForm({ initialData, onSubmit }: FamilyFormProps) {
             type="checkbox"
             required
             {...register("consentimento.aceito")}
-            className="rounded text-blue-600 focus:ring-blue-500 h-4.5 w-4.5 mt-0.5 shrink-0"
+            className="rounded text-primary focus:ring-primary h-4.5 w-4.5 mt-0.5 shrink-0"
           />
           <div className="flex-1">
             <label htmlFor="lgpd" className="text-xs font-bold text-slate-700 flex items-center gap-1.5 cursor-pointer">
-              <ShieldCheck className="w-4 h-4 text-blue-600 shrink-0" />
+              <ShieldCheck className="w-4 h-4 text-primary shrink-0" />
               <span>Aceito os Termos de Tratamento de Dados (LGPD)</span>
             </label>
             <p className="text-[10px] text-slate-400 mt-1 leading-relaxed">
@@ -385,7 +385,7 @@ export function FamilyForm({ initialData, onSubmit }: FamilyFormProps) {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="flex items-center space-x-2 px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg text-sm transition shadow disabled:opacity-50"
+          className="flex items-center space-x-2 px-6 py-3 bg-primary hover:opacity-90 text-white font-bold rounded-lg text-sm transition shadow disabled:opacity-50"
         >
           <Save className="w-4 h-4" />
           <span>{isSubmitting ? "Gravando Inscrição..." : "Salvar Inscrição"}</span>

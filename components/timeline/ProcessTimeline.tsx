@@ -48,7 +48,7 @@ export function ProcessTimeline({ currentStage, steps }: ProcessTimelineProps) {
                   isCompleted
                     ? "bg-green-600 border-green-600 text-white"
                     : isActive
-                    ? "bg-blue-100 border-blue-600 text-blue-600"
+                    ? "bg-primary/10 border-primary text-primary"
                     : "bg-white border-slate-300 text-slate-400"
                 }`}
               >
@@ -60,10 +60,10 @@ export function ProcessTimeline({ currentStage, steps }: ProcessTimelineProps) {
                   <div className="w-1.5 h-1.5 bg-slate-300 rounded-full"></div>
                 )}
               </div>
-
+ 
               {/* Informações da etapa */}
               <div className="flex flex-col">
-                <span className={`text-xs font-bold ${isActive ? "text-blue-600" : "text-slate-800"}`}>
+                <span className={`text-xs font-bold ${isActive ? "text-primary" : "text-slate-800"}`}>
                   {step.label}
                 </span>
                 <p className="text-[10px] text-slate-400 mt-0.5 leading-relaxed">

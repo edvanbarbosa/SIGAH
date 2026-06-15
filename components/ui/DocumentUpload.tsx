@@ -118,7 +118,7 @@ export function DocumentUpload({
           onClick={() => inputRef.current?.click()}
           className={`border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer transition ${
             dragActive
-              ? "border-blue-500 bg-blue-50/20"
+              ? "border-primary bg-primary/5"
               : "border-slate-300 hover:border-slate-400 bg-slate-50/50 hover:bg-slate-50"
           }`}
         >
@@ -131,7 +131,7 @@ export function DocumentUpload({
           />
           <UploadCloud className="w-8 h-8 text-slate-400 mb-2" />
           <p className="text-xs text-slate-600 text-center font-medium">
-            Arraste e solte o arquivo aqui ou <span className="text-blue-600">clique para buscar</span>
+            Arraste e solte o arquivo aqui ou <span className="text-primary">clique para buscar</span>
           </p>
           <p className="text-[10px] text-slate-400 mt-1">
             Formatos aceitos: PDF, JPEG, PNG (Máx {maxSizeMB}MB)
@@ -140,7 +140,7 @@ export function DocumentUpload({
       ) : (
         <div className="border border-slate-200 rounded-lg p-3 bg-slate-50 flex items-center justify-between">
           <div className="flex items-center space-x-3 overflow-hidden">
-            <FileText className="w-6 h-6 text-blue-500 shrink-0" />
+            <FileText className="w-6 h-6 text-primary shrink-0" />
             <div className="overflow-hidden">
               <p className="text-xs font-semibold text-slate-700 truncate">{file.name}</p>
               <p className="text-[10px] text-slate-400">{(file.size / 1024 / 1024).toFixed(2)} MB</p>

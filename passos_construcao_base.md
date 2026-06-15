@@ -159,15 +159,15 @@ Montar o roteamento dinâmico por programa conforme a árvore definida no docume
 
 ---
 
-## Etapa 8 — Tema e Estilização
+## Etapa 8 — Tema e Estilização ✅
 
 ### Passo 8.1 · Configuração do Tailwind com CSS vars
-- [ ] Definir variáveis de tema no `globals.css` (cores, fontes, espaçamentos)
-- [ ] Configurar tema dinâmico por programa (cores aplicadas via `ProgramUIConfig.theme`)
+- [x] Definir variáveis de tema no `globals.css` (cores, fontes, espaçamentos)
+- [x] Configurar tema dinâmico por programa (cores aplicadas via `ProgramUIConfig.theme`)
 
 ### Passo 8.2 · Componentes shadcn/ui
-- [ ] Garantir que os primitivos do shadcn estão configurados e acessíveis
-- [ ] Verificar que `components.json` aponta para o diretório correto
+- [x] Garantir que os primitivos do shadcn estão configurados e acessíveis
+- [x] Verificar que `components.json` aponta para o diretório correto
 
 ---
 

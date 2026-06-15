@@ -42,7 +42,7 @@ export function ScoringPanel({
       {/* CABEÇALHO DA PONTUAÇÃO */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-slate-100 pb-5 gap-4">
         <div className="flex items-center space-x-3">
-          <div className="p-2.5 rounded-lg bg-blue-50 text-blue-600">
+          <div className="p-2.5 rounded-lg bg-primary/10 text-primary">
             <Award className="w-6 h-6" />
           </div>
           <div>
@@ -56,7 +56,7 @@ export function ScoringPanel({
         </div>
         <div className="text-center sm:text-right shrink-0">
           <span className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">Pontuação Total</span>
-          <span className="text-3xl font-extrabold text-blue-900">
+          <span className="text-3xl font-extrabold text-primary">
             {isCalculating ? "..." : totalScore} <span className="text-sm font-semibold text-slate-500">pts</span>
           </span>
         </div>

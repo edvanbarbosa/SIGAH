@@ -79,7 +79,7 @@ export function PropertyForm({ initialData, onSubmit }: PropertyFormProps) {
 
       {/* DADOS DO IMÓVEL */}
       <div className="space-y-4">
-        <h3 className="text-sm font-bold text-slate-700 border-l-4 border-emerald-600 pl-2">
+        <h3 className="text-sm font-bold text-slate-700 border-l-4 border-primary pl-2">
           1. Identificação Técnica do {config.labels.unidade}
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -89,7 +89,7 @@ export function PropertyForm({ initialData, onSubmit }: PropertyFormProps) {
               type="text"
               required
               {...register("inscricaoImovel")}
-              className="mt-1 block w-full px-3 py-2 text-sm border border-slate-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500"
+              className="mt-1 block w-full px-3 py-2 text-sm border border-slate-300 rounded-md focus:ring-primary focus:border-primary"
             />
           </div>
           <div>
@@ -98,7 +98,7 @@ export function PropertyForm({ initialData, onSubmit }: PropertyFormProps) {
               type="text"
               required
               {...register("matriculaCartorio")}
-              className="mt-1 block w-full px-3 py-2 text-sm border border-slate-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500"
+              className="mt-1 block w-full px-3 py-2 text-sm border border-slate-300 rounded-md focus:ring-primary focus:border-primary"
             />
           </div>
           <div>
@@ -107,14 +107,14 @@ export function PropertyForm({ initialData, onSubmit }: PropertyFormProps) {
               type="number"
               required
               {...register("areaTerrenoM2", { valueAsNumber: true })}
-              className="mt-1 block w-full px-3 py-2 text-sm border border-slate-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500"
+              className="mt-1 block w-full px-3 py-2 text-sm border border-slate-300 rounded-md focus:ring-primary focus:border-primary"
             />
           </div>
           <div>
             <label className="block text-xs font-semibold text-slate-600">Situação Física</label>
             <select
               {...register("situacaoFisica")}
-              className="mt-1 block w-full px-3 py-2 text-sm border border-slate-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500"
+              className="mt-1 block w-full px-3 py-2 text-sm border border-slate-300 rounded-md focus:ring-primary focus:border-primary"
             >
               <option value="lote_vazio">Lote Vazio</option>
               <option value="construcao_iniciada">Construção Iniciada</option>
@@ -127,7 +127,7 @@ export function PropertyForm({ initialData, onSubmit }: PropertyFormProps) {
 
       {/* ENDEREÇO DO IMÓVEL */}
       <div className="space-y-4">
-        <h3 className="text-sm font-bold text-slate-700 border-l-4 border-emerald-600 pl-2">
+        <h3 className="text-sm font-bold text-slate-700 border-l-4 border-primary pl-2">
           2. Localização Geográfica
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -187,11 +187,11 @@ export function PropertyForm({ initialData, onSubmit }: PropertyFormProps) {
             type="checkbox"
             required
             {...register("aceitoTermo")}
-            className="rounded text-emerald-600 focus:ring-emerald-500 h-4.5 w-4.5 mt-0.5 shrink-0"
+            className="rounded text-primary focus:ring-primary h-4.5 w-4.5 mt-0.5 shrink-0"
           />
           <div className="flex-1">
             <label htmlFor="termo" className="text-xs font-bold text-slate-700 flex items-center gap-1.5 cursor-pointer">
-              <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+              <ShieldCheck className="w-4 h-4 text-primary shrink-0" />
               <span>Aceito os termos da concessão do {config.labels.unidade}</span>
             </label>
             <p className="text-[10px] text-slate-400 mt-1 leading-relaxed">
@@ -206,7 +206,7 @@ export function PropertyForm({ initialData, onSubmit }: PropertyFormProps) {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="flex items-center space-x-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-sm transition shadow disabled:opacity-50"
+          className="flex items-center space-x-2 px-6 py-3 bg-primary hover:opacity-90 text-white font-bold rounded-lg text-sm transition shadow disabled:opacity-50"
         >
           <Save className="w-4 h-4" />
           <span>{isSubmitting ? "Gravando Cadastro..." : `Salvar ${config.labels.unidade}`}</span>

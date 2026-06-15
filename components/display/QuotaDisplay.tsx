@@ -27,7 +27,7 @@ export function QuotaDisplay({ quotas }: QuotaDisplayProps) {
   return (
     <div className="font-sans border border-slate-100 rounded-xl bg-white shadow-sm p-6 max-w-2xl mx-auto">
       <div className="flex items-center space-x-3 border-b border-slate-100 pb-4 mb-4">
-        <div className="p-2.5 rounded-lg bg-blue-50 text-blue-600">
+        <div className="p-2.5 rounded-lg bg-primary/10 text-primary">
           <Users className="w-5 h-5" />
         </div>
         <div>
@@ -52,7 +52,7 @@ export function QuotaDisplay({ quotas }: QuotaDisplayProps) {
               <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden relative">
                 <div
                   className={`h-full rounded-full transition-all duration-300 ${
-                    isOverlimit ? "bg-red-500" : "bg-blue-600"
+                    isOverlimit ? "bg-red-500" : "bg-primary"
                   }`}
                   style={{ width: `${Math.min(progress, 100)}%` }}
                 ></div>

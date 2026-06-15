@@ -41,7 +41,7 @@ export function ConsentBanner({
   return (
     <div className="font-sans border border-slate-200 rounded-lg p-5 bg-white shadow-md max-w-2xl mx-auto">
       <div className="flex items-start space-x-3">
-        <div className="p-2 rounded-lg bg-blue-50 text-blue-600 shrink-0">
+        <div className="p-2 rounded-lg bg-primary/10 text-primary shrink-0">
           <ShieldCheck className="w-6 h-6" />
         </div>
         <div className="flex-1">
@@ -59,7 +59,7 @@ export function ConsentBanner({
               ⚠️ O consentimento é obrigatório para dar andamento no cadastro. Se optar por recusar, o formulário de inscrição será travado.
             </p>
           )}
-
+ 
           <div className="mt-4 flex flex-wrap items-center justify-end gap-3">
             <button
               onClick={handleDecline}
@@ -69,7 +69,7 @@ export function ConsentBanner({
             </button>
             <button
               onClick={handleAccept}
-              className="flex items-center space-x-1 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-lg text-xs transition shadow-sm"
+              className="flex items-center space-x-1 px-4 py-2 bg-primary hover:opacity-90 text-white font-semibold rounded-lg text-xs transition shadow-sm"
             >
               <span>Aceitar e Prosseguir</span>
               <ArrowRight className="w-3.5 h-3.5" />

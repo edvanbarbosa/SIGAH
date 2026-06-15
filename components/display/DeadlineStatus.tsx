@@ -58,7 +58,7 @@ export function DeadlineStatus({
         <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
           <div
             className={`h-full rounded-full transition-all duration-300 ${
-              isExpired ? "bg-red-500" : isCritical ? "bg-amber-500" : "bg-blue-600"
+              isExpired ? "bg-red-500" : isCritical ? "bg-amber-500" : "bg-primary"
             }`}
             style={{ width: `${Math.max(0, Math.min(progress, 100))}%` }}
           ></div>
