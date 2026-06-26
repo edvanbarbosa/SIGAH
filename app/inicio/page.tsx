@@ -9,6 +9,7 @@
 
 import Link from "next/link";
 import { Landmark, LogIn, ShieldCheck } from "lucide-react";
+import { LandingFooter } from "@/components/layout/LandingFooter";
 
 export default function InicioPage() {
   return (
@@ -48,8 +49,8 @@ export default function InicioPage() {
           </section>
 
           {/* Card Flutuante de Conteúdo */}
-          <div className="px-4 -mt-16 relative z-10 space-y-6 pb-12">
-            <div className="bg-white rounded-2xl p-6 space-y-6 shadow-[0_16px_32px_rgba(0,30,64,0.08)] border border-outline-variant/10">
+          <div className="w-full -mt-16 relative z-10 pb-12">
+            <div className="bg-white rounded-t-2xl p-6 space-y-6 shadow-[0_-8px_32px_rgba(0,30,64,0.08)] border-t border-outline-variant/10">
               {/* Título e Texto */}
               <div className="space-y-3">
                 <h1 className="font-heading font-extrabold text-3xl text-primary leading-tight tracking-tight">
@@ -71,7 +72,7 @@ export default function InicioPage() {
                 </Link>
                 
                 <Link 
-                  href="/auth/login"
+                  href="/auth/cadastro"
                   className="w-full border-2 border-primary text-primary py-4 rounded-xl font-bold text-center text-base bg-white hover:bg-surface-container-low active:scale-[0.98] transition-all flex items-center justify-center cursor-pointer"
                 >
                   Criar Conta
@@ -121,7 +122,7 @@ export default function InicioPage() {
                 </Link>
                 
                 <Link 
-                  href="/auth/login"
+                  href="/auth/cadastro"
                   className="flex-1 border-2 border-primary text-primary py-4 px-8 rounded-xl font-bold text-center text-sm bg-white hover:bg-surface-container-low transition-all duration-300 flex items-center justify-center cursor-pointer select-none"
                 >
                   Criar Conta
@@ -160,28 +161,7 @@ export default function InicioPage() {
       </main>
 
       {/* 3. Rodapé */}
-      <footer className="w-full bg-surface-container-high px-6 py-8 border-t border-outline-variant/20">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="space-y-2 text-center md:text-left">
-            <div className="flex items-center gap-2 justify-center md:justify-start">
-              <span className="font-heading font-bold text-primary">SIGAH</span>
-              <span className="text-outline text-xs">|</span>
-              <span className="text-[10px] text-on-surface-variant font-black uppercase tracking-wider">
-                Governo Federal
-              </span>
-            </div>
-            <p className="font-sans text-xs text-on-surface-variant leading-relaxed">
-              © 2026 - Sistema Integrado de Gestão de Apoio Habitacional. Todos os direitos reservados à União.
-            </p>
-          </div>
-          <div className="flex gap-6 text-xs text-on-surface font-semibold">
-            <a className="hover:underline" href="#">Privacidade</a>
-            <a className="hover:underline" href="#">Termos de Uso</a>
-            <a className="hover:underline" href="#">Acessibilidade</a>
-            <a className="hover:underline" href="#">Contato</a>
-          </div>
-        </div>
-      </footer>
+      <LandingFooter />
 
     </div>
   );

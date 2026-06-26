@@ -6,6 +6,7 @@
 // =============================================================================
 
 import Link from "next/link";
+import { LandingFooter } from "@/components/layout/LandingFooter";
 import { fetchPrograms } from "@/lib/api/programs";
 import { ProgramUIConfig } from "@/types/program";
 import { 
@@ -113,12 +114,12 @@ export default async function HomePage() {
             <button className="text-sm font-bold text-[#43474f] px-4 py-2 hover:text-[#001e40] transition-colors hidden sm:block">
               Suporte
             </button>
-            <a 
-              href="#programas" 
+            <Link 
+              href="/inicio" 
               className="bg-[#001e40] hover:bg-[#001e40]/90 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-sm"
             >
               Acessar Portal
-            </a>
+            </Link>
           </div>
         </div>
       </header>
@@ -185,87 +186,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 3. Seção de Programas Ativos (Seleção / Redirecionamento) */}
-      <section className="py-24 bg-white" id="programas">
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
-          
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-            <div className="space-y-3">
-              <span className="text-[10px] font-black tracking-widest text-[#0059bb] uppercase">
-                Portais Operacionais
-              </span>
-              <h2 className="font-heading font-black text-3xl sm:text-4xl text-[#001e40] tracking-tight">
-                Programas Habitacionais Ativos
-              </h2>
-              <p className="text-sm text-[#43474f] max-w-xl">
-                Acesse o portal do programa habitacional desejado para gerenciar o cadastro social de famílias, realizar a hierarquização ou gerenciar lotes e unidades.
-              </p>
-            </div>
-            
-            <div className="flex items-center space-x-2 text-xs font-bold text-[#0059bb] hover:underline cursor-pointer">
-              <span>Painel de Indicadores Gerais</span>
-              <ArrowUpRight className="w-4 h-4" />
-            </div>
-          </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {programs.map((program) => (
-              <div
-                key={program.id}
-                className="bg-[#f8f9fa] rounded-2xl border border-[#c3c6d1]/10 p-8 flex flex-col justify-between hover:shadow-[0_20px_40px_rgba(0,30,64,0.06)] hover:-translate-y-0.5 transition-all duration-300 relative overflow-hidden group"
-              >
-                {/* Linha colorida do tema no topo do card */}
-                <div 
-                  className="absolute top-0 left-0 right-0 h-[5px] transition-colors" 
-                  style={{ backgroundColor: program.theme.primaryColor }}
-                ></div>
-
-                <div className="mb-8">
-                  <div className="flex items-center justify-between mb-6">
-                    <span 
-                      className="text-[10px] font-black tracking-widest uppercase px-3 py-1.5 rounded"
-                      style={{ 
-                        backgroundColor: `${program.theme.primaryColor}12`, 
-                        color: program.theme.primaryColor 
-                      }}
-                    >
-                      {program.theme.shortName}
-                    </span>
-                    <div className="text-[#43474f]/30 group-hover:text-[#0059bb] transition-colors">
-                      {program.formType === "property" ? (
-                        <Building className="w-6 h-6" />
-                      ) : (
-                        <Database className="w-6 h-6" />
-                      )}
-                    </div>
-                  </div>
-
-                  <h3 className="font-heading font-black text-2xl text-[#001e40] mb-3 tracking-tight group-hover:text-[#0059bb] transition-colors">
-                    {program.name}
-                  </h3>
-                  
-                  <p className="text-xs text-[#43474f] leading-relaxed max-w-lg">
-                    Gestão centralizada de {program.labels.beneficiario.toLowerCase()}s e {program.labels.unidade.toLowerCase()}s. 
-                    Inclui análise de vulnerabilidades socioeconômicas, validação de regras de enquadramento e módulo de {program.labels.classificacao.toLowerCase()} automatizado.
-                  </p>
-                </div>
-
-                <Link
-                  href={`/${program.slug}/dashboard`}
-                  className="w-full text-center py-4 px-4 rounded-xl font-bold text-white transition-all duration-300 active:scale-[0.98] inline-flex items-center justify-center space-x-2 text-sm select-none shadow-sm hover:shadow-md hover:opacity-95"
-                  style={{ 
-                    backgroundColor: program.theme.primaryColor,
-                  }}
-                >
-                  <span>Acessar Painel do {program.theme.shortName}</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-                </Link>
-              </div>
-            ))}
-          </div>
-
-        </div>
-      </section>
 
       {/* 4. Features Section (Bento Grid) */}
       <section className="py-28 bg-[#f3f4f5] border-t border-b border-[#c3c6d1]/10" id="funcionalidades">
@@ -606,68 +527,7 @@ export default async function HomePage() {
       </section>
 
       {/* 9. Footer */}
-      <footer className="bg-[#001e40] text-white py-16 border-t border-white/10">
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
-          
-          <div className="flex flex-col md:flex-row justify-between items-start gap-12 mb-16">
-            
-            <div className="space-y-4 max-w-xs">
-              <span className="font-heading font-black text-2xl tracking-tight">SIGAH</span>
-              <p className="text-white/60 text-xs leading-relaxed">
-                A plataforma líder em gestão habitacional inteligente para o setor público brasileiro. Transformando moradia em dignidade através de dados.
-              </p>
-              <div className="flex flex-wrap gap-2 pt-2">
-                <span className="px-2.5 py-1 bg-white/10 rounded-full text-[9px] font-bold uppercase tracking-widest">
-                  100% Digital
-                </span>
-                <span className="px-2.5 py-1 bg-white/10 rounded-full text-[9px] font-bold uppercase tracking-widest">
-                  Seguro
-                </span>
-                <span className="px-2.5 py-1 bg-white/10 rounded-full text-[9px] font-bold uppercase tracking-widest">
-                  Auditável
-                </span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-12">
-              <div className="space-y-4">
-                <h5 className="font-bold text-xs uppercase tracking-wider text-white">Produto</h5>
-                <ul className="space-y-2 text-xs text-white/60">
-                  <li><a className="hover:text-white transition-colors" href="#funcionalidades">Funcionalidades</a></li>
-                  <li><a className="hover:text-white transition-colors" href="#programas">Conformidade Legal</a></li>
-                  <li><a className="hover:text-white transition-colors" href="#">Segurança de Dados</a></li>
-                </ul>
-              </div>
-              <div className="space-y-4">
-                <h5 className="font-bold text-xs uppercase tracking-wider text-white">Institucional</h5>
-                <ul className="space-y-2 text-xs text-white/60">
-                  <li><a className="hover:text-white transition-colors" href="#">Sobre Nós</a></li>
-                  <li><a className="hover:text-white transition-colors" href="#depoimentos">Transparência</a></li>
-                  <li><a className="hover:text-white transition-colors" href="#">Contato</a></li>
-                </ul>
-              </div>
-              <div className="space-y-4 col-span-2 sm:col-span-1">
-                <h5 className="font-bold text-xs uppercase tracking-wider text-white">Legal</h5>
-                <ul className="space-y-2 text-xs text-white/60">
-                  <li><a className="hover:text-white transition-colors" href="#">Privacidade</a></li>
-                  <li><a className="hover:text-white transition-colors" href="#">Termos de Uso</a></li>
-                  <li><a className="hover:text-white transition-colors" href="#">Acessibilidade</a></li>
-                </ul>
-              </div>
-            </div>
-
-          </div>
-
-          <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6 text-white/40 text-xs">
-            <p>© 2026 SIGAH Public Housing Management Platform. All Rights Reserved. Institutional Transparency Portal.</p>
-            <div className="flex gap-6">
-              <a className="hover:underline" href="#">Open Data API</a>
-              <a className="hover:underline" href="#">Ouvidoria Geral</a>
-            </div>
-          </div>
-
-        </div>
-      </footer>
+      <LandingFooter />
 
     </div>
   );
