@@ -18,7 +18,8 @@ import {
   Settings,
   Percent,
   Clock,
-  ShieldCheck
+  ShieldCheck,
+  Building
 } from "lucide-react";
 import { useProgram } from "@/lib/hooks/useProgram";
 
@@ -74,6 +75,16 @@ export function Sidebar({
             href: `/${programId}/vagas`,
             icon: Percent,
             active: pathname.includes("/vagas"),
+          },
+        ]
+      : []),
+    ...(config.enabledSections.unidades
+      ? [
+          {
+            label: "Designação de Unidades",
+            href: `/${programId}/unidades`,
+            icon: Building,
+            active: pathname.includes("/unidades"),
           },
         ]
       : []),
