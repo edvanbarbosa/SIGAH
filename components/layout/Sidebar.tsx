@@ -16,7 +16,8 @@ import {
   Users, 
   FileText, 
   Settings,
-  Percent
+  Percent,
+  Clock
 } from "lucide-react";
 import { useProgram } from "@/lib/hooks/useProgram";
 
@@ -81,6 +82,16 @@ export function Sidebar({
       icon: FileText,
       active: pathname.includes("/relatorios"),
     },
+    ...(config.enabledSections.prazosProcessuais
+      ? [
+          {
+            label: "Gestão de Prazos",
+            href: `/${programId}/prazos`,
+            icon: Clock,
+            active: pathname.includes("/prazos"),
+          },
+        ]
+      : []),
     {
       label: "Configurações",
       href: "#",
