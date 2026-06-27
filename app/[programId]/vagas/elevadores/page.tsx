@@ -426,19 +426,30 @@ Gerado em: ${new Date().toLocaleDateString("pt-BR")}
                   </div>
 
                   {/* Manutenção de Elevadores */}
-                  <div className="flex items-center justify-between py-4 bg-secondary/5 px-4 rounded-xl border-l-4 border-secondary select-none">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-secondary text-white flex items-center justify-center">
-                        <Layers className="w-5 h-5" />
+                  <div className="flex flex-col bg-secondary/5 p-4 rounded-xl border-l-4 border-secondary select-none gap-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-secondary text-white flex items-center justify-center">
+                          <Layers className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-secondary">Manutenção de Elevadores</p>
+                          <p className="text-[10px] text-on-surface-variant font-medium">Parcela exclusiva (RF043)</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-xs font-bold text-secondary">Manutenção de Elevadores</p>
-                        <p className="text-[10px] text-on-surface-variant font-medium">Parcela exclusiva (RF043)</p>
+                      <div className="text-right">
+                        <p className="font-heading text-lg font-black text-secondary">R$ {valorElevadores}</p>
+                        <p className="text-[8px] font-black text-on-surface-variant uppercase tracking-wider">24% da cota</p>
                       </div>
                     </div>
-                    <div className="text-right">
-                      <p className="font-heading text-lg font-black text-secondary">R$ {valorElevadores}</p>
-                      <p className="text-[8px] font-black text-on-surface-variant uppercase tracking-wider">24% da cota</p>
+                    <div className="border-t border-secondary/10 pt-2 flex justify-end">
+                      <a 
+                        href={`/${programId}/vagas/caucao`}
+                        className="text-[10px] text-secondary font-black hover:underline uppercase tracking-wider flex items-center gap-1"
+                      >
+                        Gerenciar Conta Caução
+                        <span className="material-symbols-outlined text-[12px] leading-none">arrow_forward</span>
+                      </a>
                     </div>
                   </div>
 
