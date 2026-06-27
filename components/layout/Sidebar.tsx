@@ -107,6 +107,12 @@ export function Sidebar({
       icon: ShieldCheck,
       active: pathname.includes("/auditoria") && !pathname.includes("/enquadramento"),
     },
+    {
+      label: "Meu Imóvel (Cidadão)",
+      href: `/${programId}/meu-imovel`,
+      icon: Landmark,
+      active: pathname.includes("/meu-imovel"),
+    },
     ...(config.enabledSections.suplencia
       ? [
           {
