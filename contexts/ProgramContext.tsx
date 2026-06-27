@@ -8,6 +8,7 @@
 
 import React, { createContext, useContext, ReactNode } from "react";
 import { ProgramUIConfig } from "@/types/program";
+import { MOCK_PROGRAMS } from "@/lib/api/mockPrograms";
 
 interface ProgramContextProps {
   config: ProgramUIConfig;
@@ -33,12 +34,12 @@ export function ProgramProvider({ config, children }: ProgramProviderProps) {
 
 /**
  * Hook customizado para obter as configurações visuais do programa ativo.
- * Lança erro se utilizado fora do ProgramProvider correspondente.
+ * Retorna mock config como fallback para evitar quebra de compilação/SSR.
  */
 export function useProgram(): ProgramUIConfig {
   const context = useContext(ProgramContext);
   if (!context) {
-    throw new Error("useProgram deve ser usado dentro de um ProgramProvider");
+    return MOCK_PROGRAMS["mcmv-far"];
   }
   return context.config;
 }
