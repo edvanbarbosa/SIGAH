@@ -19,7 +19,8 @@ import {
   Percent,
   Clock,
   ShieldCheck,
-  Building
+  Building,
+  AlertTriangle
 } from "lucide-react";
 import { useProgram } from "@/lib/hooks/useProgram";
 
@@ -61,6 +62,12 @@ export function Sidebar({
       href: `/${programId}/social`,
       icon: Briefcase,
       active: pathname.includes("/social"),
+    },
+    {
+      label: "Irregularidades",
+      href: `/${programId}/denuncias/averiguacao`,
+      icon: AlertTriangle,
+      active: pathname.includes("/denuncias/averiguacao"),
     },
     {
       label: beneficiarioLabel,
@@ -126,9 +133,9 @@ export function Sidebar({
       : []),
     {
       label: "Configurações",
-      href: "#",
+      href: `/${programId}/ciclos`,
       icon: Settings,
-      active: false,
+      active: pathname.includes("/ciclos"),
     },
   ];
 
