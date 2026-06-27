@@ -57,10 +57,10 @@ export function Sidebar({
       active: pathname.endsWith("/dashboard"),
     },
     {
-      label: "Projetos Sociais",
-      href: "#",
+      label: "Acompanhamento Social",
+      href: `/${programId}/social`,
       icon: Briefcase,
-      active: false,
+      active: pathname.includes("/social"),
     },
     {
       label: beneficiarioLabel,
