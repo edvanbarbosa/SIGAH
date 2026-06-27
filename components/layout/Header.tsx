@@ -35,6 +35,7 @@ export function Header({
 
   const dashboardPath = programId ? `/${programId}/dashboard` : "/";
   const cadastroPath = programId ? `/${programId}/cadastro` : "#";
+  const vistoriasPath = programId ? `/${programId}/vistorias` : "#";
 
   return (
     <header className="bg-surface/80 backdrop-blur-xl text-primary border-b border-outline-variant/30 flex justify-between items-center px-6 md:px-8 h-20 w-full sticky top-0 z-50 shadow-[0px_16px_32px_rgba(0,30,64,0.06)]">
@@ -70,10 +71,14 @@ export function Header({
             Cadastro
           </Link>
           <Link 
-            href="#"
-            className="text-on-surface-variant font-semibold text-sm hover:text-secondary transition-colors duration-300"
+            href={vistoriasPath}
+            className={`font-semibold text-sm transition-colors duration-300 ${
+              pathname.includes("/vistorias")
+                ? "text-secondary" 
+                : "text-on-surface-variant hover:text-secondary"
+            }`}
           >
-            Projetos
+            Vistorias
           </Link>
         </nav>
 
