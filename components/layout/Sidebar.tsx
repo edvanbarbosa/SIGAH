@@ -101,6 +101,12 @@ export function Sidebar({
       icon: FileText,
       active: pathname.includes("/relatorios"),
     },
+    {
+      label: "Auditoria e Transparência",
+      href: `/${programId}/auditoria`,
+      icon: ShieldCheck,
+      active: pathname.includes("/auditoria") && !pathname.includes("/enquadramento"),
+    },
     ...(config.enabledSections.suplencia
       ? [
           {
