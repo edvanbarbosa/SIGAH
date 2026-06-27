@@ -36,6 +36,7 @@ export function Header({
   const dashboardPath = programId ? `/${programId}/dashboard` : "/";
   const cadastroPath = programId ? `/${programId}/cadastro` : "#";
   const vistoriasPath = programId ? `/${programId}/vistorias` : "#";
+  const entregasPath = programId ? `/${programId}/entregas` : "#";
 
   return (
     <header className="bg-surface/80 backdrop-blur-xl text-primary border-b border-outline-variant/30 flex justify-between items-center px-6 md:px-8 h-20 w-full sticky top-0 z-50 shadow-[0px_16px_32px_rgba(0,30,64,0.06)]">
@@ -79,6 +80,16 @@ export function Header({
             }`}
           >
             Vistorias
+          </Link>
+          <Link 
+            href={entregasPath}
+            className={`font-semibold text-sm transition-colors duration-300 ${
+              pathname.includes("/entregas")
+                ? "text-secondary" 
+                : "text-on-surface-variant hover:text-secondary"
+            }`}
+          >
+            Entregas
           </Link>
         </nav>
 
