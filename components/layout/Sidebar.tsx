@@ -15,8 +15,10 @@ import {
   Briefcase, 
   Users, 
   FileText, 
-  Settings 
+  Settings,
+  Percent
 } from "lucide-react";
+import { useProgram } from "@/lib/hooks/useProgram";
 
 interface SidebarProps {
   /** Slug do programa habitacional ativo (ex: "mcmv-far") */
@@ -42,6 +44,7 @@ export function Sidebar({
   userAvatar = "https://lh3.googleusercontent.com/aida-public/AB6AXuDtPmbamYvNE6arXUN6VUCVWXZHn4IqHQ2GzgNaq1RVlF6MpedF8FMk4SSOA_a7nWrNk2iwWYvRWNA3eiEzNdT_Yc37uU0XaD9CIl8iFY1SvjbcQdKl99Stqbetq3GKo6A-mD50-PQjzTVdZm0uuQgvPtYFyEvN3oMgGlSkHdNImmlOwp-D4b8-6LKmvYL46cR0ucwCmIlbXmu1Jqk69GvBSpsNhIf-gpj-lWQo06koV8XZohaCisQ0965yTyiAbAhIjB4NGB5E8sk"
 }: SidebarProps) {
   const pathname = usePathname();
+  const config = useProgram();
 
   const menuItems = [
     {
@@ -62,6 +65,16 @@ export function Sidebar({
       icon: Users,
       active: pathname.includes("/cadastro"),
     },
+    ...(config.enabledSections.cotasVagas
+      ? [
+          {
+            label: "Vagas & Reserva Legal",
+            href: `/${programId}/vagas`,
+            icon: Percent,
+            active: pathname.includes("/vagas"),
+          },
+        ]
+      : []),
     {
       label: "Relatórios PTS",
       href: `/${programId}/relatorios`,
