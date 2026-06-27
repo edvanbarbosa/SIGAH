@@ -17,7 +17,8 @@ import {
   FileText, 
   Settings,
   Percent,
-  Clock
+  Clock,
+  ShieldCheck
 } from "lucide-react";
 import { useProgram } from "@/lib/hooks/useProgram";
 
@@ -82,6 +83,26 @@ export function Sidebar({
       icon: FileText,
       active: pathname.includes("/relatorios"),
     },
+    ...(config.enabledSections.suplencia
+      ? [
+          {
+            label: "Fila de Reintegração",
+            href: `/${programId}/suplencia`,
+            icon: Users,
+            active: pathname.includes("/suplencia"),
+          },
+        ]
+      : []),
+    ...(config.enabledSections.integracaoCadUnico
+      ? [
+          {
+            label: "Pesquisa de Enquadramento",
+            href: `/${programId}/enquadramento`,
+            icon: ShieldCheck,
+            active: pathname.includes("/enquadramento"),
+          },
+        ]
+      : []),
     ...(config.enabledSections.prazosProcessuais
       ? [
           {
