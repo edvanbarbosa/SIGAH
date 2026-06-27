@@ -413,6 +413,27 @@ export default function VagasReservaLegalPage() {
               </a>
             </section>
 
+            {/* Bloco de Integração Subvenções e Repasses de Manutenção */}
+            <section className="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/20 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-6">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-xl bg-blue-50 text-[#0059bb] flex items-center justify-center shrink-0">
+                  <span className="material-symbols-outlined text-2xl">payments</span>
+                </div>
+                <div>
+                  <h4 className="font-heading font-black text-primary text-base">Subvenções e Repasses de Manutenção</h4>
+                  <p className="text-on-surface-variant text-xs mt-1 leading-relaxed max-w-xl font-medium">
+                    Gerencie a alocação de recursos governamentais destinados à conservação e manutenção técnica de elevadores em condomínios verticais seletivos.
+                  </p>
+                </div>
+              </div>
+              <a 
+                href={`/${programId}/vagas/subvencoes`}
+                className="w-full sm:w-auto px-6 py-3.5 bg-primary text-white rounded-xl text-[10px] font-bold uppercase tracking-wider text-center shrink-0 hover:brightness-110 active:scale-95 transition-all shadow-md"
+              >
+                Acessar Subvenções
+              </a>
+            </section>
+
           </main>
 
           {/* Sticky Bottom Actions Bar */}

@@ -321,6 +321,17 @@ Gerado em: ${new Date().toLocaleDateString("pt-BR")}
                     <p className="font-bold text-xs">Dez/2027</p>
                   </div>
                 </div>
+
+                <div className="flex items-center justify-between mt-6 pt-4 border-t border-slate-100 select-none">
+                  <span className="text-[10px] text-on-surface-variant font-bold">Consulte o saldo de subvenções</span>
+                  <a 
+                    href={`/${programId}/vagas/subvencoes`}
+                    className="text-secondary hover:underline text-xs font-black flex items-center gap-1 uppercase tracking-wider"
+                  >
+                    Gerenciar Repasses
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </a>
+                </div>
               </div>
 
               {/* RF043.4 & RF043.5: Aporte do Ente Público */}
