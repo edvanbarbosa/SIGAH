@@ -67,6 +67,7 @@ export default function CandidatoDossieDetailPage() {
 
   const [notification, setNotification] = useState<string | null>(null);
   const [showFullHistory, setShowFullHistory] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   // Calcula itens completos (validados ou enviados contam como preenchidos para a meta do dossiê)
   // Mockup original: 9 / 12 concluídos = 75%
@@ -115,6 +116,7 @@ Histórico gerado em: ${new Date().toLocaleDateString("pt-BR")}
     document.body.appendChild(element);
     element.click();
     document.body.removeChild(element);
+    setShowSuccessModal(true);
   };
 
   const handleOpenTicket = () => {
@@ -693,6 +695,37 @@ Histórico gerado em: ${new Date().toLocaleDateString("pt-BR")}
           <span className="font-sans text-[10px] font-semibold uppercase tracking-wider mt-0.5">Entregas</span>
         </a>
       </nav>
+
+      {showSuccessModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-primary/45 backdrop-blur-sm animate-fade-in">
+          <div className="bg-surface-container-lowest w-full max-w-md rounded-xl shadow-2xl p-8 flex flex-col items-center text-center border border-outline-variant/10">
+            <div className="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mb-6">
+              <CheckCircle className="text-green-600 w-10 h-10 shrink-0" />
+            </div>
+            <h2 className="text-2xl font-black font-heading text-primary mb-3">Exportação Concluída!</h2>
+            <p className="font-sans text-on-surface-variant font-medium mb-4 leading-relaxed text-sm">
+              Seu dossiê foi exportado com sucesso. O cadastro foi finalizado e todos os seus dados foram enviados para análise institucional.
+            </p>
+            <p className="text-xs text-on-surface-variant/70 mb-8 font-semibold">
+              Você receberá atualizações sobre o status da sua análise. Acompanhe seu status pelo app.
+            </p>
+            <div className="flex flex-col w-full gap-3">
+              <a
+                href={`/${programId}/dashboard`}
+                className="w-full py-3 bg-[#003366] hover:bg-[#001e40] text-white font-bold rounded-xl shadow-lg shadow-blue-900/20 active:scale-[0.98] transition-transform text-xs text-center uppercase tracking-wider no-underline"
+              >
+                Ir para Início
+              </a>
+              <button
+                onClick={() => setShowSuccessModal(false)}
+                className="w-full py-3 bg-surface-container-high text-primary font-bold rounded-xl active:scale-[0.98] transition-transform border border-outline-variant/30 text-xs uppercase tracking-wider cursor-pointer font-sans"
+              >
+                Ver Meu Status
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );

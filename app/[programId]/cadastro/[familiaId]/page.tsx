@@ -29,7 +29,8 @@ import {
   Home,
   ClipboardList,
   MessageSquare,
-  Check
+  Check,
+  Clock
 } from "lucide-react";
 
 interface Member {
@@ -133,11 +134,6 @@ export default function FamiliaDetailPage() {
   // Trata submissão do formulário
   const onSubmitForm = (data: FormValues) => {
     setSaveSuccess(true);
-    setTimeout(() => {
-      setSaveSuccess(false);
-      // Simula redirecionamento ou volta para a listagem
-      router.push(`/${programId}/cadastro`);
-    }, 2000);
   };
 
   return (
@@ -156,16 +152,7 @@ export default function FamiliaDetailPage() {
           
           <main className="w-full max-w-5xl mx-auto px-6 py-10 mb-20 md:mb-8 space-y-8">
             
-            {/* Mensagem de sucesso */}
-            {saveSuccess && (
-              <div className="bg-green-100 border border-green-300 text-green-800 p-4 rounded-xl flex items-center gap-3 shadow-md animate-fade-in">
-                <Check className="w-6 h-6 text-green-700 bg-green-200/50 p-1 rounded-full shrink-0" />
-                <div>
-                  <h4 className="font-bold text-sm">Cadastro Gravado!</h4>
-                  <p className="text-xs">Os dados foram atualizados com sucesso e salvos no servidor.</p>
-                </div>
-              </div>
-            )}
+
 
             {/* Cabeçalho da Seção */}
             <div className="space-y-1">
@@ -645,6 +632,53 @@ export default function FamiliaDetailPage() {
           <span className="font-sans text-[10px] mt-0.5">Perfil</span>
         </Link>
       </nav>
+      {saveSuccess && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-primary/45 backdrop-blur-sm animate-fade-in">
+          <div className="bg-surface-container-lowest w-full max-w-md rounded-[2rem] overflow-hidden shadow-2xl border border-outline-variant/10">
+            <div className="p-8 flex flex-col items-center text-center">
+              
+              {/* Success Icon */}
+              <div className="w-16 h-16 rounded-full flex items-center justify-center mb-6 bg-amber-50 border border-amber-200">
+                <Clock className="w-8 h-8 text-amber-600 shrink-0" />
+              </div>
+              
+              {/* Content */}
+              <h3 className="font-headline text-2xl font-black text-primary leading-tight mb-3">
+                Cadastro Pessoal Realizado com Sucesso!
+              </h3>
+              <p className="text-on-surface-variant text-sm leading-relaxed mb-6 px-2 font-medium">
+                O cadastro pessoal foi realizado com sucesso. Para seu cadastro ser completamente concluído, cadastre a documentação.
+              </p>
+              
+              {/* Protocol Card */}
+              <div className="w-full bg-surface-container-low border border-outline-variant/30 rounded-xl p-4 mb-8">
+                <p className="text-[10px] font-black text-outline uppercase tracking-wider mb-1">
+                  Número de Protocolo
+                </p>
+                <p className="font-headline text-lg font-bold text-secondary tracking-tight">
+                  #2024-SIGAH-{familiaId === "ana-silva" ? "8892" : Math.floor(1000 + Math.random() * 9000)}
+                </p>
+              </div>
+              
+              {/* Actions */}
+              <div className="flex flex-col w-full gap-3">
+                <a
+                  href={`/${programId}/${familiaId === "new" ? "ana-silva" : familiaId}`}
+                  className="w-full py-4 bg-secondary text-white rounded-xl font-bold text-xs hover:brightness-110 active:scale-95 transition-all text-center uppercase tracking-wider no-underline shadow-lg shadow-secondary/15"
+                >
+                  Cadastrar Documentação
+                </a>
+                <button 
+                  onClick={() => setSaveSuccess(false)}
+                  className="w-full py-4 border-2 border-outline/20 text-primary hover:bg-surface-container-high rounded-xl font-bold text-xs transition-all active:scale-95 cursor-pointer uppercase tracking-wider bg-transparent font-sans"
+                >
+                  Voltar ao Início
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );
