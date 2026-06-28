@@ -312,6 +312,23 @@ Histórico gerado em: ${new Date().toLocaleDateString("pt-BR")}
                   </button>
                 </div>
 
+                {/* Solicitação de Adaptação (Módulo de Acessibilidade) */}
+                <div className="bg-white border border-outline-variant/15 p-6 rounded-xl shadow-sm flex flex-col justify-between">
+                  <div className="flex items-center gap-2 mb-2 select-none">
+                    <span className="material-symbols-outlined text-secondary">accessibility_new</span>
+                    <h3 className="text-xs font-black text-primary uppercase tracking-wider">Acessibilidade</h3>
+                  </div>
+                  <p className="text-xs text-on-surface-variant/80 font-semibold mb-4 leading-relaxed">
+                    Possui algum membro na família com deficiência (PCD)? Solicite adaptações estruturais na unidade habitacional antes da entrega das chaves.
+                  </p>
+                  <a 
+                    href={`/${programId}/${candidatoId}/adaptacao`}
+                    className="w-full bg-secondary hover:bg-secondary-container text-white font-bold text-[10px] uppercase py-3 rounded-lg shadow-lg active:scale-95 transition-all text-center tracking-widest border-none"
+                  >
+                    Solicitar Adaptação
+                  </a>
+                </div>
+
                 {/* Histórico do Cadastro (Timeline) */}
                 <div className="bg-surface-container-lowest border border-outline-variant/15 rounded-xl shadow-sm overflow-hidden flex flex-col justify-between">
                   <div className="px-6 py-4 border-b border-outline-variant/15 select-none">
