@@ -343,6 +343,27 @@ Exportado em: ${new Date().toLocaleTimeString("pt-BR")} - ${new Date().toLocaleD
               </p>
             </section>
 
+            {/* Atalho para Designação Acessível */}
+            <section className="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/20 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-6 select-none">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-xl bg-blue-50 text-[#0059bb] flex items-center justify-center shrink-0">
+                  <Accessibility className="w-6 h-6 text-secondary" />
+                </div>
+                <div>
+                  <h4 className="font-heading font-black text-primary text-base">Designação Acessível</h4>
+                  <p className="text-on-surface-variant text-xs mt-1 leading-relaxed max-w-xl font-semibold">
+                    Gerencie a vinculação de candidatos PCD ou idosos com laudo aprovado para unidades adaptadas no térreo com acessibilidade total.
+                  </p>
+                </div>
+              </div>
+              <a 
+                href={`/${programId}/unidades/acessivel`}
+                className="w-full sm:w-auto px-6 py-3.5 bg-primary text-white rounded-xl text-[10px] font-bold uppercase tracking-wider text-center shrink-0 hover:brightness-110 active:scale-95 transition-all shadow-md border-none"
+              >
+                Acessar Vinculação
+              </a>
+            </section>
+
             {/* Lista de Atendimento */}
             <section className="space-y-5">
               <div className="flex items-center justify-between select-none">
