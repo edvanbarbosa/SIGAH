@@ -347,10 +347,45 @@ export default function VistoriaSchedulingPage() {
                           {item.day}
                         </div>
                       );
-
                     })}
                   </div>
+                </section>
 
+                {/* Seção 3: Links de Checklists Técnicos */}
+                <section className="bg-surface-container-lowest p-8 rounded-xl shadow-sm border border-outline-variant/10 space-y-6">
+                  <div className="flex items-center gap-3">
+                    <ClipboardCheck className="text-secondary w-6 h-6 shrink-0" />
+                    <h3 className="font-heading text-lg font-bold text-primary">Checklists de Vistoria e Conformidade</h3>
+                  </div>
+                  <p className="text-xs text-on-surface-variant leading-relaxed font-semibold">
+                    Acesse os checklists para vistoria da unidade habitacional ou para a auditoria de conformidade técnica NBR da torre.
+                  </p>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <a 
+                      href={`/${programId}/vistorias/checklist`}
+                      className="p-5 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition-all gap-4 text-left border-none"
+                    >
+                      <div>
+                        <span className="text-[8px] font-black uppercase text-secondary bg-blue-50 px-2 py-0.5 rounded tracking-wider w-fit">Unidade</span>
+                        <h4 className="font-heading font-black text-sm text-primary mt-2">Vistoria do Imóvel</h4>
+                        <p className="text-[10px] text-slate-500 font-semibold mt-1 leading-relaxed">Checklist de entrega de chaves, tomadas, cerâmicas e vazamentos.</p>
+                      </div>
+                      <span className="text-[9px] font-black text-secondary uppercase tracking-widest flex items-center gap-1 mt-auto">Acessar Checklist →</span>
+                    </a>
+
+                    <a 
+                      href={`/${programId}/vistorias/checklist-nbr`}
+                      className="p-5 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition-all gap-4 text-left border-none"
+                    >
+                      <div>
+                        <span className="text-[8px] font-black uppercase text-amber-700 bg-amber-50 px-2 py-0.5 rounded tracking-wider w-fit">Torre / NBR</span>
+                        <h4 className="font-heading font-black text-sm text-primary mt-2">Conformidade NBR</h4>
+                        <p className="text-[10px] text-slate-500 font-semibold mt-1 leading-relaxed">Auditoria técnica de poços de ventilação, janelas e regras de ventilação.</p>
+                      </div>
+                      <span className="text-[9px] font-black text-secondary uppercase tracking-widest flex items-center gap-1 mt-auto">Acessar NBR →</span>
+                    </a>
+                  </div>
                 </section>
 
               </div>
