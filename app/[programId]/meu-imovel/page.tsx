@@ -16,7 +16,7 @@ import {
   ChevronRight,
   Lock,
   Info,
-  Calculate,
+  Calculator,
   FileText,
   Download,
   Users,
@@ -103,20 +103,20 @@ export default function MeuImovelInalienabilidadePage() {
 
   return (
     <div className="bg-surface text-primary min-h-screen pb-24 md:pb-0 flex flex-col font-sans">
-      
+
       {/* 1. Header Reutilizável */}
       <Header programId={programId} />
 
       <div className="flex flex-grow w-full">
-        
+
         {/* 2. Sidebar Reutilizável */}
         <Sidebar programId={programId} beneficiarioLabel={config.labels.beneficiario + "s"} />
 
         {/* 3. Área de Conteúdo Principal */}
         <div className="flex-grow w-full xl:pl-72 flex flex-col justify-between">
-          
+
           <main className="pt-24 px-6 md:p-10 max-w-7xl mx-auto w-full space-y-8">
-            
+
             {/* Mensagem Toast */}
             {toastMessage && (
               <div className="bg-primary text-white p-4 rounded-xl flex items-center gap-3 shadow-md animate-fade-in z-30 select-none max-w-md">
@@ -142,7 +142,7 @@ export default function MeuImovelInalienabilidadePage() {
 
             {/* Grid Bento Layout */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-              
+
               {/* Card 1: Status de Propriedade (RF061) */}
               <section className="lg:col-span-7 bg-white rounded-2xl p-8 flex flex-col justify-between border border-outline-variant/15 shadow-sm relative overflow-hidden select-none min-h-[220px]">
                 <div className="flex justify-between items-start mb-8 relative z-10">
@@ -169,8 +169,8 @@ export default function MeuImovelInalienabilidadePage() {
                   </div>
 
                   <div className="h-3 w-full bg-slate-100 rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-[#0059bb] rounded-full transition-all duration-500" 
+                    <div
+                      className="h-full bg-[#0059bb] rounded-full transition-all duration-500"
                       style={{ width: `${(monthsElapsed / totalMonths) * 100}%` }}
                     ></div>
                   </div>
@@ -188,7 +188,7 @@ export default function MeuImovelInalienabilidadePage() {
                 <div className="absolute top-4 right-4 opacity-5">
                   <Award className="w-48 h-48" />
                 </div>
-                
+
                 <div className="flex items-center gap-3">
                   <div className="bg-white/10 p-2 rounded-xl">
                     <Info className="w-5 h-5 text-white" />
@@ -201,7 +201,7 @@ export default function MeuImovelInalienabilidadePage() {
                 </p>
 
                 <div>
-                  <button 
+                  <button
                     onClick={() => setShowNormativeModal(true)}
                     className="bg-white/10 hover:bg-white/20 px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border border-white/10 cursor-pointer"
                   >
@@ -250,8 +250,8 @@ export default function MeuImovelInalienabilidadePage() {
                         R$ {quitacaoAmount.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
                       </div>
                     </div>
-                    
-                    <button 
+
+                    <button
                       onClick={handleRequestBoleto}
                       disabled={isBoletoGenerating}
                       className="w-full mt-6 bg-[#0059bb] hover:bg-secondary text-white font-black text-xs uppercase tracking-widest py-3.5 rounded-lg transition-all flex items-center justify-center gap-2 border-none cursor-pointer"
@@ -289,7 +289,7 @@ export default function MeuImovelInalienabilidadePage() {
                   </p>
                 </div>
 
-                <button 
+                <button
                   disabled
                   className="w-full bg-slate-100 text-slate-400 font-black text-xs uppercase tracking-widest py-4 rounded-xl flex items-center justify-center gap-2 cursor-not-allowed border-none"
                 >
@@ -306,7 +306,7 @@ export default function MeuImovelInalienabilidadePage() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  
+
                   {/* Transferência de Titularidade */}
                   <div className="bg-white p-6 rounded-xl border border-slate-200 flex flex-col gap-4">
                     <div className="flex items-center gap-2.5 text-primary select-none">
@@ -315,7 +315,7 @@ export default function MeuImovelInalienabilidadePage() {
                     </div>
 
                     <div className="space-y-3">
-                      <div 
+                      <div
                         onClick={() => {
                           setTransferType("obito");
                           setIsTransferModalOpen(true);
@@ -331,7 +331,7 @@ export default function MeuImovelInalienabilidadePage() {
                         </div>
                       </div>
 
-                      <div 
+                      <div
                         onClick={() => {
                           setTransferType("divorcio");
                           setIsTransferModalOpen(true);
@@ -361,7 +361,7 @@ export default function MeuImovelInalienabilidadePage() {
                       </p>
                     </div>
 
-                    <button 
+                    <button
                       onClick={() => setIsSinistroModalOpen(true)}
                       className="w-full bg-[#001e40] hover:bg-primary-container text-white py-3.5 rounded-lg font-black text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2 border-none cursor-pointer mt-6"
                     >
@@ -378,7 +378,7 @@ export default function MeuImovelInalienabilidadePage() {
                 <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6">
                   Histórico de Movimentação do Imóvel
                 </h3>
-                
+
                 <div className="divide-y divide-slate-100">
                   <div className="flex items-center py-4 bg-slate-50 px-4 rounded-t-lg select-none">
                     <div className="w-2 h-2 rounded-full bg-secondary mr-6"></div>
@@ -430,21 +430,21 @@ export default function MeuImovelInalienabilidadePage() {
           MOBILE BOTTOM NAV BAR (Simulado do Stitch)
           ========================================== */}
       <nav className="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 px-4 md:hidden bg-white/95 dark:bg-[#001e40]/95 backdrop-blur-lg rounded-t-2xl border-t border-[#001e40]/10 shadow-[0_-8px_24px_rgba(0,30,64,0.08)]">
-        <a 
+        <a
           href={`/${programId}/dashboard`}
           className="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant/70 active:scale-90 transition-transform duration-150"
         >
           <Home className="w-5 h-5" />
           <span className="font-sans text-[10px] font-semibold uppercase tracking-wider mt-0.5">Início</span>
         </a>
-        <a 
+        <a
           href={`/${programId}/meu-imovel`}
           className="flex flex-col items-center justify-center text-secondary font-bold active:scale-90 transition-transform duration-150 scale-110"
         >
           <Lock className="w-5 h-5 text-secondary animate-pulse" />
           <span className="font-sans text-[10px] font-semibold uppercase tracking-wider mt-0.5 font-bold">Imóvel</span>
         </a>
-        <a 
+        <a
           href={`/${programId}/minha-classificacao`}
           className="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant/70 active:scale-90 transition-transform duration-150"
         >
@@ -462,14 +462,14 @@ export default function MeuImovelInalienabilidadePage() {
           <div className="relative bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
             <div className="p-6 border-b border-slate-200 flex justify-between items-center select-none">
               <h3 className="font-heading text-lg font-black text-[#001e40]">Portaria Normativa nº 45/2023</h3>
-              <button 
-                className="text-slate-400 hover:bg-slate-100 p-2 rounded-full border-none bg-transparent cursor-pointer" 
+              <button
+                className="text-slate-400 hover:bg-slate-100 p-2 rounded-full border-none bg-transparent cursor-pointer"
                 onClick={() => setShowNormativeModal(false)}
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
-            
+
             <div className="p-6 space-y-4 max-h-[350px] overflow-y-auto">
               <p className="text-xs text-[#001e40] leading-relaxed font-semibold">
                 <strong>Art. 1º.</strong> Os imóveis habitacionais subsidiados pelos cofres públicos serão gravados com cláusulas restritivas de inalienabilidade pelo prazo improrrogável de 60 (sessenta) meses, contados a partir da data de assinatura do contrato de compra e venda.
@@ -483,7 +483,7 @@ export default function MeuImovelInalienabilidadePage() {
             </div>
 
             <div className="p-6 bg-slate-50 border-t border-slate-150 flex justify-end select-none">
-              <button 
+              <button
                 onClick={() => setShowNormativeModal(false)}
                 className="py-3 px-8 bg-[#001e40] text-white font-bold text-xs uppercase tracking-widest rounded-xl hover:opacity-90 transition-all border-none cursor-pointer"
               >
@@ -503,20 +503,20 @@ export default function MeuImovelInalienabilidadePage() {
           <div className="relative bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
             <div className="p-6 border-b border-slate-200 flex justify-between items-center select-none">
               <h3 className="font-heading text-lg font-black text-[#001e40]">Acionar Protocolo de Sinistro</h3>
-              <button 
-                className="text-slate-400 hover:bg-slate-100 p-2 rounded-full border-none bg-transparent cursor-pointer" 
+              <button
+                className="text-slate-400 hover:bg-slate-100 p-2 rounded-full border-none bg-transparent cursor-pointer"
                 onClick={() => setIsSinistroModalOpen(false)}
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
-            
+
             <form onSubmit={handleSendSinistro} className="p-6 space-y-5">
               <div>
                 <label className="font-sans text-[10px] uppercase font-black text-slate-500 block mb-2 tracking-widest select-none">
                   Tipo de Sinistro Securitário
                 </label>
-                <select 
+                <select
                   className="w-full bg-slate-50 border-none border-b-2 border-[#001e40] focus:ring-0 focus:border-secondary p-3.5 text-xs rounded-t-lg text-primary font-bold"
                   value={sinistroType}
                   onChange={(e) => setSinistroType(e.target.value)}
@@ -531,7 +531,7 @@ export default function MeuImovelInalienabilidadePage() {
                 <label className="font-sans text-[10px] uppercase font-black text-slate-500 block mb-2 tracking-widest select-none">
                   Descrição e Laudo Inicial
                 </label>
-                <textarea 
+                <textarea
                   rows={3}
                   className="w-full bg-slate-50 border-none border-b-2 border-[#001e40] focus:ring-0 focus:border-secondary p-3.5 text-xs rounded-t-lg text-primary font-bold"
                   placeholder="Descreva detalhes como datas, certidão de óbito ou laudo do INSS..."
@@ -542,15 +542,15 @@ export default function MeuImovelInalienabilidadePage() {
               </div>
 
               <div className="flex gap-4 pt-4 select-none">
-                <button 
-                  type="button" 
-                  className="flex-1 py-3 text-slate-500 font-black text-xs border border-slate-200 rounded-xl hover:bg-slate-50 transition-all cursor-pointer bg-transparent" 
+                <button
+                  type="button"
+                  className="flex-1 py-3 text-slate-500 font-black text-xs border border-slate-200 rounded-xl hover:bg-slate-50 transition-all cursor-pointer bg-transparent"
                   onClick={() => setIsSinistroModalOpen(false)}
                 >
                   CANCELAR
                 </button>
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   className="flex-1 py-3 bg-[#001e40] text-white font-black text-xs rounded-xl shadow-lg hover:opacity-90 active:scale-95 transition-all cursor-pointer border-none"
                 >
                   CONFIRMAR
@@ -572,20 +572,20 @@ export default function MeuImovelInalienabilidadePage() {
               <h3 className="font-heading text-lg font-black text-[#001e40]">
                 {transferType === "obito" ? "Sucessão por Óbito" : "Prioridade da Mulher"}
               </h3>
-              <button 
-                className="text-slate-400 hover:bg-slate-100 p-2 rounded-full border-none bg-transparent cursor-pointer" 
+              <button
+                className="text-slate-400 hover:bg-slate-100 p-2 rounded-full border-none bg-transparent cursor-pointer"
                 onClick={() => setIsTransferModalOpen(false)}
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
-            
+
             <form onSubmit={handleSendTransfer} className="p-6 space-y-5">
               <div>
                 <label className="font-sans text-[10px] uppercase font-black text-slate-500 block mb-2 tracking-widest select-none">
                   Nome Completo do Novo Titular
                 </label>
-                <input 
+                <input
                   className="w-full bg-slate-50 border-none border-b-2 border-[#001e40] focus:ring-0 focus:border-secondary p-3.5 text-xs rounded-t-lg text-primary font-bold"
                   placeholder="Nome do sucessor ou beneficiária..."
                   value={successorName}
@@ -598,7 +598,7 @@ export default function MeuImovelInalienabilidadePage() {
                 <label className="font-sans text-[10px] uppercase font-black text-slate-500 block mb-2 tracking-widest select-none">
                   CPF do Novo Titular
                 </label>
-                <input 
+                <input
                   className="w-full bg-slate-50 border-none border-b-2 border-[#001e40] focus:ring-0 focus:border-secondary p-3.5 text-xs rounded-t-lg text-primary font-bold"
                   placeholder="000.000.000-00"
                   value={successorCPF}
@@ -608,15 +608,15 @@ export default function MeuImovelInalienabilidadePage() {
               </div>
 
               <div className="flex gap-4 pt-4 select-none">
-                <button 
-                  type="button" 
-                  className="flex-1 py-3 text-slate-500 font-black text-xs border border-slate-200 rounded-xl hover:bg-slate-50 transition-all cursor-pointer bg-transparent" 
+                <button
+                  type="button"
+                  className="flex-1 py-3 text-slate-500 font-black text-xs border border-slate-200 rounded-xl hover:bg-slate-50 transition-all cursor-pointer bg-transparent"
                   onClick={() => setIsTransferModalOpen(false)}
                 >
                   CANCELAR
                 </button>
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   className="flex-1 py-3 bg-[#001e40] text-white font-black text-xs rounded-xl shadow-lg hover:opacity-90 active:scale-95 transition-all cursor-pointer border-none"
                 >
                   CONFIRMAR
