@@ -364,6 +364,27 @@ Exportado em: ${new Date().toLocaleTimeString("pt-BR")} - ${new Date().toLocaleD
               </a>
             </section>
 
+            {/* Atalho para Gerenciamento de Adaptações */}
+            <section className="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/20 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-6 select-none">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center shrink-0">
+                  <Building2 className="w-6 h-6 text-amber-600" />
+                </div>
+                <div>
+                  <h4 className="font-heading font-black text-primary text-base">Gestão de Adaptações e Construtoras</h4>
+                  <p className="text-on-surface-variant text-xs mt-1 leading-relaxed max-w-xl font-semibold">
+                    Monitore cronogramas físicos e prazos limites (trava contratual) com as construtoras responsáveis pelas reformas de acessibilidade.
+                  </p>
+                </div>
+              </div>
+              <a 
+                href={`/${programId}/unidades/adaptacoes`}
+                className="w-full sm:w-auto px-6 py-3.5 bg-primary text-white rounded-xl text-[10px] font-bold uppercase tracking-wider text-center shrink-0 hover:brightness-110 active:scale-95 transition-all shadow-md border-none"
+              >
+                Gerenciar Prazos
+              </a>
+            </section>
+
             {/* Lista de Atendimento */}
             <section className="space-y-5">
               <div className="flex items-center justify-between select-none">
