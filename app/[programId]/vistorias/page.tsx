@@ -361,7 +361,7 @@ export default function VistoriaSchedulingPage() {
                     Acesse os checklists para vistoria da unidade habitacional ou para a auditoria de conformidade técnica NBR da torre.
                   </p>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <a 
                       href={`/${programId}/vistorias/checklist`}
                       className="p-5 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition-all gap-4 text-left border-none"
@@ -384,6 +384,18 @@ export default function VistoriaSchedulingPage() {
                         <p className="text-[10px] text-slate-500 font-semibold mt-1 leading-relaxed">Auditoria técnica de poços de ventilação, janelas e regras de ventilação.</p>
                       </div>
                       <span className="text-[9px] font-black text-secondary uppercase tracking-widest flex items-center gap-1 mt-auto">Acessar NBR →</span>
+                    </a>
+
+                    <a 
+                      href={`/${programId}/vistorias/chamado`}
+                      className="p-5 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition-all gap-4 text-left border-none"
+                    >
+                      <div>
+                        <span className="text-[8px] font-black uppercase text-red-750 bg-red-50 px-2 py-0.5 rounded tracking-wider w-fit">Manutenção / Assistência</span>
+                        <h4 className="font-heading font-black text-sm text-primary mt-2">Abrir Chamado</h4>
+                        <p className="text-[10px] text-slate-500 font-semibold mt-1 leading-relaxed">Reportar problemas estruturais, de acabamento ou vícios de obras.</p>
+                      </div>
+                      <span className="text-[9px] font-black text-secondary uppercase tracking-widest flex items-center gap-1 mt-auto">Abrir Chamado →</span>
                     </a>
                   </div>
                 </section>
