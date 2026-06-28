@@ -141,6 +141,12 @@ export function Sidebar({
             icon: Clock,
             active: pathname.includes("/prazos"),
           },
+          {
+            label: "Status de Convocações",
+            href: `/${programId}/convocacao`,
+            icon: Clock,
+            active: pathname.includes("/convocacao"),
+          },
         ]
       : []),
     {
