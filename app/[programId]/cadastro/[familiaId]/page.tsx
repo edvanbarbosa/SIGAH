@@ -587,6 +587,12 @@ export default function FamiliaDetailPage() {
                 >
                   <span>Condições de Moradia</span>
                 </Link>
+                <Link
+                  href={`/${programId}/verificacao/${familiaId}`}
+                  className="w-full sm:w-auto px-8 py-3 rounded-full border-2 border-secondary text-secondary font-bold text-sm hover:bg-secondary/5 transition-all text-center select-none no-underline flex items-center justify-center gap-1.5 font-sans"
+                >
+                  <span>Verificação Documental</span>
+                </Link>
                 <button 
                   type="submit"
                   className="w-full sm:w-auto px-10 py-3 rounded-full bg-primary text-white font-bold text-sm shadow-md hover:shadow-lg hover:scale-[1.01] active:scale-95 transition-all cursor-pointer text-center select-none border-none"
