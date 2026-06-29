@@ -318,17 +318,26 @@ export default function AcompanhamentoSocialPage() {
               
               {/* Histórico de Comunicação */}
               <section className="lg:col-span-8 space-y-6">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between flex-wrap gap-4">
                   <h2 className="font-heading text-xl font-bold text-primary flex items-center gap-3">
                     <History className="w-5 h-5 text-secondary shrink-0" />
                     Histórico de Comunicação
                   </h2>
-                  <button 
-                    onClick={() => setIsCommModalOpen(true)}
-                    className="text-xs font-black text-secondary hover:underline transition-all bg-transparent border-none cursor-pointer uppercase tracking-wider"
-                  >
-                    Registrar Atendimento
-                  </button>
+                  <div className="flex items-center gap-4">
+                    <button 
+                      onClick={() => router.push(`/${programId}/social/frequencia`)}
+                      className="text-xs font-black text-secondary hover:underline transition-all bg-transparent border-none cursor-pointer uppercase tracking-wider flex items-center gap-1"
+                    >
+                      Controle de Frequência
+                    </button>
+                    <span className="text-slate-350 select-none">|</span>
+                    <button 
+                      onClick={() => setIsCommModalOpen(true)}
+                      className="text-xs font-black text-secondary hover:underline transition-all bg-transparent border-none cursor-pointer uppercase tracking-wider"
+                    >
+                      Registrar Atendimento
+                    </button>
+                  </div>
                 </div>
 
                 <div className="space-y-4">
