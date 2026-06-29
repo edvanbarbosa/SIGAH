@@ -325,6 +325,13 @@ export default function AcompanhamentoSocialPage() {
                   </h2>
                   <div className="flex items-center gap-4">
                     <button 
+                      onClick={() => router.push(`/${programId}/social/oficinas`)}
+                      className="text-xs font-black text-secondary hover:underline transition-all bg-transparent border-none cursor-pointer uppercase tracking-wider flex items-center gap-1"
+                    >
+                      Gestão de Oficinas
+                    </button>
+                    <span className="text-slate-350 select-none">|</span>
+                    <button 
                       onClick={() => router.push(`/${programId}/social/frequencia`)}
                       className="text-xs font-black text-secondary hover:underline transition-all bg-transparent border-none cursor-pointer uppercase tracking-wider flex items-center gap-1"
                     >
