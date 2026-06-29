@@ -323,7 +323,14 @@ export default function AcompanhamentoSocialPage() {
                     <History className="w-5 h-5 text-secondary shrink-0" />
                     Histórico de Comunicação
                   </h2>
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-4 flex-wrap">
+                    <button 
+                      onClick={() => router.push(`/${programId}/social/monitoramento`)}
+                      className="text-xs font-black text-secondary hover:underline transition-all bg-transparent border-none cursor-pointer uppercase tracking-wider flex items-center gap-1"
+                    >
+                      Monitoramento Condominial
+                    </button>
+                    <span className="text-slate-350 select-none">|</span>
                     <button 
                       onClick={() => router.push(`/${programId}/social/oficinas`)}
                       className="text-xs font-black text-secondary hover:underline transition-all bg-transparent border-none cursor-pointer uppercase tracking-wider flex items-center gap-1"
