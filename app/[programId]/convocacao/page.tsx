@@ -162,18 +162,26 @@ export default function GestaoPrazosFinalPage() {
             )}
 
             {/* Cabeçalho da Rota */}
-            <header className="select-none">
-              <nav className="flex text-on-surface-variant text-[10px] font-black uppercase tracking-widest gap-2 mb-4">
-                <span>Concursos</span>
-                <ChevronRight className="w-3.5 h-3.5 text-on-surface-variant/40" />
-                <span className="text-secondary font-black">Gestão de Convocação</span>
-              </nav>
-              <h1 className="text-3xl font-extrabold text-primary tracking-tight mb-1">
-                Status de Convocações
-              </h1>
-              <p className="text-on-surface-variant text-xs font-semibold">
-                Edital 004/2023 • Gestão Administrativa
-              </p>
+            <header className="select-none flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+              <div>
+                <nav className="flex text-on-surface-variant text-[10px] font-black uppercase tracking-widest gap-2 mb-4">
+                  <span>Concursos</span>
+                  <ChevronRight className="w-3.5 h-3.5 text-on-surface-variant/40" />
+                  <span className="text-secondary font-black">Gestão de Convocação</span>
+                </nav>
+                <h1 className="text-3xl font-extrabold text-primary tracking-tight mb-1">
+                  Status de Convocações
+                </h1>
+                <p className="text-on-surface-variant text-xs font-semibold">
+                  Edital 004/2023 • Gestão Administrativa
+                </p>
+              </div>
+              <button 
+                onClick={() => router.push(`/${programId}/convocacao/gestao`)}
+                className="bg-primary hover:bg-[#003366] text-white px-5 py-3 rounded-xl font-black text-[10px] uppercase tracking-wider flex items-center gap-1.5 cursor-pointer border-none shadow-sm active:scale-95 transition-all"
+              >
+                <span>Acessar Fila de Chamada →</span>
+              </button>
             </header>
 
             {/* Card Bento: Total de Desclassificações Automáticas */}
