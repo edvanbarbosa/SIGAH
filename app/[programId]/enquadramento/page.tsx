@@ -86,6 +86,13 @@ export default function PesquisaEnquadramentoPage() {
       tags: ["CADMUT", "MCMV"]
     },
     {
+      id: "familia-oliveira",
+      name: "Família Oliveira (Maria Oliveira Silva)",
+      nis: "123.771.602-55",
+      status: "Compatível",
+      tags: ["ÁREA DE RISCO", "GEO"]
+    },
+    {
       id: "beatriz-oliveira",
       name: "Beatriz Oliveira Costa",
       nis: "555.444.333-88",
@@ -503,7 +510,13 @@ export default function PesquisaEnquadramentoPage() {
                           </button>
                         ) : (
                           <button 
-                            onClick={() => router.push(`/${programId}/enquadramento/renda`)}
+                            onClick={() => {
+                              if (cand.id === "familia-oliveira") {
+                                router.push(`/${programId}/enquadramento/georreferenciamento`);
+                              } else {
+                                router.push(`/${programId}/enquadramento/renda`);
+                              }
+                            }}
                             className="flex-grow py-3 bg-primary text-white hover:brightness-110 rounded-xl font-heading font-black text-[10px] uppercase tracking-wider active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 cursor-pointer border-none shadow-md"
                           >
                             <span>VER DETALHES</span>
