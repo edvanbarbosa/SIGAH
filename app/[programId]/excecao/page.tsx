@@ -266,8 +266,16 @@ export default function AtendimentoExcepcionalPage() {
                         Indicação Direta por Desastre
                       </h3>
                     </div>
-                    <div className="flex items-center gap-1.5 bg-[#e1e3e4] px-3 py-1 rounded-full text-primary">
-                      <span className="text-[8px] font-black uppercase tracking-wider">Pós 01/01/2023</span>
+                    <div className="flex items-center gap-3">
+                      <button
+                        onClick={() => router.push(`/${programId}/excecao/indicacao`)}
+                        className="bg-secondary text-white hover:brightness-110 px-4 py-2 rounded-xl font-black text-[9px] uppercase tracking-wider cursor-pointer border-none shadow-md"
+                      >
+                        + Nova Indicação
+                      </button>
+                      <div className="flex items-center gap-1.5 bg-[#e1e3e4] px-3 py-1 rounded-full text-primary">
+                        <span className="text-[8px] font-black uppercase tracking-wider">Pós 01/01/2023</span>
+                      </div>
                     </div>
                   </div>
 
