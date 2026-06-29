@@ -7,7 +7,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useProgram } from "@/lib/hooks/useProgram";
 import { Header } from "@/components/layout/Header";
 import { Sidebar } from "@/components/layout/Sidebar";
@@ -48,6 +48,7 @@ interface CandidateLote {
 
 export default function PesquisaEnquadramentoPage() {
   const params = useParams();
+  const router = useRouter();
   const config = useProgram();
   const programId = params.programId as string;
 
@@ -474,7 +475,10 @@ export default function PesquisaEnquadramentoPage() {
                             <span>TRATAR EXCEÇÃO</span>
                           </button>
                         ) : (
-                          <button className="flex-grow py-3 bg-primary text-white hover:brightness-110 rounded-xl font-heading font-black text-[10px] uppercase tracking-wider active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 cursor-pointer border-none shadow-md">
+                          <button 
+                            onClick={() => router.push(`/${programId}/enquadramento/renda`)}
+                            className="flex-grow py-3 bg-primary text-white hover:brightness-110 rounded-xl font-heading font-black text-[10px] uppercase tracking-wider active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 cursor-pointer border-none shadow-md"
+                          >
                             <span>VER DETALHES</span>
                           </button>
                         )}
