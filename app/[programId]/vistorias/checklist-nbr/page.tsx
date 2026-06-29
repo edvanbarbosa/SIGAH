@@ -1,7 +1,7 @@
 // =============================================================================
 // app/[programId]/vistorias/checklist-nbr/page.tsx
-// Checklist de Conformidade NBR - Padronizado (Passo 13.1).
-// Baseado fielmente no Stitch, projeto "DESIGN SIGAH".
+// Checklist de Conformidade Técnica - Padronizado (Passo 13.1).
+// Baseada fielmente no Stitch, projeto "DESIGN SIGAH".
 // =============================================================================
 
 "use client";
@@ -15,148 +15,151 @@ import { Footer } from "@/components/layout/Footer";
 import {
   ChevronRight,
   ClipboardCheck,
+  Accessibility,
+  Activity,
+  Wifi,
+  Save,
+  Info,
   CheckCircle2,
   AlertTriangle,
+  AlertCircle,
   X,
-  Upload,
   Loader2,
-  FileText,
-  Bookmark,
-  Info,
-  CheckSquare,
-  Award,
-  Home,
-  Users
+  FileText
 } from "lucide-react";
 
-interface NbrChecklistItem {
+interface NbrItem {
   id: string;
+  category: "acessibilidade" | "desempenho" | "sustentabilidade";
+  code: string;
   title: string;
   desc: string;
-  status: "conforme" | "defeito" | "aviso" | null;
-  observation?: string;
-  hasAttachmentButton?: boolean;
-  attachmentName?: string;
+  status: "conforme" | "defeito" | null;
+  observation: string;
 }
 
-export default function NbrChecklistPage() {
+export default function ChecklistConformidadeTecnicaPadronizadoPage() {
   const params = useParams();
   const router = useRouter();
   const config = useProgram();
   const programId = params.programId as string;
 
-  // Estados dos Controles
+  // Estados
   const [toastMessage, setToastMessage] = useState<string | null>(null);
-  const [isFinishing, setIsFinishing] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
-  // Estados de Modais
-  const [showAttachmentModal, setShowAttachmentModal] = useState<string | null>(null);
-  const [showFinalReportModal, setShowFinalReportModal] = useState(false);
-
-  // Item de anexo
-  const [attachedFileName, setAttachedFileName] = useState("");
-
-  // Lista de Itens do Checklist NBR (Baseado no Mockup do Stitch)
-  const [checklist, setChecklist] = useState<NbrChecklistItem[]>([
+  // Itens do Checklist NBR
+  const [items, setItems] = useState<NbrItem[]>([
     {
-      id: "nbr-1",
-      title: "Room/Bedroom Windows",
-      desc: "As janelas de dormitórios e salas de estar não podem estar voltadas exclusivamente para poços internos de ventilação, conforme código de obras vigente.",
+      id: "nbr-1.1",
+      category: "acessibilidade",
+      code: "Item 1.1",
+      title: "Rampas de Acesso",
+      desc: "Rampas de acesso: inclinação máxima de 8,33% conforme NBR 9050.",
+      status: "conforme",
+      observation: ""
+    },
+    {
+      id: "nbr-1.2",
+      category: "acessibilidade",
+      code: "Item 1.2",
+      title: "Sinalização Tátil",
+      desc: "Sinalização tátil de alerta e direcional nos percursos principais.",
+      status: "conforme",
+      observation: ""
+    },
+    {
+      id: "nbr-2.1",
+      category: "desempenho",
+      code: "Item 2.1",
+      title: "Desempenho Térmico",
+      desc: "Desempenho térmico: Avaliação das vedações externas e coberturas.",
       status: "defeito",
-      observation: "Abertura inadequada na face norte do bloco B."
+      observation: "Isolamento inadequado na cobertura da torre B."
     },
     {
-      id: "nbr-2",
-      title: "Service Area Ventilation",
-      desc: "Aberturas em poços internos para áreas de serviço são permitidas, desde que apresentada comprovação técnica de iluminação zenital mínima.",
-      status: "aviso",
-      hasAttachmentButton: true,
-      attachmentName: undefined
+      id: "nbr-2.2",
+      category: "desempenho",
+      code: "Item 2.2",
+      title: "Vida Útil de Projeto (VUP)",
+      desc: "Vida Útil de Projeto (VUP): Conformidade com prazos mínimos de sistema.",
+      status: "defeito",
+      observation: "Impermeabilização do subsolo abaixo do limite normativo."
     },
     {
-      id: "nbr-3",
-      title: "Ventilation Towers",
-      desc: "Certificação arquitetônica confirmada. Os poços internos funcionam como torres abertas integradas às áreas comuns.",
-      status: "conforme"
+      id: "nbr-3.1",
+      category: "sustentabilidade",
+      code: "Item 3.1",
+      title: "Infraestrutura Tecnológica",
+      desc: "Infraestrutura para fibra óptica e dispositivos IoT de medição.",
+      status: "conforme",
+      observation: ""
     },
     {
-      id: "nbr-4",
-      title: "Ground Floor Access",
-      desc: "Verificação concluída: a base dos poços no pavimento térreo permanece sem fechamento total.",
-      status: "conforme"
+      id: "nbr-3.2",
+      category: "sustentabilidade",
+      code: "Item 3.2",
+      title: "Eficiência Hídrica e Energética",
+      desc: "Reuso de águas cinzas e previsão de painéis fotovoltaicos.",
+      status: "conforme",
+      observation: ""
     }
   ]);
 
-  // Atualizar Status do Item
-  const handleStatusChange = (id: string, newStatus: "conforme" | "defeito" | "aviso") => {
-    setChecklist(prev => prev.map(item => {
+  // Alterar status
+  const handleStatusChange = (id: string, newStatus: "conforme" | "defeito") => {
+    setItems(prev => prev.map(item => {
       if (item.id === id) {
         return {
           ...item,
           status: newStatus,
-          // Se mudou para conforme, remove observações e anexos antigos se não necessários
-          attachmentName: newStatus === "conforme" ? undefined : item.attachmentName
+          // Limpa observação se mudar para conforme
+          observation: newStatus === "conforme" ? "" : item.observation
         };
       }
       return item;
     }));
-
-    setToastMessage(`Status do item atualizado para ${newStatus === "conforme" ? "Conforme" : newStatus === "defeito" ? "Com Defeito" : "Aviso"}!`);
-    setTimeout(() => setToastMessage(null), 3000);
   };
 
-  // Simular Upload do Laudo
-  const handleUploadAttachment = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!attachedFileName.trim()) {
-      alert("Por favor, digite o nome ou descrição do arquivo.");
-      return;
-    }
-
-    setIsUploading(true);
-    setTimeout(() => {
-      setChecklist(prev => prev.map(item => {
-        if (item.id === showAttachmentModal) {
-          return {
-            ...item,
-            attachmentName: attachedFileName,
-            status: "conforme" // Muda para conforme automaticamente após anexar o laudo exigido
-          };
-        }
-        return item;
-      }));
-
-      setIsUploading(false);
-      setShowAttachmentModal(null);
-      setAttachedFileName("");
-
-      setToastMessage("Laudo de luminosidade técnica anexado com sucesso!");
-      setTimeout(() => setToastMessage(null), 3500);
-    }, 1200);
+  // Alterar observação
+  const handleObservationChange = (id: string, text: string) => {
+    setItems(prev => prev.map(item => {
+      if (item.id === id) {
+        return {
+          ...item,
+          observation: text
+        };
+      }
+      return item;
+    }));
   };
 
-  // Finalizar Relatório
-  const handleFinalizeReport = () => {
-    // Verifica se há algum item nulo ou pendente de laudo
-    const hasPendingLaudo = checklist.some(i => i.hasAttachmentButton && i.status === "aviso" && !i.attachmentName);
-    if (hasPendingLaudo) {
-      setToastMessage("Atenção: Por favor, anexe o laudo de luminosidade obrigatório antes de prosseguir.");
+  // Finalizar validação
+  const handleFinalizeValidation = () => {
+    const hasEmptyDefectObs = items.some(item => item.status === "defeito" && !item.observation.trim());
+    if (hasEmptyDefectObs) {
+      setToastMessage("Por favor, preencha as observações técnicas para os itens não conformes.");
       setTimeout(() => setToastMessage(null), 4000);
       return;
     }
 
-    setIsFinishing(true);
+    setIsProcessing(true);
+    setToastMessage("Transmitindo relatório técnico de auditoria NBR...");
     setTimeout(() => {
-      setIsFinishing(false);
-      setShowFinalReportModal(true);
+      setIsProcessing(false);
+      setToastMessage("Relatório de validação de conformidade técnica transmitido com sucesso!");
+      setTimeout(() => setToastMessage(null), 4000);
     }, 1500);
   };
 
-  // Calcular Progresso
-  const totalItems = checklist.length;
-  const compliantCount = checklist.filter(i => i.status === "conforme").length;
-  const progressPercent = Math.round((compliantCount / totalItems) * 100);
+  // Métricas
+  const totalChecked = items.length; // 6 itens na tela
+  const compliantCount = items.filter(i => i.status === "conforme").length;
+  const nonCompliantCount = items.filter(i => i.status === "defeito").length;
+
+  const acessibilidadeItems = items.filter(i => i.category === "acessibilidade");
+  const desempenhoItems = items.filter(i => i.category === "desempenho");
+  const sustentabilidadeItems = items.filter(i => i.category === "sustentabilidade");
 
   return (
     <div className="bg-surface text-primary min-h-screen pb-24 md:pb-0 flex flex-col font-sans">
@@ -172,7 +175,7 @@ export default function NbrChecklistPage() {
         {/* 3. Área de Conteúdo Principal */}
         <div className="flex-grow w-full xl:pl-72 flex flex-col justify-between">
           
-          <main className="pt-24 px-4 md:p-10 max-w-7xl mx-auto w-full space-y-6">
+          <main className="pt-24 px-4 md:p-10 max-w-7xl mx-auto w-full space-y-10">
             
             {/* Mensagem Toast */}
             {toastMessage && (
@@ -183,185 +186,267 @@ export default function NbrChecklistPage() {
             )}
 
             {/* Cabeçalho da Rota */}
-            <header className="select-none">
-              <h2 className="text-3xl font-extrabold text-[#001e40] tracking-tight mb-2">
+            <div className="space-y-1">
+              <nav className="flex items-center gap-2 text-[10px] font-black text-slate-400 uppercase tracking-widest select-none">
+                <span>Vistorias Técnicas</span>
+                <ChevronRight className="w-3.5 h-3.5 text-slate-350" />
+                <span className="text-secondary font-black">Conformidade NBR</span>
+              </nav>
+              <h1 className="text-3xl md:text-4xl font-black text-primary tracking-tight mt-2 select-none">
                 Checklist de Auditoria Técnica
-              </h2>
-              <p className="text-slate-400 text-xs font-semibold max-w-2xl">
+              </h1>
+              <p className="text-slate-500 text-xs font-semibold select-none leading-relaxed max-w-2xl">
                 Relatório de conformidade arquitetônica para certificação de torres residenciais e habitabilidade institucional.
               </p>
-            </header>
+            </div>
 
-            {/* Bento Grid Layout */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            {/* Layout em Bento Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
               
-              {/* Painel Resumo (Esquerda) */}
-              <div className="lg:col-span-4 lg:sticky lg:top-28 space-y-6">
+              {/* Coluna Esquerda: Itens do Checklist */}
+              <div className="lg:col-span-8 space-y-8">
                 
-                <section className="p-8 rounded-2xl bg-[#001e40] text-white shadow-sm flex flex-col justify-between">
-                  <h3 className="text-base font-black mb-8 flex items-center gap-3 text-white select-none">
-                    <ClipboardCheck className="w-5 h-5 text-white shrink-0" />
-                    Resumo da Auditoria
-                  </h3>
-
-                  <div className="space-y-6 mb-10 text-sm select-none">
-                    <div className="flex justify-between items-center pb-4 border-b border-white/10">
-                      <span className="text-xs font-bold uppercase tracking-wider text-slate-300">Status Geral</span>
-                      <span className="font-black text-white">{progressPercent}% Concluído</span>
-                    </div>
-                    <div className="flex justify-between items-center pb-4 border-b border-white/10">
-                      <span className="text-xs font-bold uppercase tracking-wider text-slate-300">Referência</span>
-                      <span className="font-black text-right text-white">Vão 04-A</span>
-                    </div>
-                    
-                    <div className="pt-2">
-                      <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-wider mb-2">
-                        <span className="text-slate-300">Itens Conformes</span>
-                        <span>{compliantCount} / {totalItems}</span>
+                {/* Acessibilidade (NBR 9050) */}
+                <section className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+                  <div className="flex items-center justify-between border-b border-slate-100 pb-4 select-none">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-blue-50 text-secondary rounded-lg">
+                        <Accessibility className="w-5 h-5 shrink-0" />
                       </div>
-                      <div className="w-full h-2 rounded-full overflow-hidden bg-white/20">
-                        <div 
-                          className="bg-secondary h-full rounded-full transition-all duration-500" 
-                          style={{ width: `${progressPercent}%` }}
-                        ></div>
+                      <div>
+                        <h2 className="text-sm font-black text-[#001e40] uppercase tracking-wide">Acessibilidade (NBR 9050)</h2>
+                        <p className="text-[10px] text-slate-400 font-semibold mt-0.5">Parâmetros antropométricos e requisitos de projeto</p>
                       </div>
                     </div>
+                    <span className="bg-blue-50 text-secondary text-[8px] font-black px-2 py-1 rounded uppercase tracking-wider">RF084</span>
                   </div>
 
-                  <button 
-                    onClick={handleFinalizeReport}
-                    disabled={isFinishing}
-                    className="w-full py-4 text-white font-black rounded-xl shadow-lg hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-2 mb-4 bg-secondary border-none cursor-pointer text-xs uppercase tracking-widest"
-                  >
-                    {isFinishing ? (
-                      <Loader2 className="w-4 h-4 animate-spin text-white" />
-                    ) : (
-                      <>
-                        <FileText className="w-4 h-4 text-white shrink-0" />
-                        <span>Finalizar Relatório</span>
-                      </>
-                    )}
-                  </button>
-
-                  <p className="text-[9px] text-center text-slate-400 font-semibold italic select-none">
-                    Ao finalizar, o PDF será gerado para análise técnica.
-                  </p>
-                </section>
-
-                <div className="bg-amber-50 p-6 rounded-2xl border border-amber-250 flex items-start gap-3 select-none">
-                  <Info className="w-5 h-5 text-amber-700 shrink-0 mt-0.5" />
-                  <div>
-                    <h5 className="font-black text-[#723610] text-xs mb-1 uppercase tracking-wider">Instruções de Apoio</h5>
-                    <p className="text-[11px] text-amber-800 leading-relaxed font-semibold">
-                      Caso identifique um defeito estrutural grave, utilize o campo de observações para detalhar as dimensões e localização exata do problema.
-                    </p>
-                  </div>
-                </div>
-
-              </div>
-
-              {/* Checklist Principal (Direita) */}
-              <div className="lg:col-span-8 space-y-4">
-                
-                <section className="bg-white p-8 rounded-2xl border border-outline-variant/15 shadow-sm space-y-8">
-                  <div className="flex items-center gap-3 select-none">
-                    <Bookmark className="w-5 h-5 text-secondary shrink-0" />
-                    <h3 className="text-lg font-black text-primary">Conformidade Arquitetônica</h3>
-                  </div>
-
-                  <div className="divide-y divide-slate-100 space-y-8">
-                    {checklist.map((item, idx) => (
-                      <div 
-                        key={item.id} 
-                        className={`checklist-item pt-6 first:pt-0 flex flex-col md:flex-row md:items-start justify-between gap-6`}
-                      >
-                        <div className="flex-grow space-y-1">
-                          <h4 className="text-xs font-black text-primary uppercase tracking-wider">
-                            {item.title}
-                          </h4>
-                          <p className="text-xs text-slate-400 font-semibold leading-relaxed">
-                            {item.desc}
-                          </p>
-
-                          {/* Seção de Anexo */}
-                          {item.hasAttachmentButton && (
-                            <div className="pt-3">
-                              {item.attachmentName ? (
-                                <div className="flex items-center gap-2 text-emerald-600 bg-emerald-50 border border-emerald-250 px-3.5 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider w-fit">
-                                  <CheckCircle2 className="w-4 h-4" />
-                                  <span>Laudo Anexo: {item.attachmentName}</span>
-                                </div>
-                              ) : (
-                                <button 
-                                  onClick={() => setShowAttachmentModal(item.id)}
-                                  className="text-secondary hover:underline font-black text-[10px] flex items-center gap-1 border-none bg-transparent cursor-pointer uppercase tracking-wider"
-                                >
-                                  <Upload className="w-3.5 h-3.5" />
-                                  Anexar Laudo de Luminosidade
-                                </button>
-                              )}
-                            </div>
-                          )}
+                  <div className="divide-y divide-slate-100/80 space-y-6">
+                    {acessibilidadeItems.map((item, idx) => (
+                      <div key={item.id} className={`grid grid-cols-1 md:grid-cols-[1fr_200px_300px] gap-4 items-start py-4 ${idx > 0 ? "pt-6 border-t border-slate-100" : "pt-2"}`}>
+                        <div className="space-y-1">
+                          <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{item.code}</span>
+                          <p className="text-xs text-[#001e40] font-black">{item.title}</p>
+                          <p className="text-[10px] text-slate-400 font-semibold leading-relaxed">{item.desc}</p>
                         </div>
-
-                        {/* Status Badges e Seletor */}
-                        <div className="flex flex-col gap-2 shrink-0 select-none">
-                          <div className="flex gap-1.5 bg-slate-100 p-1 rounded-xl w-fit">
-                            <button 
-                              onClick={() => handleStatusChange(item.id, "conforme")}
-                              className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider transition-colors cursor-pointer border-none ${
-                                item.status === "conforme" 
-                                  ? "bg-secondary text-white" 
-                                  : "text-slate-500 hover:bg-slate-200 bg-transparent"
-                              }`}
-                            >
-                              Conforme
-                            </button>
-                            <button 
-                              onClick={() => handleStatusChange(item.id, "defeito")}
-                              className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider transition-colors cursor-pointer border-none ${
-                                item.status === "defeito" 
-                                  ? "bg-red-500 text-white" 
-                                  : "text-slate-500 hover:bg-slate-200 bg-transparent"
-                              }`}
-                            >
-                              Defeito
-                            </button>
-                            <button 
-                              onClick={() => handleStatusChange(item.id, "aviso")}
-                              className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider transition-colors cursor-pointer border-none ${
-                                item.status === "aviso" 
-                                  ? "bg-amber-500 text-white" 
-                                  : "text-slate-500 hover:bg-slate-200 bg-transparent"
-                              }`}
-                            >
-                              Aviso
-                            </button>
-                          </div>
-
-                          {/* Tag de Status Ativo */}
-                          <div className="flex justify-end">
-                            {item.status === "conforme" && (
-                              <span className="bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-wider">
-                                Conforme
-                              </span>
-                            )}
-                            {item.status === "defeito" && (
-                              <span className="bg-red-50 text-red-700 border border-red-200 px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-wider">
-                                Com Defeito
-                              </span>
-                            )}
-                            {item.status === "aviso" && (
-                              <span className="bg-amber-50 text-amber-700 border border-amber-200 px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-wider">
-                                Aviso
-                              </span>
-                            )}
-                          </div>
+                        <div className="flex gap-2 select-none">
+                          <button
+                            type="button"
+                            onClick={() => handleStatusChange(item.id, "conforme")}
+                            className={`flex-1 py-2 px-3 text-[10px] font-black uppercase tracking-wider border-2 rounded-lg cursor-pointer transition-all ${
+                              item.status === "conforme"
+                                ? "bg-blue-50 border-secondary text-secondary"
+                                : "bg-transparent border-slate-200 text-slate-500 hover:border-secondary hover:text-secondary"
+                            }`}
+                          >
+                            Conforme
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleStatusChange(item.id, "defeito")}
+                            className={`flex-1 py-2 px-3 text-[10px] font-black uppercase tracking-wider border-2 rounded-lg cursor-pointer transition-all ${
+                              item.status === "defeito"
+                                ? "bg-red-50 border-red-650 text-red-700"
+                                : "bg-transparent border-slate-200 text-slate-500 hover:border-red-650 hover:text-red-700"
+                            }`}
+                          >
+                            Não Conf.
+                          </button>
                         </div>
+                        <textarea
+                          value={item.observation}
+                          onChange={(e) => handleObservationChange(item.id, e.target.value)}
+                          className="w-full bg-slate-50 border border-slate-200 focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none text-[11px] p-3 min-h-[80px] rounded-xl transition-all font-bold text-slate-700 resize-none"
+                          placeholder="Observações técnicas..."
+                        ></textarea>
                       </div>
                     ))}
                   </div>
                 </section>
+
+                {/* Desempenho (NBR 15575) */}
+                <section className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+                  <div className="flex items-center justify-between border-b border-slate-100 pb-4 select-none">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-blue-50 text-secondary rounded-lg">
+                        <Activity className="w-5 h-5 shrink-0" />
+                      </div>
+                      <div>
+                        <h2 className="text-sm font-black text-[#001e40] uppercase tracking-wide">Desempenho (NBR 15575)</h2>
+                        <p className="text-[10px] text-slate-400 font-semibold mt-0.5">Requisitos técnicos para edificações habitacionais</p>
+                      </div>
+                    </div>
+                    <span className="bg-blue-50 text-secondary text-[8px] font-black px-2 py-1 rounded uppercase tracking-wider">RF085</span>
+                  </div>
+
+                  <div className="divide-y divide-slate-100/80 space-y-6">
+                    {desempenhoItems.map((item, idx) => (
+                      <div key={item.id} className={`grid grid-cols-1 md:grid-cols-[1fr_200px_300px] gap-4 items-start py-4 ${idx > 0 ? "pt-6 border-t border-slate-100" : "pt-2"}`}>
+                        <div className="space-y-1">
+                          <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{item.code}</span>
+                          <p className="text-xs text-[#001e40] font-black">{item.title}</p>
+                          <p className="text-[10px] text-slate-400 font-semibold leading-relaxed">{item.desc}</p>
+                        </div>
+                        <div className="flex gap-2 select-none">
+                          <button
+                            type="button"
+                            onClick={() => handleStatusChange(item.id, "conforme")}
+                            className={`flex-1 py-2 px-3 text-[10px] font-black uppercase tracking-wider border-2 rounded-lg cursor-pointer transition-all ${
+                              item.status === "conforme"
+                                ? "bg-blue-50 border-secondary text-secondary"
+                                : "bg-transparent border-slate-200 text-slate-500 hover:border-secondary hover:text-secondary"
+                            }`}
+                          >
+                            Conforme
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleStatusChange(item.id, "defeito")}
+                            className={`flex-1 py-2 px-3 text-[10px] font-black uppercase tracking-wider border-2 rounded-lg cursor-pointer transition-all ${
+                              item.status === "defeito"
+                                ? "bg-red-50 border-red-650 text-red-700"
+                                : "bg-transparent border-slate-200 text-slate-500 hover:border-red-650 hover:text-red-700"
+                            }`}
+                          >
+                            Não Conf.
+                          </button>
+                        </div>
+                        <textarea
+                          value={item.observation}
+                          onChange={(e) => handleObservationChange(item.id, e.target.value)}
+                          className="w-full bg-slate-50 border border-slate-200 focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none text-[11px] p-3 min-h-[80px] rounded-xl transition-all font-bold text-slate-700 resize-none"
+                          placeholder="Observações técnicas..."
+                        ></textarea>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+
+                {/* Conectividade e Sustentabilidade */}
+                <section className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+                  <div className="flex items-center justify-between border-b border-slate-100 pb-4 select-none">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-blue-50 text-secondary rounded-lg">
+                        <Wifi className="w-5 h-5 shrink-0" />
+                      </div>
+                      <div>
+                        <h2 className="text-sm font-black text-[#001e40] uppercase tracking-wide">Conectividade e Sustentabilidade</h2>
+                        <p className="text-[10px] text-slate-400 font-semibold mt-0.5">Inovação e eficiência de recursos</p>
+                      </div>
+                    </div>
+                    <span className="bg-blue-50 text-secondary text-[8px] font-black px-2 py-1 rounded uppercase tracking-wider">RF086</span>
+                  </div>
+
+                  <div className="divide-y divide-slate-100/80 space-y-6">
+                    {sustentabilidadeItems.map((item, idx) => (
+                      <div key={item.id} className={`grid grid-cols-1 md:grid-cols-[1fr_200px_300px] gap-4 items-start py-4 ${idx > 0 ? "pt-6 border-t border-slate-100" : "pt-2"}`}>
+                        <div className="space-y-1">
+                          <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{item.code}</span>
+                          <p className="text-xs text-[#001e40] font-black">{item.title}</p>
+                          <p className="text-[10px] text-slate-400 font-semibold leading-relaxed">{item.desc}</p>
+                        </div>
+                        <div className="flex gap-2 select-none">
+                          <button
+                            type="button"
+                            onClick={() => handleStatusChange(item.id, "conforme")}
+                            className={`flex-1 py-2 px-3 text-[10px] font-black uppercase tracking-wider border-2 rounded-lg cursor-pointer transition-all ${
+                              item.status === "conforme"
+                                ? "bg-blue-50 border-secondary text-secondary"
+                                : "bg-transparent border-slate-200 text-slate-500 hover:border-secondary hover:text-secondary"
+                            }`}
+                          >
+                            Conforme
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleStatusChange(item.id, "defeito")}
+                            className={`flex-1 py-2 px-3 text-[10px] font-black uppercase tracking-wider border-2 rounded-lg cursor-pointer transition-all ${
+                              item.status === "defeito"
+                                ? "bg-red-50 border-red-650 text-red-700"
+                                : "bg-transparent border-slate-200 text-slate-500 hover:border-red-650 hover:text-red-700"
+                            }`}
+                          >
+                            Não Conf.
+                          </button>
+                        </div>
+                        <textarea
+                          value={item.observation}
+                          onChange={(e) => handleObservationChange(item.id, e.target.value)}
+                          className="w-full bg-slate-50 border border-slate-200 focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none text-[11px] p-3 min-h-[80px] rounded-xl transition-all font-bold text-slate-700 resize-none"
+                          placeholder="Observações técnicas..."
+                        ></textarea>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+
+              </div>
+
+              {/* Coluna Direita: Resumo da Auditoria */}
+              <div className="lg:col-span-4 lg:sticky lg:top-28 space-y-8 select-none">
+                
+                <section className="p-8 rounded-2xl bg-primary text-white shadow-sm flex flex-col justify-between">
+                  <h3 className="text-base font-black mb-8 flex items-center gap-3 text-white">
+                    <ClipboardCheck className="w-5 h-5 text-white shrink-0" />
+                    Sumário da Inspeção
+                  </h3>
+
+                  <div className="space-y-6 mb-10 text-sm">
+                    <div className="flex justify-between items-center pb-4 border-b border-white/10">
+                      <span className="text-xs font-bold uppercase tracking-wider text-slate-350">Itens Avaliados</span>
+                      <span className="font-black text-white">06 / 24</span>
+                    </div>
+                    <div className="w-full bg-white/20 h-2 rounded-full overflow-hidden">
+                      <div className="bg-secondary h-full w-[25%] transition-all"></div>
+                    </div>
+                    <div className="pt-2 flex flex-col gap-2">
+                      <div className="flex items-center gap-2 text-xs text-slate-300">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                        <span>{compliantCount} Itens em Conformidade</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-xs text-slate-350">
+                        <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
+                        <span>{nonCompliantCount} Não Conformidades Detectadas</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={handleFinalizeValidation}
+                    disabled={isProcessing}
+                    className="w-full bg-secondary text-white font-black py-4 rounded-xl flex items-center justify-center gap-2 shadow-lg hover:brightness-110 active:scale-95 transition-all border-none cursor-pointer text-xs uppercase tracking-widest"
+                  >
+                    {isProcessing ? (
+                      <Loader2 className="w-4 h-4 animate-spin text-white" />
+                    ) : (
+                      <>
+                        <Save className="w-4 h-4 text-white shrink-0" />
+                        <span>FINALIZAR VALIDAÇÃO</span>
+                      </>
+                    )}
+                  </button>
+                </section>
+
+                <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200/50 space-y-4">
+                  <h4 className="text-[10px] font-black uppercase tracking-wider text-slate-500">Metadados da Unidade</h4>
+                  <div className="space-y-4 text-xs font-bold">
+                    <div>
+                      <p className="text-[9px] text-slate-400 uppercase tracking-widest font-black mb-1">ID do Empreendimento</p>
+                      <p className="text-primary font-black">ED-JARDIM-PRIMAVERA-04</p>
+                    </div>
+                    <div>
+                      <p className="text-[9px] text-slate-400 uppercase tracking-widest font-black mb-1">Endereço</p>
+                      <p className="text-slate-500 font-semibold leading-relaxed">Av. das Palmeiras, 1024 - Centro</p>
+                    </div>
+                    <div className="pt-2 rounded-xl overflow-hidden shadow-sm">
+                      <img 
+                        alt="Canteiro de Obra" 
+                        className="w-full h-40 object-cover grayscale hover:grayscale-0 transition-all duration-500" 
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8AkV3we4IjoP6l9bRBgHtmroeEp6oJcTf0lY5Evzq6DdYP3vSAhQbImi4i9CfCh6jPZ_X7nM6EhXR75IO7fdLepMgu3xDKlt0p4m91eIrZRKDAh5EBfur6XsiHXQN6LR0IEzhdXXlOa_G35KOzdKjZGVz-iPUTo-GvpEOA4d7QAUKO7quSAS040wV_bPdaoQc9zq0zaKtUJKH5IcX2-8emn7iGfgua0ANzZwgDYi65nCub0CsoGj3cfQAj1o6dstfKCl7vfkAgW8" 
+                      />
+                    </div>
+                  </div>
+                </div>
 
               </div>
 
@@ -375,149 +460,6 @@ export default function NbrChecklistPage() {
         </div>
 
       </div>
-
-      {/* ==========================================
-          MOBILE BOTTOM NAV BAR (Simulado do Stitch)
-          ========================================== */}
-      <nav className="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 px-4 md:hidden bg-white/95 dark:bg-[#001e40]/95 backdrop-blur-lg rounded-t-2xl border-t border-[#001e40]/10 shadow-[0_-8px_24px_rgba(0,30,64,0.08)]">
-        <a 
-          href={`/${programId}/dashboard`}
-          className="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant/70 active:scale-90 transition-transform duration-150"
-        >
-          <Home className="w-5 h-5" />
-          <span className="font-sans text-[10px] font-semibold uppercase tracking-wider mt-0.5">Início</span>
-        </a>
-        <a 
-          href={`/${programId}/vistorias`}
-          className="flex flex-col items-center justify-center text-secondary font-bold active:scale-90 transition-transform duration-150 scale-110"
-        >
-          <CheckSquare className="w-5 h-5 text-secondary animate-pulse" />
-          <span className="font-sans text-[10px] font-semibold uppercase tracking-wider mt-0.5 font-bold">Vistorias</span>
-        </a>
-        <a 
-          href={`/${programId}/cadastro`}
-          className="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant/70 active:scale-90 transition-transform duration-150"
-        >
-          <Users className="w-5 h-5" />
-          <span className="font-sans text-[10px] font-semibold uppercase tracking-wider mt-0.5">Membros</span>
-        </a>
-      </nav>
-
-      {/* ==========================================
-          MODAL: ANEXAR LAUDO TÉCNICO
-          ========================================== */}
-      {showAttachmentModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-[#001e40]/60 backdrop-blur-sm transition-opacity" onClick={() => setShowAttachmentModal(null)}></div>
-          <div className="relative bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
-            <div className="p-6 border-b border-slate-200 flex justify-between items-center select-none">
-              <h3 className="font-heading text-lg font-black text-[#001e40]">Anexar Laudo NBR</h3>
-              <button 
-                className="text-slate-400 hover:bg-slate-100 p-2 rounded-full border-none bg-transparent cursor-pointer" 
-                onClick={() => setShowAttachmentModal(null)}
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-            
-            <form onSubmit={handleUploadAttachment} className="p-6 space-y-4">
-              <div>
-                <label className="font-sans text-[10px] uppercase font-black text-slate-500 block mb-2 tracking-widest select-none">
-                  Nome do Arquivo
-                </label>
-                <input 
-                  className="w-full bg-slate-50 border-none border-b-2 border-[#001e40] focus:ring-0 focus:border-secondary p-3.5 text-xs rounded-t-lg text-primary font-bold"
-                  placeholder="Ex: laudo_iluminacao_servico_assinado.pdf"
-                  value={attachedFileName}
-                  onChange={(e) => setAttachedFileName(e.target.value)}
-                  required
-                />
-              </div>
-
-              <div className="border-2 border-dashed border-slate-200 rounded-xl p-6 flex flex-col items-center justify-center text-center select-none bg-slate-50">
-                <Upload className="w-8 h-8 text-slate-400 mb-2 animate-bounce" />
-                <span className="text-[10px] font-black text-slate-500 uppercase tracking-wider">
-                  Carregar Laudo Assinado (PDF)
-                </span>
-              </div>
-
-              <div className="flex gap-4 pt-4 select-none">
-                <button 
-                  type="button" 
-                  className="flex-1 py-3 text-slate-500 font-black text-xs border border-slate-200 rounded-xl hover:bg-slate-50 transition-all cursor-pointer bg-transparent" 
-                  onClick={() => setShowAttachmentModal(null)}
-                >
-                  CANCELAR
-                </button>
-                <button 
-                  type="submit" 
-                  disabled={isUploading}
-                  className="flex-1 py-3 bg-[#001e40] text-white font-black text-xs rounded-xl shadow-lg hover:opacity-90 active:scale-95 transition-all cursor-pointer border-none"
-                >
-                  {isUploading ? (
-                    <Loader2 className="w-4 h-4 animate-spin text-white" />
-                  ) : (
-                    <span>ANEXAR ARQUIVO</span>
-                  )}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* ==========================================
-          MODAL: RELATÓRIO FINAL GERADO
-          ========================================== */}
-      {showFinalReportModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-[#001e40]/60 backdrop-blur-sm transition-opacity" onClick={() => setShowFinalReportModal(false)}></div>
-          <div className="relative bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
-            <div className="p-6 border-b border-slate-200 flex justify-between items-center select-none">
-              <h3 className="font-heading text-lg font-black text-[#001e40]">Relatório Técnico NBR</h3>
-              <button 
-                className="text-slate-400 hover:bg-slate-100 p-2 rounded-full border-none bg-transparent cursor-pointer" 
-                onClick={() => setShowFinalReportModal(false)}
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-            
-            <div className="p-6 space-y-4">
-              <div className="flex items-center gap-3 text-emerald-600 bg-emerald-50 border border-emerald-250 p-4 rounded-xl select-none">
-                <Award className="w-8 h-8 text-emerald-600 shrink-0" />
-                <div className="text-xs">
-                  <span className="font-black block uppercase tracking-wider">Conformidade Arquitetônica Homologada!</span>
-                  <p className="text-emerald-700 font-semibold mt-0.5">Certificado emitido e enviado ao sistema central.</p>
-                </div>
-              </div>
-
-              <div className="bg-slate-50 p-4 rounded-xl border border-slate-200/60 font-mono text-[10px] text-slate-600 leading-relaxed">
-                <span className="text-blue-600 font-bold block mb-1">SIGAH // COMPLIANCE_NBR // VÃO 04-A</span>
-                ----------------------------------------<br />
-                - CONFORMIDADE GERAL: {progressPercent}%<br />
-                - JANELAS DE DORMITÓRIOS: DEFEITO REGISTRADO<br />
-                - ÁREA DE SERVIÇO: LAUDO ANEXADO & CERTIFICADO<br />
-                - TORRE DE VENTILAÇÃO: CONFORME<br />
-                - BASE DO PAVIMENTO: CONFORME<br />
-                - AUDITOR: CONTROLADORIA GERAL SIGAH
-              </div>
-
-              <div className="pt-2 select-none">
-                <button 
-                  onClick={() => {
-                    setShowFinalReportModal(false);
-                    router.push(`/${programId}/vistorias`);
-                  }}
-                  className="w-full py-3 bg-[#001e40] text-white font-bold text-xs uppercase tracking-widest rounded-xl hover:opacity-90 transition-all border-none cursor-pointer"
-                >
-                  VOLTAR PARA VISTORIAS
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
     </div>
   );

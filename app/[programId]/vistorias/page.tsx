@@ -381,7 +381,7 @@ export default function VistoriaSchedulingPage() {
                       <div>
                         <span className="text-[8px] font-black uppercase text-amber-700 bg-amber-50 px-2 py-0.5 rounded tracking-wider w-fit">Torre / NBR</span>
                         <h4 className="font-heading font-black text-sm text-primary mt-2">Conformidade NBR</h4>
-                        <p className="text-[10px] text-slate-500 font-semibold mt-1 leading-relaxed">Auditoria técnica de poços de ventilação, janelas e regras de ventilação.</p>
+                        <p className="text-[10px] text-slate-500 font-semibold mt-1 leading-relaxed">Auditoria técnica de acessibilidade (NBR 9050), desempenho (NBR 15575) e sustentabilidade.</p>
                       </div>
                       <span className="text-[9px] font-black text-secondary uppercase tracking-widest flex items-center gap-1 mt-auto">Acessar NBR →</span>
                     </a>
