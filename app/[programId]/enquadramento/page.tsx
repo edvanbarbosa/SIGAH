@@ -41,7 +41,7 @@ interface CandidateLote {
   id: string;
   name: string;
   nis: string;
-  status: "Compatível" | "Incompatível" | "Processando" | "Justificado";
+  status: "Compatível" | "Incompatível" | "Processando" | "Justificado" | "Desclassificado";
   tags: string[];
   justification?: string;
 }
@@ -70,6 +70,20 @@ export default function PesquisaEnquadramentoPage() {
       nis: "987.654.321-02",
       status: "Incompatível",
       tags: ["Vínculo Prévio"]
+    },
+    {
+      id: "familia-santos",
+      name: "Família Santos (Maria Eduarda Santos)",
+      nis: "123.088.216-99",
+      status: "Desclassificado",
+      tags: ["CRÍTICO", "RF016"]
+    },
+    {
+      id: "familia-silva",
+      name: "Família Silva (José Ricardo Silva)",
+      nis: "123.921.448-33",
+      status: "Desclassificado",
+      tags: ["CADMUT", "MCMV"]
     },
     {
       id: "beatriz-oliveira",
@@ -464,7 +478,20 @@ export default function PesquisaEnquadramentoPage() {
 
                     {cand.status !== "Processando" && (
                       <div className="flex gap-2">
-                        {cand.status === "Incompatível" ? (
+                        {cand.status === "Desclassificado" ? (
+                          <button 
+                            onClick={() => {
+                              if (cand.id === "familia-silva") {
+                                router.push(`/${programId}/enquadramento/duplicidade`);
+                              } else {
+                                router.push(`/${programId}/enquadramento/fraude`);
+                              }
+                            }}
+                            className="flex-grow py-3 bg-error text-on-error hover:brightness-110 rounded-xl font-heading font-black text-[10px] uppercase tracking-wider active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 cursor-pointer border-none shadow-md"
+                          >
+                            <span>VER DETALHES</span>
+                          </button>
+                        ) : cand.status === "Incompatível" ? (
                           <button 
                             onClick={() => {
                               setExceptionCandidate(cand);
@@ -483,10 +510,10 @@ export default function PesquisaEnquadramentoPage() {
                           </button>
                         )}
                         <button className="px-4 py-3 bg-surface-container-high hover:bg-slate-200 text-on-surface rounded-xl active:scale-95 transition-transform border-none cursor-pointer">
-                          {cand.status === "Incompatível" ? (
-                            <UserMinus className="w-4 h-4 text-error" />
+                          {cand.status === "Incompatível" || cand.status === "Desclassificado" ? (
+                            <span className="material-symbols-outlined text-xs text-error font-black">block</span>
                           ) : (
-                            <MoreVertical className="w-4 h-4" />
+                            <span className="material-symbols-outlined text-xs font-black">more_vert</span>
                           )}
                         </button>
                       </div>
