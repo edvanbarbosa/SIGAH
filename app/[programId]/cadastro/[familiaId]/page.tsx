@@ -577,13 +577,19 @@ export default function FamiliaDetailPage() {
                 <button 
                   type="button" 
                   onClick={() => router.push(`/${programId}/cadastro`)}
-                  className="w-full sm:w-auto px-8 py-3 rounded-full border-2 border-primary text-primary font-bold text-sm hover:bg-primary/5 transition-all cursor-pointer text-center select-none"
+                  className="w-full sm:w-auto px-8 py-3 rounded-full border-2 border-primary text-primary font-bold text-sm hover:bg-primary/5 transition-all cursor-pointer text-center select-none bg-transparent"
                 >
                   Voltar para Lista
                 </button>
+                <Link
+                  href={`/${programId}/cadastro/${familiaId}/moradia`}
+                  className="w-full sm:w-auto px-8 py-3 rounded-full border-2 border-secondary text-secondary font-bold text-sm hover:bg-secondary/5 transition-all text-center select-none no-underline flex items-center justify-center gap-1.5 font-sans"
+                >
+                  <span>Condições de Moradia</span>
+                </Link>
                 <button 
                   type="submit"
-                  className="w-full sm:w-auto px-10 py-3 rounded-full bg-primary text-white font-bold text-sm shadow-md hover:shadow-lg hover:scale-[1.01] active:scale-95 transition-all cursor-pointer text-center select-none"
+                  className="w-full sm:w-auto px-10 py-3 rounded-full bg-primary text-white font-bold text-sm shadow-md hover:shadow-lg hover:scale-[1.01] active:scale-95 transition-all cursor-pointer text-center select-none border-none"
                 >
                   Salvar Cadastro
                 </button>
@@ -647,7 +653,7 @@ export default function FamiliaDetailPage() {
                 Cadastro Pessoal Realizado com Sucesso!
               </h3>
               <p className="text-on-surface-variant text-sm leading-relaxed mb-6 px-2 font-medium">
-                O cadastro pessoal foi realizado com sucesso. Para seu cadastro ser completamente concluído, cadastre a documentação.
+                O cadastro pessoal foi realizado com sucesso. Para seu cadastro ser completamente concluído, responda ao questionário de moradia.
               </p>
               
               {/* Protocol Card */}
@@ -662,17 +668,17 @@ export default function FamiliaDetailPage() {
               
               {/* Actions */}
               <div className="flex flex-col w-full gap-3">
-                <a
-                  href={`/${programId}/${familiaId === "new" ? "ana-silva" : familiaId}`}
-                  className="w-full py-4 bg-secondary text-white rounded-xl font-bold text-xs hover:brightness-110 active:scale-95 transition-all text-center uppercase tracking-wider no-underline shadow-lg shadow-secondary/15"
+                <Link
+                  href={`/${programId}/cadastro/${familiaId === "new" ? "ana-silva" : familiaId}/moradia`}
+                  className="w-full py-4 bg-secondary text-white rounded-xl font-bold text-xs hover:brightness-110 active:scale-95 transition-all text-center uppercase tracking-wider no-underline shadow-lg shadow-secondary/15 font-sans"
                 >
-                  Cadastrar Documentação
-                </a>
+                  Responder Questionário de Moradia
+                </Link>
                 <button 
                   onClick={() => setSaveSuccess(false)}
                   className="w-full py-4 border-2 border-outline/20 text-primary hover:bg-surface-container-high rounded-xl font-bold text-xs transition-all active:scale-95 cursor-pointer uppercase tracking-wider bg-transparent font-sans"
                 >
-                  Voltar ao Início
+                  Voltar ao Formulário
                 </button>
               </div>
             </div>
