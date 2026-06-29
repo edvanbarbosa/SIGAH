@@ -70,6 +70,12 @@ export function Sidebar({
       active: pathname.includes("/denuncias/averiguacao"),
     },
     {
+      label: "Gestão de Exceção",
+      href: `/${programId}/excecao`,
+      icon: AlertTriangle,
+      active: pathname.includes("/excecao"),
+    },
+    {
       label: beneficiarioLabel,
       href: `/${programId}/cadastro`,
       icon: Users,
