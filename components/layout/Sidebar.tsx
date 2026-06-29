@@ -76,6 +76,12 @@ export function Sidebar({
       active: pathname.includes("/excecao"),
     },
     {
+      label: "Liberação de Recursos",
+      href: `/${programId}/recursos`,
+      icon: Landmark,
+      active: pathname.includes("/recursos"),
+    },
+    {
       label: beneficiarioLabel,
       href: `/${programId}/cadastro`,
       icon: Users,
