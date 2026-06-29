@@ -7,7 +7,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useProgram } from "@/lib/hooks/useProgram";
 import { Header } from "@/components/layout/Header";
 import { Sidebar } from "@/components/layout/Sidebar";
@@ -51,6 +51,7 @@ interface CandidateRanking {
 
 export default function ClassificacaoFamiliasPage() {
   const params = useParams();
+  const router = useRouter();
   const config = useProgram();
   const programId = params.programId as string;
 
@@ -175,13 +176,21 @@ export default function ClassificacaoFamiliasPage() {
           <main className="w-full max-w-5xl mx-auto px-6 py-10 mb-20 md:mb-8 space-y-8">
             
             {/* Título e Subtítulo */}
-            <div className="space-y-1">
-              <h2 className="text-3xl font-heading font-black text-primary tracking-tight">
-                Classificação de Famílias
-              </h2>
-              <p className="text-on-surface-variant text-sm sm:text-base font-medium">
-                Consulte a listagem atualizada de candidatos conforme os critérios de prioridade e pontuação social vigentes.
-              </p>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-100 pb-6">
+              <div className="space-y-1">
+                <h2 className="text-3xl font-heading font-black text-primary tracking-tight">
+                  Classificação de Famílias
+                </h2>
+                <p className="text-on-surface-variant text-sm font-medium">
+                  Consulte a listagem de candidatos conforme os critérios de prioridade social.
+                </p>
+              </div>
+              <button
+                onClick={() => router.push(`/${programId}/classificacao/hierarquizacao`)}
+                className="bg-secondary text-white hover:brightness-110 px-5 py-3 rounded-xl font-black text-[10px] uppercase tracking-wider flex items-center justify-center gap-1.5 cursor-pointer border-none shadow-md"
+              >
+                <span>VER HIERARQUIZAÇÃO AJUSTADA</span>
+              </button>
             </div>
 
             {/* Hero Section / Critérios Vigentes */}
