@@ -72,6 +72,13 @@ export default function PesquisaEnquadramentoPage() {
       tags: ["Vínculo Prévio"]
     },
     {
+      id: "carlos-alberto",
+      name: "Carlos Alberto dos Santos",
+      nis: "123.45678.90-1",
+      status: "Incompatível",
+      tags: ["DÉFICIT", "EM ANÁLISE"]
+    },
+    {
       id: "familia-santos",
       name: "Família Santos (Maria Eduarda Santos)",
       nis: "123.088.216-99",
@@ -501,8 +508,12 @@ export default function PesquisaEnquadramentoPage() {
                         ) : cand.status === "Incompatível" ? (
                           <button 
                             onClick={() => {
-                              setExceptionCandidate(cand);
-                              setExceptionJustification("");
+                              if (cand.id === "carlos-alberto") {
+                                router.push(`/${programId}/enquadramento/deficit`);
+                              } else {
+                                setExceptionCandidate(cand);
+                                setExceptionJustification("");
+                              }
                             }}
                             className="flex-grow py-3 bg-primary text-white hover:brightness-110 rounded-xl font-heading font-black text-[10px] uppercase tracking-wider active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 cursor-pointer border-none shadow-md"
                           >
