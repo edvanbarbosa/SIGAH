@@ -387,15 +387,15 @@ export default function VistoriaSchedulingPage() {
                     </a>
 
                     <a 
-                      href={`/${programId}/vistorias/chamado`}
+                      href={`/${programId}/vistorias/chamados-lista`}
                       className="p-5 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition-all gap-4 text-left border-none"
                     >
                       <div>
                         <span className="text-[8px] font-black uppercase text-red-750 bg-red-50 px-2 py-0.5 rounded tracking-wider w-fit">Manutenção / Assistência</span>
-                        <h4 className="font-heading font-black text-sm text-primary mt-2">Abrir Chamado</h4>
+                        <h4 className="font-heading font-black text-sm text-primary mt-2">Assistência Técnica</h4>
                         <p className="text-[10px] text-slate-500 font-semibold mt-1 leading-relaxed">Reportar problemas estruturais, de acabamento ou vícios de obras.</p>
                       </div>
-                      <span className="text-[9px] font-black text-secondary uppercase tracking-widest flex items-center gap-1 mt-auto">Abrir Chamado →</span>
+                      <span className="text-[9px] font-black text-secondary uppercase tracking-widest flex items-center gap-1 mt-auto">Acessar Chamados →</span>
                     </a>
                   </div>
                 </section>
