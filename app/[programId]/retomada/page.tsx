@@ -159,6 +159,23 @@ export default function ExecucaoExtrajudicialPage() {
               </div>
             )}
 
+            {/* Abas Superiores do Módulo de Retomada */}
+            <div className="border-b border-slate-200 select-none mb-6">
+              <nav className="flex gap-6 -mb-px">
+                <button 
+                  className="pb-4 px-1 border-b-2 border-secondary text-[#001e40] text-xs font-black uppercase tracking-wider cursor-pointer bg-transparent"
+                >
+                  Execução Extrajudicial
+                </button>
+                <button 
+                  onClick={() => router.push(`/${programId}/retomada/unidades`)}
+                  className="pb-4 px-1 border-b-2 border-transparent text-slate-400 hover:text-primary text-xs font-black uppercase tracking-wider cursor-pointer bg-transparent"
+                >
+                  Gestão de Unidades Retomadas
+                </button>
+              </nav>
+            </div>
+
             {/* Seletor de Perfil do Operador (Simulação de Auditoria) */}
             <div className="mb-6 bg-white p-4 rounded-2xl border border-slate-200/60 flex items-center justify-between gap-4 select-none">
               <span className="text-xs font-black text-primary uppercase tracking-wider">
