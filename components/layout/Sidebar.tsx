@@ -20,7 +20,8 @@ import {
   Clock,
   ShieldCheck,
   Building,
-  AlertTriangle
+  AlertTriangle,
+  Dices
 } from "lucide-react";
 import { useProgram } from "@/lib/hooks/useProgram";
 
@@ -104,6 +105,16 @@ export function Sidebar({
             href: `/${programId}/unidades`,
             icon: Building,
             active: pathname.includes("/unidades"),
+          },
+        ]
+      : []),
+    ...(config.enabledSections.sorteio
+      ? [
+          {
+            label: "Sorteio e Suplência",
+            href: `/${programId}/sorteio`,
+            icon: Dices,
+            active: pathname.includes("/sorteio"),
           },
         ]
       : []),
