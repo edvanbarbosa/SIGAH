@@ -217,6 +217,23 @@ export default function ExportacaoPublicidadePage() {
               </p>
             </header>
 
+            {/* Banner de Acesso Rápido: Transmissão CEF */}
+            <div
+              onClick={() => router.push(`/${programId}/exportacao/caixa`)}
+              className="bg-[#001e40] rounded-2xl p-5 flex items-center justify-between gap-4 cursor-pointer hover:shadow-lg hover:shadow-[#001e40]/10 transition-all group select-none"
+            >
+              <div className="flex items-center gap-4">
+                <div className="bg-[#003366] p-3 rounded-xl shrink-0">
+                  <CloudUpload className="w-6 h-6 text-[#a7c8ff]" />
+                </div>
+                <div>
+                  <h4 className="font-headline font-bold text-white text-sm">Transmissão Direta para a Caixa Econômica Federal</h4>
+                  <p className="text-[#a7c8ff] text-xs">Módulo especializado de exportação institucional com integração CadÚnico e criptografia.</p>
+                </div>
+              </div>
+              <ChevronRight className="w-5 h-5 text-[#a7c8ff] group-hover:translate-x-1 transition-transform shrink-0" />
+            </div>
+
             {/* ─── Grid Principal 12-col ─────────────────────────────── */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
