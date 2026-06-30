@@ -22,7 +22,8 @@ import {
   Building,
   AlertTriangle,
   Dices,
-  ShieldAlert
+  ShieldAlert,
+  Share2
 } from "lucide-react";
 import { useProgram } from "@/lib/hooks/useProgram";
 
@@ -152,6 +153,12 @@ export function Sidebar({
       href: `/${programId}/retomada`,
       icon: ShieldAlert,
       active: pathname.includes("/retomada"),
+    },
+    {
+      label: "Exportação de Dados",
+      href: `/${programId}/exportacao`,
+      icon: Share2,
+      active: pathname.includes("/exportacao"),
     },
     ...(config.enabledSections.integracaoCadUnico
       ? [
