@@ -21,7 +21,8 @@ import {
   ShieldCheck,
   Building,
   AlertTriangle,
-  Dices
+  Dices,
+  ShieldAlert
 } from "lucide-react";
 import { useProgram } from "@/lib/hooks/useProgram";
 
@@ -146,6 +147,12 @@ export function Sidebar({
           },
         ]
       : []),
+    {
+      label: "Retomada de Imóveis",
+      href: `/${programId}/retomada`,
+      icon: ShieldAlert,
+      active: pathname.includes("/retomada"),
+    },
     ...(config.enabledSections.integracaoCadUnico
       ? [
           {
