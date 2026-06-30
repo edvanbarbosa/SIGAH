@@ -236,13 +236,19 @@ export default function EmpreendimentosPage() {
                     </div>
 
                     {/* Actions button */}
-                    <div className="p-6 pt-0 select-none">
+                    <div className="p-6 pt-0 select-none flex gap-3">
                       <button 
                         onClick={() => router.push(`/${programId}/empreendimentos/validacao`)}
-                        className="w-full bg-[#001e40] hover:bg-[#003366] text-white py-3 rounded-xl font-black text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2 border-none cursor-pointer shadow-sm active:scale-[0.98]"
+                        className="flex-1 bg-white hover:bg-slate-50 text-primary py-3 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all flex items-center justify-center gap-1 border border-slate-250 cursor-pointer shadow-sm active:scale-[0.98]"
                       >
-                        <span>Validar Documentação</span>
-                        <ArrowRight className="w-4 h-4 text-white" />
+                        <span>Validar</span>
+                      </button>
+                      <button 
+                        onClick={() => router.push(`/${programId}/empreendimentos/parametrizacao`)}
+                        className="flex-1 bg-[#001e40] hover:bg-[#003366] text-white py-3 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all flex items-center justify-center gap-1.5 border-none cursor-pointer shadow-sm active:scale-[0.98]"
+                      >
+                        <span>Parametrizar</span>
+                        <Sliders className="w-3.5 h-3.5 text-white shrink-0" />
                       </button>
                     </div>
 
