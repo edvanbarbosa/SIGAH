@@ -136,7 +136,7 @@ export default function ExecucaoExtrajudicialPage() {
   };
 
   return (
-    <div className="bg-[#f8f9fa] text-[#191c1d] min-h-screen flex flex-col selection:bg-[#0059bb]/20">
+    <div className="bg-[#f8f9fa] text-[#191c1d] min-h-screen pb-24 md:pb-0 flex flex-col selection:bg-[#0059bb]/20">
       
       {/* 1. Header Reutilizável */}
       <Header programId={programId} />
