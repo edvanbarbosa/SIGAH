@@ -40,15 +40,15 @@ Criar os contratos TypeScript que serão usados em toda a aplicação.
 Criar os providers React que distribuem estado global.
 
 ### Passo 2.1 · `contexts/ProgramContext.tsx`
-- [ ] Criar `ProgramProvider` — recebe `ProgramUIConfig` e distribui via Context
-- [ ] Criar hook `useProgram()` — retorna a config do programa ativo
+- [x] Criar `ProgramProvider` — recebe `ProgramUIConfig` e distribui via Context
+- [x] Criar hook `useProgram()` — retorna a config do programa ativo
   - Lança erro se usado fora do provider
-- [ ] Incluir feature flags de UI acessíveis via `useProgram().enabledSections`
+- [x] Incluir feature flags de UI acessíveis via `useProgram().enabledSections`
 
 ### Passo 2.2 · `contexts/UserContext.tsx`
-- [ ] Criar `UserProvider` — gerencia dados do usuário autenticado
-- [ ] Criar hook `useUser()` — retorna perfil, permissões e status de autenticação
-- [ ] Criar hook `usePermissions()` — atalho para checagem de permissões por ação/recurso
+- [x] Criar `UserProvider` — gerencia dados do usuário autenticado
+- [x] Criar hook `useUser()` — retorna perfil, permissões e status de autenticação
+- [x] Criar hook `usePermissions()` — atalho para checagem de permissões por ação/recurso
 
 ---
 
@@ -57,40 +57,40 @@ Criar os providers React que distribuem estado global.
 Criar a camada de comunicação com o backend.
 
 ### Passo 3.1 · `lib/api/client.ts`
-- [ ] Criar instância base do fetch/axios com base URL configurável
-- [ ] Interceptor de autenticação (token JWT no header)
-- [ ] Tratamento centralizado de erros (`ApiError`)
+- [x] Criar instância base do fetch/axios com base URL configurável
+- [x] Interceptor de autenticação (token JWT no header)
+- [x] Tratamento centralizado de erros (`ApiError`)
 
 ### Passo 3.2 · `lib/api/programs.ts`
-- [ ] Função `fetchProgramConfig(programId): Promise<ProgramUIConfig>`
+- [x] Função `fetchProgramConfig(programId): Promise<ProgramUIConfig>`
   - Cache stale-while-revalidate (⚠ atenção ao risco 1 do documento)
-- [ ] Função `fetchPrograms(): Promise<ProgramUIConfig[]>`
+- [x] Função `fetchPrograms(): Promise<ProgramUIConfig[]>`
 
 ### Passo 3.3 · `lib/api/families.ts`
-- [ ] Funções CRUD para cadastros familiares
-- [ ] Função de consulta de status de integração CadÚnico
+- [x] Funções CRUD para cadastros familiares
+- [x] Função de consulta de status de integração CadÚnico
 
 ---
 
 ## Etapa 4 — Hooks Utilitários (`lib/hooks/`)
 
 ### Passo 4.1 · `lib/hooks/useProgram.ts`
-- [ ] Reexportar o hook de `contexts/ProgramContext` (ponto central de importação)
+- [x] Reexportar o hook de `contexts/ProgramContext` (ponto central de importação)
 
 ### Passo 4.2 · `lib/hooks/usePermissions.ts`
-- [ ] Hook que combina `useUser()` + `useProgram()` para checar permissões contextuais
+- [x] Hook que combina `useUser()` + `useProgram()` para checar permissões contextuais
 
 ---
 
 ## Etapa 5 — Validações e Formatadores (`lib/validations/` e `lib/formatters/`)
 
 ### Passo 5.1 · `lib/validations/`
-- [ ] Criar validações de formato: CPF, telefone, CEP, e-mail
-- [ ] **Apenas formato** — sem lógica de elegibilidade (é responsabilidade do backend)
+- [x] Criar validações de formato: CPF, telefone, CEP, e-mail
+- [x] **Apenas formato** — sem lógica de elegibilidade (é responsabilidade do backend)
 
 ### Passo 5.2 · `lib/formatters/`
-- [ ] Formatadores de CPF, moeda (BRL), data, telefone
-- [ ] Formatador de status/etapa processual para exibição
+- [x] Formatadores de CPF, moeda (BRL), data, telefone
+- [x] Formatador de status/etapa processual para exibição
 
 ---
 
@@ -99,75 +99,75 @@ Criar a camada de comunicação com o backend.
 Montar o roteamento dinâmico por programa conforme a árvore definida no documento.
 
 ### Passo 6.1 · `app/page.tsx` (Landing / Seleção de Programa)
-- [ ] Tela de entrada que lista programas disponíveis
-- [ ] Redireciona para `/{programId}/dashboard` ao selecionar
+- [x] Tela de entrada que lista programas disponíveis
+- [x] Redireciona para `/{programId}/dashboard` ao selecionar
 
 ### Passo 6.2 · `app/auth/`
-- [ ] `app/auth/login/page.tsx` — tela de login
-- [ ] `app/auth/recuperar/page.tsx` — recuperação de acesso
+- [x] `app/auth/login/page.tsx` — tela de login
+- [x] `app/auth/recuperar/page.tsx` — recuperação de acesso
 
 ### Passo 6.3 · `app/[programId]/layout.tsx` ⭐ (Layout raiz por programa)
-- [ ] Buscar `ProgramUIConfig` do backend via `fetchProgramConfig(programId)`
-- [ ] Usar cache `stale-while-revalidate` do Next.js (⚠ Risco 1 — latência)
-- [ ] Envolver children com `<ProgramProvider config={...}>` e `<UserProvider>`
-- [ ] Proteger rotas autenticadas (redirecionar para `/auth/login` se não autenticado)
+- [x] Buscar `ProgramUIConfig` do backend via `fetchProgramConfig(programId)`
+- [x] Usar cache `stale-while-revalidate` do Next.js (⚠ Risco 1 — latência)
+- [x] Envolver children com `<ProgramProvider config={...}>` e `<UserProvider>`
+- [x] Proteger rotas autenticadas (redirecionar para `/auth/login` se não autenticado)
 
 ### Passo 6.4 · Páginas dentro de `app/[programId]/`
-- [ ] `dashboard/page.tsx` — painel principal do programa
-- [ ] `cadastro/page.tsx` — listagem de cadastros
-- [ ] `cadastro/[familiaId]/page.tsx` — detalhes de um cadastro
-- [ ] `classificacao/page.tsx` — exibe lista e status vindos da API
-- [ ] `sorteio/page.tsx`
-- [ ] `suplencia/page.tsx`
-- [ ] `convocacao/page.tsx`
-- [ ] `[candidatoId]/page.tsx` — detalhes de candidato
-- [ ] `empreendimentos/page.tsx`
-- [ ] `unidades/page.tsx`
-- [ ] `auditoria/logs/page.tsx`
-- [ ] `relatorios/page.tsx`
+- [x] `dashboard/page.tsx` — painel principal do programa
+- [x] `cadastro/page.tsx` — listagem de cadastros
+- [x] `cadastro/[familiaId]/page.tsx` — detalhes de um cadastro
+- [x] `classificacao/page.tsx` — exibe lista e status vindos da API
+- [x] `sorteio/page.tsx`
+- [x] `suplencia/page.tsx`
+- [x] `convocacao/page.tsx`
+- [x] `[candidatoId]/page.tsx` — detalhes de candidato
+- [x] `empreendimentos/page.tsx`
+- [x] `unidades/page.tsx`
+- [x] `auditoria/logs/page.tsx`
+- [x] `relatorios/page.tsx`
 
 ---
 
-## Etapa 7 — Componentes de Domínio (`components/`)
+## Etapa 7 — Componentes de Domínio (`components/`) ✅
 
 ### Passo 7.1 · `components/forms/` — Formulários Modulares
-- [ ] `FamilyForm.tsx` — cadastro orientado à família
+- [x] `FamilyForm.tsx` — cadastro orientado à família
   - Seções condicionais controladas por feature flags do programa
   - Usar React Hook Form (⚠ Risco 3 — performance / re-renderização)
-- [ ] `PropertyForm.tsx` — cadastro orientado ao imóvel
+- [x] `PropertyForm.tsx` — cadastro orientado ao imóvel
   - Ativado/desativado por programa via `useProgram()`
 
 ### Passo 7.2 · `components/display/` — Exibição de Dados da API
-- [ ] `ScoringPanel.tsx` — recebe pontuação **já calculada** pelo backend e exibe
-- [ ] `QuotaDisplay.tsx` — exibe distribuição de cotas
-- [ ] `DeadlineStatus.tsx` — exibe indicador de prazos processuais
-- [ ] `IntegrationStatus.tsx` — exibe status de integração com bases externas (CadÚnico)
+- [x] `ScoringPanel.tsx` — recebe pontuação **já calculada** pelo backend e exibe
+- [x] `QuotaDisplay.tsx` — exibe distribuição de cotas
+- [x] `DeadlineStatus.tsx` — exibe indicador de prazos processuais
+- [x] `IntegrationStatus.tsx` — exibe status de integração com bases externas (CadÚnico)
 
 ### Passo 7.3 · `components/timeline/`
-- [ ] `ProcessTimeline.tsx` — linha do tempo do processo do candidato
-- [ ] `AuditLog.tsx` — histórico de ações/auditoria
+- [x] `ProcessTimeline.tsx` — linha do tempo do processo do candidato
+- [x] `AuditLog.tsx` — histórico de ações/auditoria
 
 ### Passo 7.4 · `components/layout/FeatureGate.tsx` ⭐
-- [ ] Componente que mostra/oculta children com base em feature flags do programa
-- [ ] Props: `feature: string`, `fallback?: ReactNode`
-- [ ] Usa `useProgram()` para ler `enabledSections`
-- [ ] ⚠ Risco 2: FeatureGate **não é proteção real** — backend valida independentemente
+- [x] Componente que mostra/oculta children com base em feature flags do programa
+- [x] Props: `feature: string`, `fallback?: ReactNode`
+- [x] Usa `useProgram()` para ler `enabledSections`
+- [x] ⚠ Risco 2: FeatureGate **não é proteção real** — backend valida independentemente
 
 ### Passo 7.5 · `components/ui/`
-- [ ] `DocumentUpload.tsx` — upload de documentos com preview
-- [ ] `ConsentBanner.tsx` — banner LGPD para coleta de aceite (RF 040)
+- [x] `DocumentUpload.tsx` — upload de documentos com preview
+- [x] `ConsentBanner.tsx` — banner LGPD para coleta de aceite (RF 040)
 
 ---
 
-## Etapa 8 — Tema e Estilização
+## Etapa 8 — Tema e Estilização ✅
 
 ### Passo 8.1 · Configuração do Tailwind com CSS vars
-- [ ] Definir variáveis de tema no `globals.css` (cores, fontes, espaçamentos)
-- [ ] Configurar tema dinâmico por programa (cores aplicadas via `ProgramUIConfig.theme`)
+- [x] Definir variáveis de tema no `globals.css` (cores, fontes, espaçamentos)
+- [x] Configurar tema dinâmico por programa (cores aplicadas via `ProgramUIConfig.theme`)
 
 ### Passo 8.2 · Componentes shadcn/ui
-- [ ] Garantir que os primitivos do shadcn estão configurados e acessíveis
-- [ ] Verificar que `components.json` aponta para o diretório correto
+- [x] Garantir que os primitivos do shadcn estão configurados e acessíveis
+- [x] Verificar que `components.json` aponta para o diretório correto
 
 ---
 
