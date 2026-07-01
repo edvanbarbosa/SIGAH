@@ -9,18 +9,18 @@ import Link from "next/link";
 import { LandingFooter } from "@/components/layout/LandingFooter";
 import { fetchPrograms } from "@/lib/api/programs";
 import { ProgramUIConfig } from "@/types/program";
-import { 
-  ShieldCheck, 
-  UserCheck, 
-  CheckSquare, 
-  TrendingUp, 
-  MapPin, 
-  Building2, 
-  FileSpreadsheet, 
-  AlertTriangle, 
-  Map, 
-  ArrowRight, 
-  Building, 
+import {
+  ShieldCheck,
+  UserCheck,
+  CheckSquare,
+  TrendingUp,
+  MapPin,
+  Building2,
+  FileSpreadsheet,
+  AlertTriangle,
+  Map,
+  ArrowRight,
+  Building,
   Database,
   ArrowUpRight,
   MessageSquare,
@@ -71,7 +71,7 @@ const FALLBACK_PROGRAMS: Partial<ProgramUIConfig>[] = [
 
 export default async function HomePage() {
   let programs: any[] = [];
-  
+
   try {
     // Tenta obter os programas da API do backend
     programs = await fetchPrograms();
@@ -82,7 +82,7 @@ export default async function HomePage() {
 
   return (
     <div className="min-h-screen bg-[#f8f9fa] text-[#191c1d] font-sans selection:bg-[#0059bb]/10 selection:text-[#0059bb] scroll-smooth">
-      
+
       {/* 1. Header / Navegação Principal */}
       <header className="fixed top-0 w-full z-50 bg-[#f8f9fa]/80 backdrop-blur-xl border-b border-[#c3c6d1]/15 h-18 flex items-center">
         <div className="max-w-7xl mx-auto w-full px-6 md:px-12 flex items-center justify-between">
@@ -114,8 +114,8 @@ export default async function HomePage() {
             <button className="text-sm font-bold text-[#43474f] px-4 py-2 hover:text-[#001e40] transition-colors hidden sm:block">
               Suporte
             </button>
-            <Link 
-              href="/inicio" 
+            <Link
+              href="/acesso"
               className="bg-[#001e40] hover:bg-[#001e40]/90 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-sm"
             >
               Acessar Portal
@@ -128,7 +128,7 @@ export default async function HomePage() {
       <section className="relative overflow-hidden pt-36 pb-28 bg-[#f3f4f5] border-b border-[#c3c6d1]/10">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <div className="flex flex-col lg:flex-row items-center gap-16">
-            
+
             {/* Texto Hero */}
             <div className="lg:w-1/2 space-y-6">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#0059bb]/10 text-[#0059bb] rounded-full">
@@ -137,24 +137,24 @@ export default async function HomePage() {
                   Conformidade FAR / MCMV
                 </span>
               </div>
-              
+
               <h1 className="font-heading font-black text-4xl sm:text-5xl lg:text-6xl leading-[1.1] text-[#001e40] tracking-tight">
                 Transforme a Gestão Habitacional com <span className="text-[#0059bb]">Inteligência</span> e Transparência
               </h1>
-              
+
               <p className="text-[#43474f] text-base sm:text-lg leading-relaxed max-w-xl">
                 Centralize o cadastro, seleção, hierarquização e acompanhamento de beneficiários em uma única plataforma, totalmente alinhada às normas do Minha Casa Minha Vida e FAR.
               </p>
-              
+
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                <a 
-                  href="#programas" 
+                <a
+                  href="/acesso"
                   className="bg-gradient-to-br from-[#001e40] to-[#003366] text-white px-8 py-4 rounded-xl font-bold text-center text-sm shadow-md hover:shadow-lg hover:opacity-95 transition-all duration-300"
                 >
-                  Selecionar Programa
+                  Acessar Portal
                 </a>
-                <a 
-                  href="#funcionalidades" 
+                <a
+                  href="#funcionalidades"
                   className="border-2 border-[#0059bb]/30 text-[#0059bb] px-8 py-4 rounded-xl font-bold text-center text-sm hover:bg-[#0059bb]/5 transition-all"
                 >
                   Conhecer Funcionalidades
@@ -165,23 +165,23 @@ export default async function HomePage() {
             {/* Imagem Mockup Hero */}
             <div className="lg:w-1/2 relative group w-full">
               <div className="relative z-10 rounded-2xl overflow-hidden shadow-[0_24px_48px_rgba(0,30,64,0.08)] border border-[#c3c6d1]/15 transform group-hover:-translate-y-1 transition-transform duration-500 bg-white">
-                <img 
-                  className="w-full h-auto object-cover" 
-                  alt="Interface gráfica do painel administrativo do SIGAH mostrando indicadores sociais e mapas" 
+                <img
+                  className="w-full h-auto object-cover"
+                  alt="Interface gráfica do painel administrativo do SIGAH mostrando indicadores sociais e mapas"
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwM8N3wXY-iCM0J_fOvyfPi-UBUeHOgwPFrY1ceW8ChYYqHYE3yoVzd4wbmbPnMxFxfiUI3VjUDNc23qAtb60beMKHC6oFAYeLno0dcOoyhZhXxumnFaYpFxWyTJYtn67SUegBJfY_ugQ1R1ufBOM-NwuwNsLFPtoP96bHKk2u2gkOjf4Z57zPGcVe5sp2BK8sfnrxR5BY16WDe6aufujwz25ZSN9SKr-wLSieFeZoNY4YPlAR0QdzwX3GZdwSh8MY6xLil-_0dYE"
                 />
               </div>
-              
+
               <div className="absolute -bottom-10 -left-10 z-20 w-52 h-52 rounded-2xl overflow-hidden shadow-[0_16px_32px_rgba(0,30,64,0.08)] border-4 border-[#f3f4f5] hidden xl:block transform group-hover:translate-x-1.5 transition-transform duration-700">
-                <img 
-                  className="w-full h-full object-cover" 
-                  alt="Fotografia arquitetônica de complexo habitacional moderno e sustentável" 
+                <img
+                  className="w-full h-full object-cover"
+                  alt="Fotografia arquitetônica de complexo habitacional moderno e sustentável"
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3KBe6Fp5o8C2Uz32tb0zH4i7_8gWSEiFMRjiImMj-i-DHz-2rOjywhcKWUBYr8IFY8t_YJqrUO7mLEKQDkaTYehGyIafSrivdPBy0nRPcoRsekcQXFIvkOwX5v2FZf4Fs3VcqF1TSN5LU1FYhn3SVrKZgUz3EV7Bn45H9dj3ockH71nCzccIMZ7WaPbqGPaEx0D1V-j30WQO7pU3-lQm2fz0umfj-K0vbjU37RxXJzic_Vm6qNZHe_pfHrQyRCbOPeol9QC0a5AM"
                 />
               </div>
               <div className="absolute -top-16 -right-16 w-80 h-80 bg-[#0059bb]/5 rounded-full blur-3xl -z-10"></div>
             </div>
-            
+
           </div>
         </div>
       </section>
@@ -191,7 +191,7 @@ export default async function HomePage() {
       {/* 4. Features Section (Bento Grid) */}
       <section className="py-28 bg-[#f3f4f5] border-t border-b border-[#c3c6d1]/10" id="funcionalidades">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
-          
+
           <div className="text-center max-w-2xl mx-auto mb-20 space-y-4">
             <span className="text-[10px] font-black tracking-widest text-[#0059bb] uppercase">
               Recursos de Governança
@@ -205,7 +205,7 @@ export default async function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            
+
             {/* Feature 1 */}
             <div className="bg-white p-8 rounded-2xl border border-[#c3c6d1]/10 hover:shadow-[0_16px_32px_rgba(0,30,64,0.04)] transition-all duration-300 group">
               <div className="w-12 h-12 bg-[#0059bb]/10 rounded-xl flex items-center justify-center mb-6 text-[#0059bb] group-hover:bg-[#0059bb] group-hover:text-white transition-colors duration-300">
@@ -292,7 +292,7 @@ export default async function HomePage() {
       {/* 5. Process Flow Section */}
       <section className="py-24 bg-[#001e40] text-white" id="fluxo">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
-          
+
           <div className="text-center max-w-2xl mx-auto mb-20 space-y-4">
             <span className="text-[10px] font-black tracking-widest text-[#0059bb] uppercase">
               Jornada de Inscrição
@@ -321,7 +321,7 @@ export default async function HomePage() {
                 {idx < arr.length - 1 && (
                   <div className="absolute top-[22px] left-1/2 right-[-50%] h-[2px] bg-white/20 -z-10" />
                 )}
-                
+
                 <div className="w-11 h-11 rounded-full border-2 border-[#0059bb] flex items-center justify-center mx-auto bg-[#001e40] text-white font-heading font-black text-xs relative z-10 shadow-sm group-hover:bg-[#0059bb] group-hover:scale-105 transition-all duration-300">
                   {step.num}
                 </div>
@@ -335,7 +335,7 @@ export default async function HomePage() {
           <div className="lg:hidden relative ml-2 space-y-10">
             {/* Linha vertical conectiva */}
             <div className="absolute left-[15px] top-4 bottom-4 w-[2px] bg-white/20 z-0" />
-            
+
             {[
               { num: 1, label: "Cadastro", desc: "Coleta estruturada de dados socioeconômicos familiares e aceite LGPD." },
               { num: 2, label: "Validação", desc: "Cruzamento automático com o Cadastro Único e bases externas." },
@@ -364,15 +364,15 @@ export default async function HomePage() {
       <section className="py-28 bg-[#f3f4f5] border-b border-[#c3c6d1]/10">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
-            
+
             <div className="lg:w-1/2">
-              <img 
-                className="rounded-2xl shadow-[0_24px_48px_rgba(0,30,64,0.06)] border border-[#c3c6d1]/10" 
-                alt="Macro fotografia de tecnologia moderna e seguranca digital" 
+              <img
+                className="rounded-2xl shadow-[0_24px_48px_rgba(0,30,64,0.06)] border border-[#c3c6d1]/10"
+                alt="Macro fotografia de tecnologia moderna e seguranca digital"
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuADWOMmXF0g-PTa_tGwlnfIPT4mC-DyEZvkr4H8bvZ0EzwhlaPcMUu6kbwsiUqbEh34MimbUBAyB2ilcGMuaWRcUWgvOR3Jpkmn1csOaJDPJzDjy4h6TROvh7mtwv5kLpQVhhhWZrFFbcXm4LaSAOwuzKE5hrY7KhomDEciOhBBC5GLgB-IVyWPtuT7l0AtJB9yusUDC8I6DVgIEO0_QVpb5j5p5a1U_nbKVBDyKBHoVls98UcwyM7imyxRwt9UAQ0tIXpwHxgFvnc"
               />
             </div>
-            
+
             <div className="lg:w-1/2 space-y-10">
               <div className="space-y-2">
                 <span className="text-[10px] font-black tracking-widest text-[#0059bb] uppercase">
@@ -382,9 +382,9 @@ export default async function HomePage() {
                   Por que escolher o SIGAH?
                 </h2>
               </div>
-              
+
               <div className="space-y-6">
-                
+
                 {/* Diff 1 */}
                 <div className="flex gap-4">
                   <div className="shrink-0 text-[#0059bb]">
@@ -440,7 +440,7 @@ export default async function HomePage() {
       {/* 7. Testimonials Section */}
       <section className="py-24 bg-white" id="depoimentos">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
-          
+
           <div className="text-center max-w-xl mx-auto mb-16">
             <h2 className="font-heading font-black text-3xl text-[#001e40] tracking-tight">
               Confiança de Gestores Públicos
@@ -448,7 +448,7 @@ export default async function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            
+
             {/* Card 1 */}
             <div className="bg-[#f8f9fa] p-8 rounded-2xl border border-[#c3c6d1]/10 flex flex-col justify-between relative">
               <p className="text-xs text-[#43474f] leading-relaxed mb-6 italic">
@@ -508,11 +508,11 @@ export default async function HomePage() {
           <h2 className="font-heading font-black text-4xl text-[#001e40] mb-4 tracking-tight leading-none">
             Modernize a Gestão Habitacional do Seu Município
           </h2>
-          
+
           <p className="text-[#43474f] text-sm max-w-xl mx-auto mb-10 leading-relaxed">
             Agende uma demonstração personalizada com nossos especialistas e veja como o SIGAH pode transformar o atendimento e a gestão urbana de moradia.
           </p>
-          
+
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <button className="bg-[#0059bb] hover:bg-[#0059bb]/90 text-white px-8 py-4 rounded-xl font-bold text-sm shadow-md hover:shadow-lg transition-all active:scale-[0.98] inline-flex items-center justify-center space-x-2">
               <MessageSquare className="w-4 h-4" />

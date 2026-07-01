@@ -10,7 +10,7 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { 
-  Landmark, 
+  Landmark,
   LayoutDashboard, 
   Briefcase, 
   Users, 
@@ -197,9 +197,11 @@ export function Sidebar({
   return (
     <aside className="hidden xl:flex flex-col h-screen w-72 fixed left-0 top-0 bg-surface-container/90 backdrop-blur-2xl py-8 z-[60] border-r border-outline-variant/15 select-none">
       {/* 1. Logotipo Oficial */}
-      <div className="px-6 mb-10 flex items-center gap-3">
-        <Landmark className="text-primary w-8 h-8" />
-        <span className="font-heading font-black text-primary text-xl tracking-widest">
+      <div className="px-6 mb-10 flex items-center space-x-2.5">
+        <div className="h-9 w-9 bg-gradient-to-br from-[#001e40] to-[#003366] rounded-lg flex items-center justify-center text-white font-heading font-black text-lg shadow-sm">
+          S
+        </div>
+        <span className="font-heading font-black text-2xl tracking-tight text-[#001e40]">
           SIGAH
         </span>
       </div>

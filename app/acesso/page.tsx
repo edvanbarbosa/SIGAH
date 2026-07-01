@@ -8,7 +8,7 @@
 // =============================================================================
 
 import Link from "next/link";
-import { Landmark, LogIn, ShieldCheck } from "lucide-react";
+import { LogIn, ShieldCheck } from "lucide-react";
 import { LandingFooter } from "@/components/layout/LandingFooter";
 
 export default function InicioPage() {
@@ -18,9 +18,11 @@ export default function InicioPage() {
       {/* 1. Header (Navegação Superior) */}
       <header className="fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-xl border-b border-outline-variant/30 h-16 flex items-center">
         <div className="max-w-7xl mx-auto w-full px-6 md:px-12 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Landmark className="text-primary w-6 h-6" />
-            <span className="font-heading font-extrabold text-primary text-xl tracking-tighter">
+          <div className="flex items-center space-x-2.5">
+            <div className="h-9 w-9 bg-gradient-to-br from-[#001e40] to-[#003366] rounded-lg flex items-center justify-center text-white font-heading font-black text-lg shadow-sm">
+              S
+            </div>
+            <span className="font-heading font-black text-2xl tracking-tight text-[#001e40]">
               SIGAH
             </span>
           </div>

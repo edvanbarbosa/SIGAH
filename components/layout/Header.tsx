@@ -8,7 +8,6 @@
 
 import React from "react";
 import Link from "next/link";
-import { Landmark } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 interface HeaderProps {
@@ -41,11 +40,13 @@ export function Header({
   return (
     <header className="bg-surface/80 backdrop-blur-xl text-primary border-b border-outline-variant/30 flex justify-between items-center px-6 md:px-8 h-20 w-full sticky top-0 z-50 shadow-[0px_16px_32px_rgba(0,30,64,0.06)]">
       {/* Lado Esquerdo: Marca oficial */}
-      <Link href="/" className="flex items-center gap-3.5 hover:opacity-90 transition-opacity">
-        <Landmark className="text-3xl w-7 h-7 text-primary" />
-        <h1 className="font-heading font-black text-primary tracking-tighter text-2xl select-none">
+      <Link href="/" className="flex items-center space-x-2.5 hover:opacity-90 transition-opacity">
+        <div className="h-9 w-9 bg-gradient-to-br from-[#001e40] to-[#003366] rounded-lg flex items-center justify-center text-white font-heading font-black text-lg shadow-sm">
+          S
+        </div>
+        <span className="font-heading font-black text-2xl tracking-tight text-[#001e40]">
           SIGAH
-        </h1>
+        </span>
       </Link>
 
       {/* Lado Direito: Links e Perfil */}

@@ -11,7 +11,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useUser, UserProfile } from "@/contexts/UserContext";
-import { Landmark, ArrowRight, KeyRound, Mail, UserCircle2, ChevronDown, Check, Briefcase, HeartHandshake, Building, Search, User } from "lucide-react";
+import { ArrowRight, KeyRound, Mail, UserCircle2, ChevronDown, Check, Briefcase, HeartHandshake, Building, Search, User } from "lucide-react";
 import { LandingFooter } from "@/components/layout/LandingFooter";
 
 const PROFILES = [
@@ -93,7 +93,7 @@ export default function LoginPage() {
         });
 
         localStorage.setItem("sigah_token", "dummy_jwt_token");
-        router.push("/");
+        router.push("/home");
       } catch (err) {
         setError("Erro ao autenticar. Tente novamente.");
       } finally {
@@ -237,13 +237,15 @@ export default function LoginPage() {
       {/* 1. Header Simplificado */}
       <header className="fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-xl border-b border-outline-variant/30 h-16 flex items-center">
         <div className="max-w-7xl mx-auto w-full px-6 md:px-12 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <Landmark className="text-primary w-6 h-6" />
-            <span className="font-heading font-extrabold text-primary text-xl tracking-tighter">
+          <Link href="/" className="flex items-center space-x-2.5">
+            <div className="h-9 w-9 bg-gradient-to-br from-[#001e40] to-[#003366] rounded-lg flex items-center justify-center text-white font-heading font-black text-lg shadow-sm">
+              S
+            </div>
+            <span className="font-heading font-black text-2xl tracking-tight text-[#001e40]">
               SIGAH
             </span>
           </Link>
-          <Link href="/inicio" className="font-sans text-sm font-semibold text-on-surface-variant hover:text-primary transition-colors cursor-pointer">
+          <Link href="/acesso" className="font-sans text-sm font-semibold text-on-surface-variant hover:text-primary transition-colors cursor-pointer">
             Voltar ao Início
           </Link>
         </div>

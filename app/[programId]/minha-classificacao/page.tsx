@@ -232,7 +232,7 @@ export default function MinhaClassificacaoPage() {
           ========================================== */}
       <nav className="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 px-4 md:hidden bg-white/95 dark:bg-[#001e40]/95 backdrop-blur-lg rounded-t-2xl border-t border-[#001e40]/10 shadow-[0_-8px_24px_rgba(0,30,64,0.08)]">
         <a 
-          href="/inicio"
+          href="/acesso"
           className="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant/70 active:scale-90 transition-transform duration-150"
         >
           <HomeIcon className="w-5 h-5" />
