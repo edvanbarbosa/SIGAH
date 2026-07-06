@@ -7,9 +7,9 @@
 
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
-export type UserProfile = "gestor" | "assistente_social" | "agente_financeiro" | "auditor";
+export type UserProfile = "gestor" | "assistente_social" | "agente_financeiro" | "auditor" | "cidadao";
 
 /** Estrutura do usuário logado. */
 export interface User {
@@ -17,6 +17,9 @@ export interface User {
   name: string;
   email: string;
   profile: UserProfile;
+  role?: string;
+  region?: string;
+  avatar?: string;
 }
 
 interface UserContextProps {
@@ -24,6 +27,8 @@ interface UserContextProps {
   isAuthenticated: boolean;
   login: (user: User) => void;
   logout: () => void;
+  updateProfile: (name: string, email: string) => Promise<{ success: boolean; error?: string }>;
+  refreshUser: () => Promise<void>;
 }
 
 const UserContext = createContext<UserContextProps | undefined>(undefined);
@@ -38,6 +43,27 @@ interface UserProviderProps {
 export function UserProvider({ children }: UserProviderProps) {
   const [user, setUser] = useState<User | null>(null);
 
+  // Carrega as informações do usuário da API no início da sessão
+  const refreshUser = async () => {
+    try {
+      const res = await fetch("/api/user");
+      if (res.ok) {
+        const data = await res.json();
+        setUser(data);
+      }
+    } catch (err) {
+      console.error("Erro ao sincronizar informações do usuário:", err);
+    }
+  };
+
+  useEffect(() => {
+    // Sincroniza o usuário se houver token ou se estivermos em ambiente simulado
+    const token = typeof window !== "undefined" ? localStorage.getItem("sigah_token") : null;
+    if (token) {
+      refreshUser();
+    }
+  }, []);
+
   const login = (newUser: User) => {
     setUser(newUser);
   };
@@ -46,10 +72,37 @@ export function UserProvider({ children }: UserProviderProps) {
     setUser(null);
   };
 
+  /**
+   * Atualiza os dados do perfil do operador fazendo uma requisição PUT para o backend simulado.
+   */
+  const updateProfile = async (name: string, email: string): Promise<{ success: boolean; error?: string }> => {
+    try {
+      const res = await fetch("/api/user", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        setUser(data.user);
+        return { success: true };
+      } else {
+        return { success: false, error: data.error || "Erro desconhecido ao salvar." };
+      }
+    } catch (err) {
+      console.error("Erro ao enviar atualização de perfil:", err);
+      return { success: false, error: "Erro de conexão com o servidor." };
+    }
+  };
+
   const isAuthenticated = user !== null;
 
   return (
-    <UserContext.Provider value={{ user, isAuthenticated, login, logout }}>
+    <UserContext.Provider value={{ user, isAuthenticated, login, logout, updateProfile, refreshUser }}>
       {children}
     </UserContext.Provider>
   );
@@ -109,6 +162,14 @@ export function usePermissions() {
           "cadastro_visualizar",
           "logs_visualizar",
           "relatorios_gerar",
+        ].includes(action);
+
+      case "cidadao":
+        return [
+          "read",
+          "cadastro_familia",
+          "dossie_habitacao",
+          "acompanhar_solicitacao",
         ].includes(action);
 
       default:

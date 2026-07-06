@@ -1,13 +1,14 @@
 // =============================================================================
 // app/home/page.tsx
 // Hub pós-login do usuário autenticado (Página Home).
-// Exibe: saudação personalizada, programas cadastrados, programas disponíveis
-// e notificações do sistema.
+// Exibe conteúdo diferenciado por perfil:
+// - Cidadão: solicitações de cadastro (família e dossiê de habitação)
+// - Operadores: programas cadastrados, programas disponíveis e notificações
 // =============================================================================
 
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useUser } from "@/contexts/UserContext";
 import { LandingFooter } from "@/components/layout/LandingFooter";
@@ -24,6 +25,14 @@ import {
   ChevronDown,
   ChevronUp,
   ExternalLink,
+  Users,
+  FileText,
+  Home,
+  ClipboardList,
+  Plus,
+  Eye,
+  Pencil,
+  CircleDot,
 } from "lucide-react";
 
 // =============================================================================
@@ -143,6 +152,66 @@ const MOCK_AVAILABLE_PROGRAMS: AvailableProgram[] = [
 ];
 
 // =============================================================================
+// Mock Data — Cidadão (Solicitações de Cadastro)
+// =============================================================================
+
+interface CadastroFamiliaSolicitacao {
+  id: string;
+  protocolo: string;
+  status: "rascunho" | "enviado" | "em_analise" | "pendente_documentos" | "aprovado" | "reprovado";
+  dataCriacao: string;
+  dataAtualizacao: string;
+  membros: number;
+  progresso: number;
+}
+
+interface DossieHabitacaoSolicitacao {
+  id: string;
+  protocolo: string;
+  status: "nao_iniciado" | "em_preenchimento" | "enviado" | "em_analise" | "aprovado" | "reprovado";
+  dataCriacao: string;
+  dataAtualizacao: string;
+  programaVinculado: string | null;
+}
+
+const MOCK_CADASTRO_FAMILIA: CadastroFamiliaSolicitacao = {
+  id: "cf-001",
+  protocolo: "CAD-2026-00187",
+  status: "em_analise",
+  dataCriacao: "15/06/2026",
+  dataAtualizacao: "28/06/2026",
+  membros: 4,
+  progresso: 100,
+};
+
+const MOCK_DOSSIE_HABITACAO: DossieHabitacaoSolicitacao = {
+  id: "dh-001",
+  protocolo: "DOS-2026-00092",
+  status: "em_preenchimento",
+  dataCriacao: "20/06/2026",
+  dataAtualizacao: "29/06/2026",
+  programaVinculado: "MCMV-FAR",
+};
+
+const cadastroFamiliaStatusMap: Record<CadastroFamiliaSolicitacao["status"], { label: string; color: string; bgColor: string; borderColor: string }> = {
+  rascunho: { label: "Rascunho", color: "text-[#737780]", bgColor: "bg-[#737780]/10", borderColor: "border-[#737780]/20" },
+  enviado: { label: "Enviado", color: "text-[#0059bb]", bgColor: "bg-[#0059bb]/10", borderColor: "border-[#0059bb]/20" },
+  em_analise: { label: "Em Análise", color: "text-[#0059bb]", bgColor: "bg-[#0059bb]/10", borderColor: "border-[#0059bb]/20" },
+  pendente_documentos: { label: "Documentação Pendente", color: "text-amber-700", bgColor: "bg-amber-500/10", borderColor: "border-amber-500/20" },
+  aprovado: { label: "Aprovado", color: "text-emerald-700", bgColor: "bg-emerald-500/10", borderColor: "border-emerald-500/20" },
+  reprovado: { label: "Reprovado", color: "text-red-700", bgColor: "bg-red-500/10", borderColor: "border-red-500/20" },
+};
+
+const dossieStatusMap: Record<DossieHabitacaoSolicitacao["status"], { label: string; color: string; bgColor: string; borderColor: string }> = {
+  nao_iniciado: { label: "Não Iniciado", color: "text-[#737780]", bgColor: "bg-[#737780]/10", borderColor: "border-[#737780]/20" },
+  em_preenchimento: { label: "Em Preenchimento", color: "text-amber-700", bgColor: "bg-amber-500/10", borderColor: "border-amber-500/20" },
+  enviado: { label: "Enviado", color: "text-[#0059bb]", bgColor: "bg-[#0059bb]/10", borderColor: "border-[#0059bb]/20" },
+  em_analise: { label: "Em Análise", color: "text-[#0059bb]", bgColor: "bg-[#0059bb]/10", borderColor: "border-[#0059bb]/20" },
+  aprovado: { label: "Aprovado", color: "text-emerald-700", bgColor: "bg-emerald-500/10", borderColor: "border-emerald-500/20" },
+  reprovado: { label: "Reprovado", color: "text-red-700", bgColor: "bg-red-500/10", borderColor: "border-red-500/20" },
+};
+
+// =============================================================================
 // Helper Components
 // =============================================================================
 
@@ -184,6 +253,264 @@ const statusColors = {
 };
 
 // =============================================================================
+// Painel do Cidadão — Solicitações de Cadastro
+// =============================================================================
+
+function getCadastroActionLabel(status: CadastroFamiliaSolicitacao["status"]): { label: string; icon: React.ReactNode } {
+  switch (status) {
+    case "rascunho":
+      return { label: "Continuar Cadastro", icon: <Pencil className="w-4 h-4" /> };
+    case "pendente_documentos":
+      return { label: "Enviar Documentos", icon: <FileText className="w-4 h-4" /> };
+    case "reprovado":
+      return { label: "Refazer Cadastro", icon: <Plus className="w-4 h-4" /> };
+    default:
+      return { label: "Visualizar", icon: <Eye className="w-4 h-4" /> };
+  }
+}
+
+function getDossieActionLabel(status: DossieHabitacaoSolicitacao["status"]): { label: string; icon: React.ReactNode } {
+  switch (status) {
+    case "nao_iniciado":
+      return { label: "Criar Dossiê", icon: <Plus className="w-4 h-4" /> };
+    case "em_preenchimento":
+      return { label: "Continuar", icon: <Pencil className="w-4 h-4" /> };
+    case "reprovado":
+      return { label: "Refazer Dossiê", icon: <Plus className="w-4 h-4" /> };
+    default:
+      return { label: "Acompanhar", icon: <Eye className="w-4 h-4" /> };
+  }
+}
+
+function CidadaoPainel() {
+  const cadastro = MOCK_CADASTRO_FAMILIA;
+  const dossie = MOCK_DOSSIE_HABITACAO;
+  const cadastroStatus = cadastroFamiliaStatusMap[cadastro.status];
+  const dossieStatus = dossieStatusMap[dossie.status];
+  const cadastroAction = getCadastroActionLabel(cadastro.status);
+  const dossieAction = getDossieActionLabel(dossie.status);
+
+  return (
+    <div className="flex-1 space-y-10">
+      {/* ── Seção: Minhas Solicitações ── */}
+      <section>
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-[#001e40] rounded-xl flex items-center justify-center text-white">
+              <ClipboardList className="w-5 h-5" />
+            </div>
+            <div>
+              <h2 className="font-heading font-bold text-xl text-[#001e40]">
+                Minhas Solicitações
+              </h2>
+              <p className="text-xs text-[#43474f]">
+                Acompanhe o andamento dos seus cadastros
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {/* ── Card: Cadastro de Família ── */}
+          <div className="bg-white rounded-2xl overflow-hidden hover:shadow-[0_16px_32px_rgba(0,30,64,0.06)] transition-all duration-300 group">
+            {/* Color strip */}
+            <div
+              className="h-1.5"
+              style={{ background: "linear-gradient(to right, #003366, #0059bb)" }}
+            />
+
+            <div className="p-6 space-y-4">
+              <div className="flex items-start justify-between">
+                <div className="space-y-1">
+                  <span className="text-[9px] font-black tracking-widest uppercase px-2 py-0.5 rounded-md bg-[#003366]/10 text-[#003366]">
+                    Cadastro Familiar
+                  </span>
+                  <h3 className="font-heading font-bold text-lg text-[#001e40] leading-snug">
+                    Cadastro de Família
+                  </h3>
+                </div>
+                <div className="w-10 h-10 bg-[#003366]/5 rounded-xl flex items-center justify-center text-[#003366]">
+                  <Users className="w-5 h-5" />
+                </div>
+              </div>
+
+              {/* Informações do cadastro */}
+              <div className="space-y-2.5">
+                <div className="flex items-center gap-2 text-xs text-[#43474f]">
+                  <CircleDot className="w-3.5 h-3.5" />
+                  <span>Protocolo: <span className="font-bold text-[#001e40]">{cadastro.protocolo}</span></span>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-[#43474f]">
+                  <Users className="w-3.5 h-3.5" />
+                  <span>{cadastro.membros} membros cadastrados</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-[#43474f]">
+                  <Clock className="w-3.5 h-3.5" />
+                  <span>Atualizado em {cadastro.dataAtualizacao}</span>
+                </div>
+              </div>
+
+              {/* Barra de progresso */}
+              <div className="space-y-1">
+                <div className="flex items-center justify-between text-[10px] font-bold">
+                  <span className="text-[#43474f] uppercase tracking-wider">Preenchimento</span>
+                  <span className="text-[#0059bb]">{cadastro.progresso}%</span>
+                </div>
+                <div className="w-full h-1.5 bg-[#e7e8e9] rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-gradient-to-r from-[#003366] to-[#0059bb] rounded-full transition-all duration-500"
+                    style={{ width: `${cadastro.progresso}%` }}
+                  />
+                </div>
+              </div>
+
+              {/* Rodapé: Status + Ação */}
+              <div className="flex items-center justify-between pt-2">
+                <span className={`text-xs font-bold px-3 py-1.5 rounded-full border ${cadastroStatus.bgColor} ${cadastroStatus.color} ${cadastroStatus.borderColor}`}>
+                  {cadastroStatus.label}
+                </span>
+                <Link
+                  href="/cadastro-familia"
+                  className="inline-flex items-center gap-1.5 text-sm font-bold px-4 py-2 rounded-xl bg-[#003366] text-white transition-all duration-300 hover:shadow-md hover:bg-[#001e40]"
+                >
+                  {cadastroAction.label}
+                  {cadastroAction.icon}
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* ── Card: Dossiê de Habitação ── */}
+          <div className="bg-white rounded-2xl overflow-hidden hover:shadow-[0_16px_32px_rgba(0,30,64,0.06)] transition-all duration-300 group">
+            {/* Color strip */}
+            <div
+              className="h-1.5"
+              style={{ background: "linear-gradient(to right, #0d5c3a, #84cc16)" }}
+            />
+
+            <div className="p-6 space-y-4">
+              <div className="flex items-start justify-between">
+                <div className="space-y-1">
+                  <span className="text-[9px] font-black tracking-widest uppercase px-2 py-0.5 rounded-md bg-[#0d5c3a]/10 text-[#0d5c3a]">
+                    Dossiê Habitacional
+                  </span>
+                  <h3 className="font-heading font-bold text-lg text-[#001e40] leading-snug">
+                    Dossiê de Habitação
+                  </h3>
+                </div>
+                <div className="w-10 h-10 bg-[#0d5c3a]/5 rounded-xl flex items-center justify-center text-[#0d5c3a]">
+                  <Home className="w-5 h-5" />
+                </div>
+              </div>
+
+              {/* Informações do dossiê */}
+              <div className="space-y-2.5">
+                <div className="flex items-center gap-2 text-xs text-[#43474f]">
+                  <CircleDot className="w-3.5 h-3.5" />
+                  <span>Protocolo: <span className="font-bold text-[#001e40]">{dossie.protocolo}</span></span>
+                </div>
+                {dossie.programaVinculado && (
+                  <div className="flex items-center gap-2 text-xs text-[#43474f]">
+                    <Building2 className="w-3.5 h-3.5" />
+                    <span>Vinculado ao <span className="font-bold text-[#001e40]">{dossie.programaVinculado}</span></span>
+                  </div>
+                )}
+                <div className="flex items-center gap-2 text-xs text-[#43474f]">
+                  <Clock className="w-3.5 h-3.5" />
+                  <span>Atualizado em {dossie.dataAtualizacao}</span>
+                </div>
+              </div>
+
+              {/* Info visual (sem barra de progresso para dossiê, usamos um indicador diferente) */}
+              <div className="bg-[#0d5c3a]/[0.03] rounded-xl p-3 flex items-center gap-3">
+                <div className="w-8 h-8 bg-[#0d5c3a]/10 rounded-lg flex items-center justify-center text-[#0d5c3a]">
+                  <FileText className="w-4 h-4" />
+                </div>
+                <div className="text-xs text-[#43474f] leading-relaxed">
+                  <span className="font-bold text-[#001e40]">Documentos habitacionais</span> e informações sobre moradia e renda.
+                </div>
+              </div>
+
+              {/* Rodapé: Status + Ação */}
+              <div className="flex items-center justify-between pt-2">
+                <span className={`text-xs font-bold px-3 py-1.5 rounded-full border ${dossieStatus.bgColor} ${dossieStatus.color} ${dossieStatus.borderColor}`}>
+                  {dossieStatus.label}
+                </span>
+                <Link
+                  href="/dossie-habitacao"
+                  className="inline-flex items-center gap-1.5 text-sm font-bold px-4 py-2 rounded-xl bg-[#0d5c3a] text-white transition-all duration-300 hover:shadow-md hover:bg-[#0a4a2e]"
+                >
+                  {dossieAction.label}
+                  {dossieAction.icon}
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Ações Rápidas ── */}
+      <section>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-10 h-10 bg-[#0059bb]/10 rounded-xl flex items-center justify-center text-[#0059bb]">
+            <ArrowRight className="w-5 h-5" />
+          </div>
+          <div>
+            <h2 className="font-heading font-bold text-xl text-[#001e40]">
+              Ações Rápidas
+            </h2>
+            <p className="text-xs text-[#43474f]">
+              Acesse funcionalidades diretamente
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <Link
+            href="/cadastro-familia/novo"
+            className="bg-white rounded-2xl p-5 flex items-center gap-4 hover:shadow-[0_16px_32px_rgba(0,30,64,0.06)] transition-all duration-300 group"
+          >
+            <div className="w-11 h-11 bg-[#003366]/10 rounded-xl flex items-center justify-center text-[#003366] group-hover:bg-[#003366] group-hover:text-white transition-all duration-300">
+              <Users className="w-5 h-5" />
+            </div>
+            <div>
+              <h4 className="font-bold text-sm text-[#001e40]">Novo Cadastro Familiar</h4>
+              <p className="text-[10px] text-[#43474f]">Iniciar cadastro de composição familiar</p>
+            </div>
+          </Link>
+
+          <Link
+            href="/dossie-habitacao/novo"
+            className="bg-white rounded-2xl p-5 flex items-center gap-4 hover:shadow-[0_16px_32px_rgba(0,30,64,0.06)] transition-all duration-300 group"
+          >
+            <div className="w-11 h-11 bg-[#0d5c3a]/10 rounded-xl flex items-center justify-center text-[#0d5c3a] group-hover:bg-[#0d5c3a] group-hover:text-white transition-all duration-300">
+              <Home className="w-5 h-5" />
+            </div>
+            <div>
+              <h4 className="font-bold text-sm text-[#001e40]">Novo Dossiê</h4>
+              <p className="text-[10px] text-[#43474f]">Abrir dossiê de habitação</p>
+            </div>
+          </Link>
+
+          <Link
+            href="/meus-documentos"
+            className="bg-white rounded-2xl p-5 flex items-center gap-4 hover:shadow-[0_16px_32px_rgba(0,30,64,0.06)] transition-all duration-300 group"
+          >
+            <div className="w-11 h-11 bg-[#0059bb]/10 rounded-xl flex items-center justify-center text-[#0059bb] group-hover:bg-[#0059bb] group-hover:text-white transition-all duration-300">
+              <FileText className="w-5 h-5" />
+            </div>
+            <div>
+              <h4 className="font-bold text-sm text-[#001e40]">Meus Documentos</h4>
+              <p className="text-[10px] text-[#43474f]">Enviar ou consultar documentos</p>
+            </div>
+          </Link>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+// =============================================================================
 // Page Component
 // =============================================================================
 
@@ -191,8 +518,21 @@ export default function HomePage() {
   const { user, logout } = useUser();
   const [notificationsExpanded, setNotificationsExpanded] = useState(true);
   const [notifications, setNotifications] = useState(MOCK_NOTIFICATIONS);
+  const [mounted, setMounted] = useState(false);
 
-  const userName = user?.name || "Usuário";
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const userName = (mounted && user?.name) || "Usuário";
+
+  const profileLabels: Record<string, string> = {
+    gestor: "Gestor Público",
+    assistente_social: "Assistente Social",
+    agente_financeiro: "Agente Financeiro",
+    auditor: "Auditor (Controle)",
+    cidadao: "Cidadão"
+  };
   const unreadCount = notifications.filter((n) => !n.read).length;
 
   const markAsRead = (id: string) => {
@@ -235,20 +575,24 @@ export default function HomePage() {
               )}
             </button>
 
-            {/* User Info */}
-            <div className="hidden sm:flex items-center gap-3">
+            {/* User Info (Link para Edição de Perfil) */}
+            <Link 
+              href="/perfil"
+              title={`Editar Perfil: ${userName}`}
+              className="hidden sm:flex items-center gap-3 hover:opacity-80 active:scale-[0.98] transition-all group cursor-pointer"
+            >
               <div className="text-right">
-                <p className="text-sm font-bold text-[#001e40] leading-tight">
+                <p className="text-sm font-bold text-[#001e40] leading-tight group-hover:text-[#0059bb] transition-colors duration-300">
                   {userName}
                 </p>
                 <p className="text-[10px] text-[#43474f] uppercase tracking-wider font-semibold">
-                  {user?.profile || "Cidadão"}
+                  {(mounted && user?.profile) ? profileLabels[user.profile] : "Cidadão"}
                 </p>
               </div>
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#001e40] to-[#003366] flex items-center justify-center text-white font-heading font-black text-sm shadow-sm">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#001e40] to-[#003366] flex items-center justify-center text-white font-heading font-black text-sm shadow-sm group-hover:scale-105 transition-transform duration-300">
                 {userName.charAt(0)}
               </div>
-            </div>
+            </Link>
 
             {/* Logout */}
             <Link
@@ -282,7 +626,10 @@ export default function HomePage() {
 
           {/* ── Grid Layout: Content + Notifications ── */}
           <div className="flex flex-col lg:flex-row gap-8">
-            {/* ─── Left Column: Programs ─── */}
+            {/* ─── Left Column: Conteúdo condicional por perfil ─── */}
+            {user?.profile === "cidadao" ? (
+              <CidadaoPainel />
+            ) : (
             <div className="flex-1 space-y-10">
               {/* ── Meus Programas ── */}
               <section>
@@ -434,6 +781,7 @@ export default function HomePage() {
                 </div>
               </section>
             </div>
+            )}
 
             {/* ─── Right Column: Notifications (Sidebar) ─── */}
             <aside className="lg:w-[360px] shrink-0">

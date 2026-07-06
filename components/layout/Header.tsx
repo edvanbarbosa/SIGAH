@@ -6,9 +6,10 @@
 
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useUser } from "@/contexts/UserContext";
 
 interface HeaderProps {
   /** Nome do usuário ativo */
@@ -20,11 +21,22 @@ interface HeaderProps {
 }
 
 export function Header({ 
-  userName = "Ana Silva", 
-  userAvatar = "https://lh3.googleusercontent.com/aida-public/AB6AXuCfj7T5csT17P6a6NfrPGws6APhsvzMq9v7bQuR5Xmi5tQ2L61UfUwRemL8HNuTkXaqAPBVnGropq1sDYg8haFpYrSgjsEGV2o6x4Lki-hjL8SXsB0JTzZs63Bxe7qGQ-qIIl9c2RBrtSu6oxKcU37DlOT_8UyRcUtN0sBWRlyrO8IxJy0uWVbxTNvdH3NlVqmk8wbhplHj3IucUTuZStFKQlkK05f9oBJbkxZe9NxQMng5_v_ul6cBxNC_T0F-xr9cVY3dUu6euu0",
+  userName, 
+  userAvatar, 
   programId 
 }: HeaderProps) {
   const pathname = usePathname();
+  const { user } = useUser();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const defaultAvatar = "https://lh3.googleusercontent.com/aida-public/AB6AXuCfj7T5csT17P6a6NfrPGws6APhsvzMq9v7bQuR5Xmi5tQ2L61UfUwRemL8HNuTkXaqAPBVnGropq1sDYg8haFpYrSgjsEGV2o6x4Lki-hjL8SXsB0JTzZs63Bxe7qGQ-qIIl9c2RBrtSu6oxKcU37DlOT_8UyRcUtN0sBWRlyrO8IxJy0uWVbxTNvdH3NlVqmk8wbhplHj3IucUTuZStFKQlkK05f9oBJbkxZe9NxQMng5_v_ul6cBxNC_T0F-xr9cVY3dUu6euu0";
+
+  const activeUserName = userName || (mounted && user?.name) || "Ana Silva";
+  const activeUserAvatar = userAvatar || (mounted && user?.avatar) || defaultAvatar;
 
   // Função para verificar se a rota atual corresponde ao link da navbar
   const isActive = (path: string) => {
@@ -94,17 +106,18 @@ export function Header({
           </Link>
         </nav>
 
-        {/* Avatar do Usuário */}
-        <div 
-          title={userName}
-          className="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center overflow-hidden border-2 border-primary/10 cursor-pointer shadow-sm hover:border-primary/30 transition-all"
+        {/* Avatar do Usuário (Link para Edição de Perfil) */}
+        <Link 
+          href="/perfil"
+          title={`Editar Perfil: ${activeUserName}`}
+          className="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center overflow-hidden border-2 border-primary/10 cursor-pointer shadow-sm hover:border-primary/40 hover:scale-105 transition-all"
         >
           <img 
-            alt={`Avatar de ${userName}`} 
+            alt={`Avatar de ${activeUserName}`} 
             className="w-full h-full object-cover" 
-            src={userAvatar} 
+            src={activeUserAvatar} 
           />
-        </div>
+        </Link>
       </div>
     </header>
   );
