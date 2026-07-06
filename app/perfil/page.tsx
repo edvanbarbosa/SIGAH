@@ -2,6 +2,7 @@
 // app/perfil/page.tsx
 // Tela global de edição do perfil do operador (Passo 10.4).
 // Baseada nas diretrizes estéticas "The Institutional Architect" (DESIGN.md).
+// Implementa renderização condicional baseada no perfil de acesso (RF076).
 // =============================================================================
 
 "use client";
@@ -20,9 +21,17 @@ import {
   Check, 
   Loader2,
   AlertCircle,
-  Camera
+  Camera,
+  Briefcase,
+  Settings,
+  FileText,
+  Building,
+  Users,
+  Home,
+  Landmark
 } from "lucide-react";
 import { LandingFooter } from "@/components/layout/LandingFooter";
+import { Header } from "@/components/layout/Header";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -41,11 +50,21 @@ export default function ProfilePage() {
   const [toastType, setToastType] = useState<"success" | "error">("success");
   const [formError, setFormError] = useState("");
 
+  // Estados para controle de hidratação e links dinâmicos de programas
+  const [mounted, setMounted] = useState(false);
+  const [activeProgramId, setActiveProgramId] = useState("mcmv-far");
+
   // Sincroniza os estados locais com o contexto do usuário
   useEffect(() => {
+    setMounted(true);
     if (user) {
       setName(user.name);
       setEmail(user.email);
+    }
+    // Tenta resgatar o último programa habitacional ativo acessado pelo operador
+    if (typeof window !== "undefined") {
+      const lastProgram = localStorage.getItem("sigah_last_program") || "mcmv-far";
+      setActiveProgramId(lastProgram);
     }
   }, [user]);
 
@@ -105,9 +124,29 @@ export default function ProfilePage() {
     cidadao: "Cidadão"
   };
 
-  const activeRole = user ? profileLabels[user.profile] : "Operador do Sistema";
+  const activeRole = user ? profileLabels[user.profile] : "Operador do Systema";
   const activeRegion = user?.region || "Região Leste";
   const activeAvatar = user?.avatar || "https://lh3.googleusercontent.com/aida-public/AB6AXuDtPmbamYvNE6arXUN6VUCVWXZHn4IqHQ2GzgNaq1RVlF6MpedF8FMk4SSOA_a7nWrNk2iwWYvRWNA3eiEzNdT_Yc37uU0XaD9CIl8iFY1SvjbcQdKl99Stqbetq3GKo6A-mD50-PQjzTVdZm0uuQgvPtYFyEvN3oMgGlSkHdNImmlOwp-D4b8-6LKmvYL46cR0ucwCmIlbXmu1Jqk69GvBSpsNhIf-gpj-lWQo06koV8XZohaCisQ0965yTyiAbAhIjB4NGB5E8sk";
+
+  // Lógica de Renderização Condicional de Componentes Específicos de Perfil
+  const renderProfileSpecificPanel = () => {
+    if (!user) return null;
+    
+    switch (user.profile) {
+      case "gestor":
+        return <GestorProfilePanel programId={activeProgramId} />;
+      case "assistente_social":
+        return <SocialWorkerProfilePanel programId={activeProgramId} />;
+      case "agente_financeiro":
+        return <FinancialAgentProfilePanel programId={activeProgramId} />;
+      case "auditor":
+        return <AuditorProfilePanel programId={activeProgramId} />;
+      case "cidadao":
+        return <CidadaoProfilePanel programId={activeProgramId} />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="bg-[#f8f9fa] text-[#191c1d] font-sans min-h-screen flex flex-col selection:bg-[#0059bb]/10 selection:text-[#0059bb]">
@@ -127,38 +166,29 @@ export default function ProfilePage() {
         </div>
       )}
 
-      {/* ── 1. Header Global Simplificado ── */}
-      <header className="fixed top-0 w-full z-50 bg-[#f8f9fa]/80 backdrop-blur-xl border-b border-[#c3c6d1]/15 h-20 flex items-center">
-        <div className="max-w-5xl mx-auto w-full px-6 md:px-12 flex items-center justify-between">
-          <Link href="/home" className="flex items-center space-x-2.5 hover:opacity-90 transition-opacity">
-            <div className="h-9 w-9 bg-gradient-to-br from-[#001e40] to-[#003366] rounded-lg flex items-center justify-center text-white font-heading font-black text-lg shadow-sm">
-              S
-            </div>
-            <span className="font-heading font-black text-2xl tracking-tight text-[#001e40]">
-              SIGAH
-            </span>
-          </Link>
+      {/* ── 1. Header Oficial Reutilizado (DRY) ── */}
+      <Header unreadNotificationsCount={2} />
+
+      {/* ── 2. Conteúdo Principal ── */}
+      <main className="flex-grow pt-24 pb-20 max-w-5xl mx-auto w-full px-6 md:px-12 flex flex-col">
+        
+        {/* Título da Página e Ação de Voltar no Main */}
+        <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h1 className="font-heading font-black text-3xl sm:text-4xl text-[#001e40] tracking-tight leading-tight">
+              Meus Dados
+            </h1>
+            <p className="text-[#43474f] text-sm mt-1">
+              Atualize suas informações de acesso e credenciais de operador do sistema.
+            </p>
+          </div>
           <Link 
             href="/home" 
-            className="inline-flex items-center gap-2 font-sans text-sm font-bold text-on-surface-variant hover:text-primary transition-colors cursor-pointer"
+            className="inline-flex items-center gap-2 font-sans text-sm font-bold text-on-surface-variant hover:text-primary hover:bg-[#001e40]/5 transition-colors cursor-pointer border border-[#c3c6d1]/20 hover:border-primary/20 px-4 py-2.5 rounded-xl self-start sm:self-center shrink-0"
           >
             <ArrowLeft className="w-4 h-4" />
             Voltar ao Hub
           </Link>
-        </div>
-      </header>
-
-      {/* ── 2. Conteúdo Principal ── */}
-      <main className="flex-grow pt-28 pb-20 max-w-5xl mx-auto w-full px-6 md:px-12 flex flex-col justify-center">
-        
-        {/* Título da Página */}
-        <div className="mb-8">
-          <h1 className="font-heading font-black text-3xl sm:text-4xl text-[#001e40] tracking-tight leading-tight">
-            Meus Dados
-          </h1>
-          <p className="text-[#43474f] text-sm mt-1">
-            Atualize suas informações de acesso e credenciais de operador do sistema.
-          </p>
         </div>
 
         {/* Layout Bento (Split) sem Linhas, feito com Contraste de Fundo */}
@@ -358,9 +388,189 @@ export default function ProfilePage() {
 
         </div>
 
+        {/* 3. Painel Específico Condicional baseada no Perfil de Usuário */}
+        {mounted && user && (
+          <div className="mt-8 transition-all duration-500 animate-in fade-in slide-in-from-bottom-6">
+            {renderProfileSpecificPanel()}
+          </div>
+        )}
+
       </main>
 
       <LandingFooter />
+    </div>
+  );
+}
+
+// =============================================================================
+// Sub-painéis Específicos por Perfil de Usuário (Passo 10.5)
+// =============================================================================
+
+interface PanelProps {
+  programId: string;
+}
+
+function GestorProfilePanel({ programId }: PanelProps) {
+  return (
+    <div className="bg-white rounded-3xl p-8 md:p-10 shadow-[0px_24px_48px_rgba(0,30,64,0.04)] border border-outline-variant/10">
+      <div className="flex items-center gap-3.5 mb-6">
+        <div className="w-10 h-10 bg-[#001e40]/5 rounded-xl flex items-center justify-center text-[#001e40]">
+          <Briefcase className="w-5 h-5" />
+        </div>
+        <div>
+          <h3 className="font-heading font-black text-lg text-primary">Painel de Ações do Gestor Público</h3>
+          <p className="text-xs text-[#43474f]">Atalhos estratégicos e parametrização geral do sistema habitacional.</p>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+        <Link href={`/${programId}/ciclos`} className="p-6 bg-[#f8f9fa] hover:bg-[#001e40]/5 rounded-2xl group transition-all duration-300 hover:shadow-sm">
+          <Settings className="w-5 h-5 text-primary mb-3 group-hover:scale-110 transition-transform duration-300" />
+          <h4 className="font-bold text-sm text-primary group-hover:text-secondary transition-colors duration-300">Configurar Ciclos</h4>
+          <p className="text-[10px] text-[#43474f] mt-1.5 leading-relaxed">Gerenciar prazos, regras e datas dos editais habitacionais.</p>
+        </Link>
+        <Link href={`/${programId}/auditoria`} className="p-6 bg-[#f8f9fa] hover:bg-[#001e40]/5 rounded-2xl group transition-all duration-300 hover:shadow-sm">
+          <Shield className="w-5 h-5 text-primary mb-3 group-hover:scale-110 transition-transform duration-300" />
+          <h4 className="font-bold text-sm text-primary group-hover:text-secondary transition-colors duration-300">Auditoria do Sistema</h4>
+          <p className="text-[10px] text-[#43474f] mt-1.5 leading-relaxed">Consultar relatórios e logs de rastreabilidade de ações.</p>
+        </Link>
+        <Link href={`/${programId}/relatorios`} className="p-6 bg-[#f8f9fa] hover:bg-[#001e40]/5 rounded-2xl group transition-all duration-300 hover:shadow-sm">
+          <FileText className="w-5 h-5 text-primary mb-3 group-hover:scale-110 transition-transform duration-300" />
+          <h4 className="font-bold text-sm text-primary group-hover:text-secondary transition-colors duration-300">Relatórios Gerenciais</h4>
+          <p className="text-[10px] text-[#43474f] mt-1.5 leading-relaxed">Exportar dados estatísticos e consolidados dos beneficiários.</p>
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+function SocialWorkerProfilePanel({ programId }: PanelProps) {
+  return (
+    <div className="bg-white rounded-3xl p-8 md:p-10 shadow-[0px_24px_48px_rgba(0,30,64,0.04)] border border-outline-variant/10">
+      <div className="flex items-center gap-3.5 mb-6">
+        <div className="w-10 h-10 bg-[#0059bb]/5 rounded-xl flex items-center justify-center text-[#0059bb]">
+          <Users className="w-5 h-5" />
+        </div>
+        <div>
+          <h3 className="font-heading font-black text-lg text-primary">Painel de Ações do Assistente Social</h3>
+          <p className="text-xs text-[#43474f]">Acompanhamento de famílias, visitas de campo e triagem social.</p>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+        <Link href={`/${programId}/social`} className="p-6 bg-[#f8f9fa] hover:bg-[#0059bb]/5 rounded-2xl group transition-all duration-300 hover:shadow-sm">
+          <Briefcase className="w-5 h-5 text-[#0059bb] mb-3 group-hover:scale-110 transition-transform duration-300" />
+          <h4 className="font-bold text-sm text-primary group-hover:text-secondary transition-colors duration-300">Acompanhamento Social</h4>
+          <p className="text-[10px] text-[#43474f] mt-1.5 leading-relaxed">Registrar visitas, relatórios PTS e laudos de vulnerabilidade.</p>
+        </Link>
+        <Link href={`/${programId}/cadastro`} className="p-6 bg-[#f8f9fa] hover:bg-[#0059bb]/5 rounded-2xl group transition-all duration-300 hover:shadow-sm">
+          <Users className="w-5 h-5 text-[#0059bb] mb-3 group-hover:scale-110 transition-transform duration-300" />
+          <h4 className="font-bold text-sm text-primary group-hover:text-secondary transition-colors duration-300">Cadastro Geral</h4>
+          <p className="text-[10px] text-[#43474f] mt-1.5 leading-relaxed">Consultar listagem e andamento das famílias inscritas no programa.</p>
+        </Link>
+        <Link href={`/${programId}/enquadramento`} className="p-6 bg-[#f8f9fa] hover:bg-[#0059bb]/5 rounded-2xl group transition-all duration-300 hover:shadow-sm">
+          <Check className="w-5 h-5 text-[#0059bb] mb-3 group-hover:scale-110 transition-transform duration-300" />
+          <h4 className="font-bold text-sm text-primary group-hover:text-secondary transition-colors duration-300">Filtros de Enquadramento</h4>
+          <p className="text-[10px] text-[#43474f] mt-1.5 leading-relaxed">Avaliar e validar famílias candidatas frente às regras sociais.</p>
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+function FinancialAgentProfilePanel({ programId }: PanelProps) {
+  return (
+    <div className="bg-white rounded-3xl p-8 md:p-10 shadow-[0px_24px_48px_rgba(0,30,64,0.04)] border border-outline-variant/10">
+      <div className="flex items-center gap-3.5 mb-6">
+        <div className="w-10 h-10 bg-emerald-600/5 rounded-xl flex items-center justify-center text-emerald-700">
+          <Landmark className="w-5 h-5" />
+        </div>
+        <div>
+          <h3 className="font-heading font-black text-lg text-primary">Painel de Ações do Agente Financeiro</h3>
+          <p className="text-xs text-[#43474f]">Validação normativa de crédito, contratos e arquivos de remessa.</p>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+        <Link href={`/${programId}/enquadramento`} className="p-6 bg-[#f8f9fa] hover:bg-emerald-600/5 rounded-2xl group transition-all duration-300 hover:shadow-sm">
+          <Landmark className="w-5 h-5 text-emerald-700 mb-3 group-hover:scale-110 transition-transform duration-300" />
+          <h4 className="font-bold text-sm text-primary group-hover:text-secondary transition-colors duration-300">Validar Enquadramento</h4>
+          <p className="text-[10px] text-[#43474f] mt-1.5 leading-relaxed">Checar compatibilidade cadastral e de renda para aprovação de crédito.</p>
+        </Link>
+        <Link href={`/${programId}/exportacao`} className="p-6 bg-[#f8f9fa] hover:bg-emerald-600/5 rounded-2xl group transition-all duration-300 hover:shadow-sm">
+          <Check className="w-5 h-5 text-emerald-700 mb-3 group-hover:scale-110 transition-transform duration-300" />
+          <h4 className="font-bold text-sm text-primary group-hover:text-secondary transition-colors duration-300">Exportação Caixa</h4>
+          <p className="text-[10px] text-[#43474f] mt-1.5 leading-relaxed">Gerar arquivos normativos de remessa digital para a Caixa Econômica.</p>
+        </Link>
+        <Link href={`/${programId}/unidades`} className="p-6 bg-[#f8f9fa] hover:bg-emerald-600/5 rounded-2xl group transition-all duration-300 hover:shadow-sm">
+          <Building className="w-5 h-5 text-emerald-700 mb-3 group-hover:scale-110 transition-transform duration-300" />
+          <h4 className="font-bold text-sm text-primary group-hover:text-secondary transition-colors duration-300">Gestão de Contratos</h4>
+          <p className="text-[10px] text-[#43474f] mt-1.5 leading-relaxed">Vincular unidades físicas e acompanhar assinatura de contratos.</p>
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+function AuditorProfilePanel({ programId }: PanelProps) {
+  return (
+    <div className="bg-white rounded-3xl p-8 md:p-10 shadow-[0px_24px_48px_rgba(0,30,64,0.04)] border border-outline-variant/10">
+      <div className="flex items-center gap-3.5 mb-6">
+        <div className="w-10 h-10 bg-amber-600/5 rounded-xl flex items-center justify-center text-amber-700">
+          <Shield className="w-5 h-5" />
+        </div>
+        <div>
+          <h3 className="font-heading font-black text-lg text-primary">Painel de Ações do Auditor de Controle</h3>
+          <p className="text-xs text-[#43474f]">Acompanhamento de transparência e auditoria de ações do sistema.</p>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+        <Link href={`/${programId}/auditoria`} className="p-6 bg-[#f8f9fa] hover:bg-amber-600/5 rounded-2xl group transition-all duration-300 hover:shadow-sm">
+          <Shield className="w-5 h-5 text-amber-700 mb-3 group-hover:scale-110 transition-transform duration-300" />
+          <h4 className="font-bold text-sm text-primary group-hover:text-secondary transition-colors duration-300">Logs de Auditoria</h4>
+          <p className="text-[10px] text-[#43474f] mt-1.5 leading-relaxed">Análise detalhada de todas as operações e alterações de dados efetuadas.</p>
+        </Link>
+        <Link href={`/${programId}/relatorios`} className="p-6 bg-[#f8f9fa] hover:bg-amber-600/5 rounded-2xl group transition-all duration-300 hover:shadow-sm">
+          <FileText className="w-5 h-5 text-amber-700 mb-3 group-hover:scale-110 transition-transform duration-300" />
+          <h4 className="font-bold text-sm text-primary group-hover:text-secondary transition-colors duration-300">Relatórios de Transparência</h4>
+          <p className="text-[10px] text-[#43474f] mt-1.5 leading-relaxed">Gerar e exportar relatórios de acompanhamento de enquadramento social.</p>
+        </Link>
+        <Link href={`/${programId}/denuncias/averiguacao`} className="p-6 bg-[#f8f9fa] hover:bg-amber-600/5 rounded-2xl group transition-all duration-300 hover:shadow-sm">
+          <AlertCircle className="w-5 h-5 text-amber-700 mb-3 group-hover:scale-110 transition-transform duration-300" />
+          <h4 className="font-bold text-sm text-primary group-hover:text-secondary transition-colors duration-300">Averiguação de Irregularidades</h4>
+          <p className="text-[10px] text-[#43474f] mt-1.5 leading-relaxed">Painel para monitoramento de inconsistências apontadas na base.</p>
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+function CidadaoProfilePanel({ programId }: PanelProps) {
+  return (
+    <div className="bg-white rounded-3xl p-8 md:p-10 shadow-[0px_24px_48px_rgba(0,30,64,0.04)] border border-outline-variant/10">
+      <div className="flex items-center gap-3.5 mb-6">
+        <div className="w-10 h-10 bg-indigo-600/5 rounded-xl flex items-center justify-center text-indigo-700">
+          <Home className="w-5 h-5" />
+        </div>
+        <div>
+          <h3 className="font-heading font-black text-lg text-primary">Painel de Acompanhamento do Cidadão</h3>
+          <p className="text-xs text-[#43474f]">Acompanhamento da sua moradia e andamento de suas solicitações.</p>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+        <Link href="/cadastro-familia" className="p-6 bg-[#f8f9fa] hover:bg-indigo-600/5 rounded-2xl group transition-all duration-300 hover:shadow-sm">
+          <Users className="w-5 h-5 text-indigo-700 mb-3 group-hover:scale-110 transition-transform duration-300" />
+          <h4 className="font-bold text-sm text-primary group-hover:text-secondary transition-colors duration-300">Meu Cadastro Familiar</h4>
+          <p className="text-[10px] text-[#43474f] mt-1.5 leading-relaxed">Visualizar composição social e dados declarados para habitação.</p>
+        </Link>
+        <Link href="/dossie-habitacao" className="p-6 bg-[#f8f9fa] hover:bg-indigo-600/5 rounded-2xl group transition-all duration-300 hover:shadow-sm">
+          <FileText className="w-5 h-5 text-indigo-700 mb-3 group-hover:scale-110 transition-transform duration-300" />
+          <h4 className="font-bold text-sm text-primary group-hover:text-secondary transition-colors duration-300">Dossiê Habitacional</h4>
+          <p className="text-[10px] text-[#43474f] mt-1.5 leading-relaxed">Consultar o andamento da sua solicitação e documentação enviada.</p>
+        </Link>
+        <Link href={`/${programId}/meu-imovel`} className="p-6 bg-[#f8f9fa] hover:bg-indigo-600/5 rounded-2xl group transition-all duration-300 hover:shadow-sm">
+          <Home className="w-5 h-5 text-indigo-700 mb-3 group-hover:scale-110 transition-transform duration-300" />
+          <h4 className="font-bold text-sm text-primary group-hover:text-secondary transition-colors duration-300">Meu Imóvel</h4>
+          <p className="text-[10px] text-[#43474f] mt-1.5 leading-relaxed">Verificar o status da unidade habitacional vinculada a você.</p>
+        </Link>
+      </div>
     </div>
   );
 }

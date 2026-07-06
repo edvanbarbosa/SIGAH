@@ -11,6 +11,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useUser } from "@/contexts/UserContext";
+import { Header } from "@/components/layout/Header";
 import { LandingFooter } from "@/components/layout/LandingFooter";
 import {
   Bell,
@@ -548,69 +549,14 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-[#f8f9fa] text-[#191c1d] font-sans selection:bg-[#0059bb]/10 selection:text-[#0059bb]">
       {/* ================================================================
-          1. Header
+          1. Header (Componente Reutilizado)
           ================================================================ */}
-      <header className="fixed top-0 w-full z-50 bg-[#f8f9fa]/80 backdrop-blur-xl border-b border-[#c3c6d1]/15 h-18 flex items-center">
-        <div className="max-w-7xl mx-auto w-full px-6 md:px-12 flex items-center justify-between">
-          <Link href="/" className="flex items-center space-x-2.5">
-            <div className="h-9 w-9 bg-gradient-to-br from-[#001e40] to-[#003366] rounded-lg flex items-center justify-center text-white font-heading font-black text-lg shadow-sm">
-              S
-            </div>
-            <span className="font-heading font-black text-2xl tracking-tight text-[#001e40]">
-              SIGAH
-            </span>
-          </Link>
-
-          <div className="flex items-center gap-4">
-            {/* Notification Bell */}
-            <button
-              className="relative p-2 rounded-xl text-[#43474f] hover:bg-[#0059bb]/5 hover:text-[#0059bb] transition-all"
-              title="Notificações"
-            >
-              <Bell className="w-5 h-5" />
-              {unreadCount > 0 && (
-                <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
-                  {unreadCount}
-                </span>
-              )}
-            </button>
-
-            {/* User Info (Link para Edição de Perfil) */}
-            <Link 
-              href="/perfil"
-              title={`Editar Perfil: ${userName}`}
-              className="hidden sm:flex items-center gap-3 hover:opacity-80 active:scale-[0.98] transition-all group cursor-pointer"
-            >
-              <div className="text-right">
-                <p className="text-sm font-bold text-[#001e40] leading-tight group-hover:text-[#0059bb] transition-colors duration-300">
-                  {userName}
-                </p>
-                <p className="text-[10px] text-[#43474f] uppercase tracking-wider font-semibold">
-                  {(mounted && user?.profile) ? profileLabels[user.profile] : "Cidadão"}
-                </p>
-              </div>
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#001e40] to-[#003366] flex items-center justify-center text-white font-heading font-black text-sm shadow-sm group-hover:scale-105 transition-transform duration-300">
-                {userName.charAt(0)}
-              </div>
-            </Link>
-
-            {/* Logout */}
-            <Link
-              href="/"
-              onClick={() => logout()}
-              className="text-sm font-bold text-[#43474f] px-3 py-2 hover:text-red-600 transition-colors flex items-center gap-1.5"
-            >
-              <LogOut className="w-4 h-4" />
-              <span className="hidden sm:inline">Sair</span>
-            </Link>
-          </div>
-        </div>
-      </header>
+      <Header unreadNotificationsCount={unreadCount} />
 
       {/* ================================================================
           2. Main Content
           ================================================================ */}
-      <main className="pt-28 pb-20">
+      <main className="pt-24 pb-20">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           {/* ── Saudação ── */}
           <div className="mb-10">
