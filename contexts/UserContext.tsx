@@ -20,6 +20,8 @@ export interface User {
   role?: string;
   region?: string;
   avatar?: string;
+  phone?: string;
+  address?: string;
 }
 
 interface UserContextProps {
@@ -27,7 +29,7 @@ interface UserContextProps {
   isAuthenticated: boolean;
   login: (user: User) => void;
   logout: () => void;
-  updateProfile: (name: string, email: string) => Promise<{ success: boolean; error?: string }>;
+  updateProfile: (name: string, email: string, phone?: string, address?: string) => Promise<{ success: boolean; error?: string }>;
   refreshUser: () => Promise<void>;
 }
 
@@ -72,17 +74,14 @@ export function UserProvider({ children }: UserProviderProps) {
     setUser(null);
   };
 
-  /**
-   * Atualiza os dados do perfil do operador fazendo uma requisição PUT para o backend simulado.
-   */
-  const updateProfile = async (name: string, email: string): Promise<{ success: boolean; error?: string }> => {
+  const updateProfile = async (name: string, email: string, phone?: string, address?: string): Promise<{ success: boolean; error?: string }> => {
     try {
       const res = await fetch("/api/user", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email }),
+        body: JSON.stringify({ name, email, phone, address }),
       });
 
       const data = await res.json();

@@ -14,7 +14,9 @@ let mockUser = {
   profile: "assistente_social",
   role: "Assistente Social",
   region: "Região Leste",
-  avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuDtPmbamYvNE6arXUN6VUCVWXZHn4IqHQ2GzgNaq1RVlF6MpedF8FMk4SSOA_a7nWrNk2iwWYvRWNA3eiEzNdT_Yc37uU0XaD9CIl8iFY1SvjbcQdKl99Stqbetq3GKo6A-mD50-PQjzTVdZm0uuQgvPtYFyEvN3oMgGlSkHdNImmlOwp-D4b8-6LKmvYL46cR0ucwCmIlbXmu1Jqk69GvBSpsNhIf-gpj-lWQo06koV8XZohaCisQ0965yTyiAbAhIjB4NGB5E8sk"
+  avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuDtPmbamYvNE6arXUN6VUCVWXZHn4IqHQ2GzgNaq1RVlF6MpedF8FMk4SSOA_a7nWrNk2iwWYvRWNA3eiEzNdT_Yc37uU0XaD9CIl8iFY1SvjbcQdKl99Stqbetq3GKo6A-mD50-PQjzTVdZm0uuQgvPtYFyEvN3oMgGlSkHdNImmlOwp-D4b8-6LKmvYL46cR0ucwCmIlbXmu1Jqk69GvBSpsNhIf-gpj-lWQo06koV8XZohaCisQ0965yTyiAbAhIjB4NGB5E8sk",
+  phone: "(81) 98888-7777",
+  address: "Av. Governador Agamenon Magalhães, 123 - Recife/PE"
 };
 
 /**
@@ -52,6 +54,8 @@ export async function PUT(request: Request) {
       ...mockUser,
       name: body.name.trim().toUpperCase(),
       email: body.email.trim().toLowerCase(),
+      phone: body.phone !== undefined ? body.phone.trim() : mockUser.phone,
+      address: body.address !== undefined ? body.address.trim() : mockUser.address,
     };
     
     return NextResponse.json({

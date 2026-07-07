@@ -283,228 +283,203 @@ function getDossieActionLabel(status: DossieHabitacaoSolicitacao["status"]): { l
   }
 }
 
+interface ProgramAction {
+  label: string;
+  href: string;
+  primary?: boolean;
+}
+
+const getProgramActions = (profile: string, slug: string, enrolled?: boolean): ProgramAction[] => {
+  switch (profile) {
+    case "gestor":
+      return [
+        { label: "Dashboard", href: `/${slug}/dashboard`, primary: true },
+        { label: "Ciclos", href: `/${slug}/ciclos` },
+        { label: "Auditoria", href: `/${slug}/auditoria` },
+      ];
+    case "assistente_social":
+      return [
+        { label: "Trabalho Social", href: `/${slug}/social`, primary: true },
+        { label: "Cadastros", href: `/${slug}/cadastro` },
+      ];
+    case "agente_financeiro":
+      return [
+        { label: "Contratos", href: `/${slug}/unidades`, primary: true },
+        { label: "Exportação", href: `/${slug}/exportacao` },
+      ];
+    case "auditor":
+      return [
+        { label: "Auditoria", href: `/${slug}/auditoria`, primary: true },
+        { label: "Relatórios", href: `/${slug}/relatorios` },
+      ];
+    case "cidadao":
+      return [
+        { label: "Acessar", href: enrolled ? `/${slug}/minha-classificacao` : `/${slug}/cadastro/ana-silva`, primary: true },
+      ];
+    default:
+      return [];
+  }
+};
+
+function ProgramCard({ program, profile, enrolled }: { program: EnrolledProgram; profile: string; enrolled?: boolean }) {
+  const actions = getProgramActions(profile, program.slug, enrolled);
+  return (
+    <div
+      className="bg-white rounded-2xl border border-[#c3c6d1]/10 overflow-hidden hover:shadow-[0_16px_32px_rgba(0,30,64,0.06)] transition-all duration-300 flex flex-col justify-between group"
+    >
+      <div>
+        {/* Color strip */}
+        <div
+          className="h-1.5"
+          style={{
+            background: `linear-gradient(to right, ${program.primaryColor}, ${program.accentColor})`,
+          }}
+        />
+
+        <div className="p-6 space-y-4">
+          <div className="flex items-start justify-between">
+            <div className="space-y-1">
+              <span
+                className="text-[9px] font-black tracking-widest uppercase px-2 py-0.5 rounded-md"
+                style={{
+                  backgroundColor: `${program.primaryColor}15`,
+                  color: program.primaryColor,
+                }}
+              >
+                {program.shortName}
+              </span>
+              <h3 className="font-heading font-bold text-lg text-[#001e40] leading-snug">
+                {program.name}
+              </h3>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 text-xs text-[#43474f]">
+            <Clock className="w-3.5 h-3.5" />
+            <span>Inscrito em {program.enrolledAt}</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="px-6 pb-6 pt-4 border-t border-[#c3c6d1]/5 flex flex-wrap items-center gap-2">
+        <span
+          className={`text-xs font-bold px-3 py-1.5 rounded-full border ${statusColors[program.statusType as keyof typeof statusColors] || "bg-amber-500/10 text-amber-700 border-amber-500/20"} mr-auto`}
+        >
+          {program.status}
+        </span>
+        
+        {actions.map((action, idx) => (
+          <Link
+            key={idx}
+            href={action.href}
+            className={`inline-flex items-center gap-1 text-xs font-bold px-3.5 py-2 rounded-xl transition-all duration-300 hover:shadow-sm cursor-pointer ${
+              action.primary
+                ? "text-white hover:opacity-90"
+                : "border border-outline-variant/35 text-on-surface-variant hover:text-primary hover:bg-[#f3f4f5]"
+            }`}
+            style={action.primary ? {
+              backgroundColor: program.primaryColor,
+            } : undefined}
+          >
+            <span>{action.label}</span>
+            {action.primary && <ChevronRight className="w-3.5 h-3.5" />}
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function CidadaoPainel() {
-  const cadastro = MOCK_CADASTRO_FAMILIA;
-  const dossie = MOCK_DOSSIE_HABITACAO;
-  const cadastroStatus = cadastroFamiliaStatusMap[cadastro.status];
-  const dossieStatus = dossieStatusMap[dossie.status];
-  const cadastroAction = getCadastroActionLabel(cadastro.status);
-  const dossieAction = getDossieActionLabel(dossie.status);
+  const { user } = useUser();
 
   return (
     <div className="flex-1 space-y-10">
-      {/* ── Seção: Minhas Solicitações ── */}
-      <section>
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-[#001e40] rounded-xl flex items-center justify-center text-white">
-              <ClipboardList className="w-5 h-5" />
-            </div>
-            <div>
-              <h2 className="font-heading font-bold text-xl text-[#001e40]">
-                Minhas Solicitações
-              </h2>
-              <p className="text-xs text-[#43474f]">
-                Acompanhe o andamento dos seus cadastros
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {/* ── Card: Cadastro de Família ── */}
-          <div className="bg-white rounded-2xl overflow-hidden hover:shadow-[0_16px_32px_rgba(0,30,64,0.06)] transition-all duration-300 group">
-            {/* Color strip */}
-            <div
-              className="h-1.5"
-              style={{ background: "linear-gradient(to right, #003366, #0059bb)" }}
-            />
-
-            <div className="p-6 space-y-4">
-              <div className="flex items-start justify-between">
-                <div className="space-y-1">
-                  <span className="text-[9px] font-black tracking-widest uppercase px-2 py-0.5 rounded-md bg-[#003366]/10 text-[#003366]">
-                    Cadastro Familiar
-                  </span>
-                  <h3 className="font-heading font-bold text-lg text-[#001e40] leading-snug">
-                    Cadastro de Família
-                  </h3>
-                </div>
-                <div className="w-10 h-10 bg-[#003366]/5 rounded-xl flex items-center justify-center text-[#003366]">
-                  <Users className="w-5 h-5" />
-                </div>
-              </div>
-
-              {/* Informações do cadastro */}
-              <div className="space-y-2.5">
-                <div className="flex items-center gap-2 text-xs text-[#43474f]">
-                  <CircleDot className="w-3.5 h-3.5" />
-                  <span>Protocolo: <span className="font-bold text-[#001e40]">{cadastro.protocolo}</span></span>
-                </div>
-                <div className="flex items-center gap-2 text-xs text-[#43474f]">
-                  <Users className="w-3.5 h-3.5" />
-                  <span>{cadastro.membros} membros cadastrados</span>
-                </div>
-                <div className="flex items-center gap-2 text-xs text-[#43474f]">
-                  <Clock className="w-3.5 h-3.5" />
-                  <span>Atualizado em {cadastro.dataAtualizacao}</span>
-                </div>
-              </div>
-
-              {/* Barra de progresso */}
-              <div className="space-y-1">
-                <div className="flex items-center justify-between text-[10px] font-bold">
-                  <span className="text-[#43474f] uppercase tracking-wider">Preenchimento</span>
-                  <span className="text-[#0059bb]">{cadastro.progresso}%</span>
-                </div>
-                <div className="w-full h-1.5 bg-[#e7e8e9] rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-gradient-to-r from-[#003366] to-[#0059bb] rounded-full transition-all duration-500"
-                    style={{ width: `${cadastro.progresso}%` }}
-                  />
-                </div>
-              </div>
-
-              {/* Rodapé: Status + Ação */}
-              <div className="flex items-center justify-between pt-2">
-                <span className={`text-xs font-bold px-3 py-1.5 rounded-full border ${cadastroStatus.bgColor} ${cadastroStatus.color} ${cadastroStatus.borderColor}`}>
-                  {cadastroStatus.label}
-                </span>
-                <Link
-                  href="/cadastro-familia"
-                  className="inline-flex items-center gap-1.5 text-sm font-bold px-4 py-2 rounded-xl bg-[#003366] text-white transition-all duration-300 hover:shadow-md hover:bg-[#001e40]"
-                >
-                  {cadastroAction.label}
-                  {cadastroAction.icon}
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          {/* ── Card: Dossiê de Habitação ── */}
-          <div className="bg-white rounded-2xl overflow-hidden hover:shadow-[0_16px_32px_rgba(0,30,64,0.06)] transition-all duration-300 group">
-            {/* Color strip */}
-            <div
-              className="h-1.5"
-              style={{ background: "linear-gradient(to right, #0d5c3a, #84cc16)" }}
-            />
-
-            <div className="p-6 space-y-4">
-              <div className="flex items-start justify-between">
-                <div className="space-y-1">
-                  <span className="text-[9px] font-black tracking-widest uppercase px-2 py-0.5 rounded-md bg-[#0d5c3a]/10 text-[#0d5c3a]">
-                    Dossiê Habitacional
-                  </span>
-                  <h3 className="font-heading font-bold text-lg text-[#001e40] leading-snug">
-                    Dossiê de Habitação
-                  </h3>
-                </div>
-                <div className="w-10 h-10 bg-[#0d5c3a]/5 rounded-xl flex items-center justify-center text-[#0d5c3a]">
-                  <Home className="w-5 h-5" />
-                </div>
-              </div>
-
-              {/* Informações do dossiê */}
-              <div className="space-y-2.5">
-                <div className="flex items-center gap-2 text-xs text-[#43474f]">
-                  <CircleDot className="w-3.5 h-3.5" />
-                  <span>Protocolo: <span className="font-bold text-[#001e40]">{dossie.protocolo}</span></span>
-                </div>
-                {dossie.programaVinculado && (
-                  <div className="flex items-center gap-2 text-xs text-[#43474f]">
-                    <Building2 className="w-3.5 h-3.5" />
-                    <span>Vinculado ao <span className="font-bold text-[#001e40]">{dossie.programaVinculado}</span></span>
-                  </div>
-                )}
-                <div className="flex items-center gap-2 text-xs text-[#43474f]">
-                  <Clock className="w-3.5 h-3.5" />
-                  <span>Atualizado em {dossie.dataAtualizacao}</span>
-                </div>
-              </div>
-
-              {/* Info visual (sem barra de progresso para dossiê, usamos um indicador diferente) */}
-              <div className="bg-[#0d5c3a]/[0.03] rounded-xl p-3 flex items-center gap-3">
-                <div className="w-8 h-8 bg-[#0d5c3a]/10 rounded-lg flex items-center justify-center text-[#0d5c3a]">
-                  <FileText className="w-4 h-4" />
-                </div>
-                <div className="text-xs text-[#43474f] leading-relaxed">
-                  <span className="font-bold text-[#001e40]">Documentos habitacionais</span> e informações sobre moradia e renda.
-                </div>
-              </div>
-
-              {/* Rodapé: Status + Ação */}
-              <div className="flex items-center justify-between pt-2">
-                <span className={`text-xs font-bold px-3 py-1.5 rounded-full border ${dossieStatus.bgColor} ${dossieStatus.color} ${dossieStatus.borderColor}`}>
-                  {dossieStatus.label}
-                </span>
-                <Link
-                  href="/dossie-habitacao"
-                  className="inline-flex items-center gap-1.5 text-sm font-bold px-4 py-2 rounded-xl bg-[#0d5c3a] text-white transition-all duration-300 hover:shadow-md hover:bg-[#0a4a2e]"
-                >
-                  {dossieAction.label}
-                  {dossieAction.icon}
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Ações Rápidas ── */}
+      {/* ── Seção: Minhas Inscrições ── */}
       <section>
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-10 h-10 bg-[#0059bb]/10 rounded-xl flex items-center justify-center text-[#0059bb]">
-            <ArrowRight className="w-5 h-5" />
+          <div className="w-10 h-10 bg-[#001e40] rounded-xl flex items-center justify-center text-white">
+            <ClipboardList className="w-5 h-5" />
           </div>
           <div>
             <h2 className="font-heading font-bold text-xl text-[#001e40]">
-              Ações Rápidas
+              Minhas Inscrições
             </h2>
             <p className="text-xs text-[#43474f]">
-              Acesse funcionalidades diretamente
+              Acompanhe seus programas habitacionais ativos e inicie os trâmites
             </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <Link
-            href="/cadastro-familia/novo"
-            className="bg-white rounded-2xl p-5 flex items-center gap-4 hover:shadow-[0_16px_32px_rgba(0,30,64,0.06)] transition-all duration-300 group"
-          >
-            <div className="w-11 h-11 bg-[#003366]/10 rounded-xl flex items-center justify-center text-[#003366] group-hover:bg-[#003366] group-hover:text-white transition-all duration-300">
-              <Users className="w-5 h-5" />
-            </div>
-            <div>
-              <h4 className="font-bold text-sm text-[#001e40]">Novo Cadastro Familiar</h4>
-              <p className="text-[10px] text-[#43474f]">Iniciar cadastro de composição familiar</p>
-            </div>
-          </Link>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {MOCK_ENROLLED_PROGRAMS.map((program) => (
+            <ProgramCard key={program.slug} program={program} profile={user?.profile || ""} enrolled={true} />
+          ))}
+        </div>
+      </section>
 
-          <Link
-            href="/dossie-habitacao/novo"
-            className="bg-white rounded-2xl p-5 flex items-center gap-4 hover:shadow-[0_16px_32px_rgba(0,30,64,0.06)] transition-all duration-300 group"
-          >
-            <div className="w-11 h-11 bg-[#0d5c3a]/10 rounded-xl flex items-center justify-center text-[#0d5c3a] group-hover:bg-[#0d5c3a] group-hover:text-white transition-all duration-300">
-              <Home className="w-5 h-5" />
-            </div>
-            <div>
-              <h4 className="font-bold text-sm text-[#001e40]">Novo Dossiê</h4>
-              <p className="text-[10px] text-[#43474f]">Abrir dossiê de habitação</p>
-            </div>
-          </Link>
+      {/* ── Seção: Programas Disponíveis para Concorrer ── */}
+      <section>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-10 h-10 bg-[#7c3aed]/10 rounded-xl flex items-center justify-center text-[#7c3aed]">
+            <ExternalLink className="w-5 h-5" />
+          </div>
+          <div>
+            <h2 className="font-heading font-bold text-xl text-[#001e40]">
+              Programas Disponíveis
+            </h2>
+            <p className="text-xs text-[#43474f]">
+              Programas abertos para inscrição ao qual você pode concorrer
+            </p>
+          </div>
+        </div>
 
-          <Link
-            href="/meus-documentos"
-            className="bg-white rounded-2xl p-5 flex items-center gap-4 hover:shadow-[0_16px_32px_rgba(0,30,64,0.06)] transition-all duration-300 group"
-          >
-            <div className="w-11 h-11 bg-[#0059bb]/10 rounded-xl flex items-center justify-center text-[#0059bb] group-hover:bg-[#0059bb] group-hover:text-white transition-all duration-300">
-              <FileText className="w-5 h-5" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {MOCK_AVAILABLE_PROGRAMS.map((program) => (
+            <div
+              key={program.slug}
+              className="bg-white rounded-2xl border border-[#c3c6d1]/10 p-6 hover:shadow-[0_16px_32px_rgba(0,30,64,0.06)] transition-all duration-300 flex flex-col justify-between group"
+            >
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span
+                    className="text-[9px] font-black tracking-widest uppercase px-2 py-0.5 rounded-md"
+                    style={{
+                      backgroundColor: `${program.primaryColor}15`,
+                      color: program.primaryColor,
+                    }}
+                  >
+                    Inscrições Abertas
+                  </span>
+                  <span className="text-[10px] font-bold text-[#43474f]">
+                    {program.deadline}
+                  </span>
+                </div>
+
+                <h3 className="font-heading font-bold text-lg text-[#001e40] leading-snug">
+                  {program.name}
+                </h3>
+
+                <p className="text-xs text-[#43474f] leading-relaxed">
+                  {program.description}
+                </p>
+              </div>
+
+              <div className="pt-4 border-t border-[#c3c6d1]/5 mt-4">
+                <Link
+                  href={`/${program.slug}/cadastro/ana-silva`}
+                  className="inline-flex items-center gap-2 text-sm font-bold px-5 py-2.5 rounded-xl border-2 transition-all duration-300 hover:shadow-md cursor-pointer"
+                  style={{
+                    borderColor: `${program.primaryColor}40`,
+                    color: program.primaryColor,
+                  }}
+                >
+                  Inscrever-se
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
             </div>
-            <div>
-              <h4 className="font-bold text-sm text-[#001e40]">Meus Documentos</h4>
-              <p className="text-[10px] text-[#43474f]">Enviar ou consultar documentos</p>
-            </div>
-          </Link>
+          ))}
         </div>
       </section>
     </div>
@@ -573,160 +548,43 @@ export default function HomePage() {
           {/* ── Grid Layout: Content + Notifications ── */}
           <div className="flex flex-col lg:flex-row gap-8">
             {/* ─── Left Column: Conteúdo condicional por perfil ─── */}
-            {user?.profile === "cidadao" ? (
+            {!mounted ? (
+              <div className="flex-1 flex items-center justify-center py-20">
+                <div className="w-10 h-10 border-4 border-[#0059bb] border-t-transparent rounded-full animate-spin"></div>
+              </div>
+            ) : user?.profile === "cidadao" ? (
               <CidadaoPainel />
             ) : (
-            <div className="flex-1 space-y-10">
-              {/* ── Meus Programas ── */}
-              <section>
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-[#001e40] rounded-xl flex items-center justify-center text-white">
-                      <Building2 className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h2 className="font-heading font-bold text-xl text-[#001e40]">
-                        Meus Programas
-                      </h2>
-                      <p className="text-xs text-[#43474f]">
-                        Programas em que você está inscrito
-                      </p>
-                    </div>
-                  </div>
-                  <span className="text-xs font-bold text-[#43474f] bg-[#e7e8e9] px-3 py-1 rounded-full">
-                    {MOCK_ENROLLED_PROGRAMS.length} ativo
-                    {MOCK_ENROLLED_PROGRAMS.length !== 1 ? "s" : ""}
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  {MOCK_ENROLLED_PROGRAMS.map((program) => (
-                    <div
-                      key={program.slug}
-                      className="bg-white rounded-2xl border border-[#c3c6d1]/10 overflow-hidden hover:shadow-[0_16px_32px_rgba(0,30,64,0.06)] transition-all duration-300 group"
-                    >
-                      {/* Color strip */}
-                      <div
-                        className="h-1.5"
-                        style={{
-                          background: `linear-gradient(to right, ${program.primaryColor}, ${program.accentColor})`,
-                        }}
-                      />
-
-                      <div className="p-6 space-y-4">
-                        <div className="flex items-start justify-between">
-                          <div className="space-y-1">
-                            <span
-                              className="text-[9px] font-black tracking-widest uppercase px-2 py-0.5 rounded-md"
-                              style={{
-                                backgroundColor: `${program.primaryColor}15`,
-                                color: program.primaryColor,
-                              }}
-                            >
-                              {program.shortName}
-                            </span>
-                            <h3 className="font-heading font-bold text-lg text-[#001e40] leading-snug">
-                              {program.name}
-                            </h3>
-                          </div>
-                        </div>
-
-                        <div className="flex items-center gap-2 text-xs text-[#43474f]">
-                          <Clock className="w-3.5 h-3.5" />
-                          <span>Inscrito em {program.enrolledAt}</span>
-                        </div>
-
-                        <div className="flex items-center justify-between pt-2">
-                          <span
-                            className={`text-xs font-bold px-3 py-1.5 rounded-full border ${statusColors[program.statusType]}`}
-                          >
-                            {program.status}
-                          </span>
-                          <Link
-                            href={`/${program.slug}/dashboard`}
-                            className="inline-flex items-center gap-1.5 text-sm font-bold px-4 py-2 rounded-xl transition-all duration-300 hover:shadow-md"
-                            style={{
-                              backgroundColor: program.primaryColor,
-                              color: "white",
-                            }}
-                          >
-                            Acessar
-                            <ChevronRight className="w-4 h-4" />
-                          </Link>
-                        </div>
+              <div className="flex-1 space-y-10">
+                {/* ── Meus Programas ── */}
+                <section>
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-[#001e40] rounded-xl flex items-center justify-center text-white">
+                        <Building2 className="w-5 h-5" />
                       </div>
-                    </div>
-                  ))}
-                </div>
-              </section>
-
-              {/* ── Programas Disponíveis ── */}
-              <section>
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-[#0059bb]/10 rounded-xl flex items-center justify-center text-[#0059bb]">
-                      <ExternalLink className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h2 className="font-heading font-bold text-xl text-[#001e40]">
-                        Programas Disponíveis
-                      </h2>
-                      <p className="text-xs text-[#43474f]">
-                        Abertos para novas inscrições
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  {MOCK_AVAILABLE_PROGRAMS.map((program) => (
-                    <div
-                      key={program.slug}
-                      className="bg-white rounded-2xl border border-[#c3c6d1]/10 p-6 hover:shadow-[0_16px_32px_rgba(0,30,64,0.06)] transition-all duration-300 group"
-                    >
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between">
-                          <span
-                            className="text-[9px] font-black tracking-widest uppercase px-2 py-0.5 rounded-md"
-                            style={{
-                              backgroundColor: `${program.primaryColor}15`,
-                              color: program.primaryColor,
-                            }}
-                          >
-                            Inscrições Abertas
-                          </span>
-                          <span className="text-[10px] font-bold text-[#43474f]">
-                            {program.deadline}
-                          </span>
-                        </div>
-
-                        <h3 className="font-heading font-bold text-lg text-[#001e40] leading-snug">
-                          {program.name}
-                        </h3>
-
-                        <p className="text-xs text-[#43474f] leading-relaxed">
-                          {program.description}
+                      <div>
+                        <h2 className="font-heading font-bold text-xl text-[#001e40]">
+                          Meus Programas
+                        </h2>
+                        <p className="text-xs text-[#43474f]">
+                          Programas vinculados ao seu perfil de atuação
                         </p>
-
-                        <div className="pt-2">
-                          <Link
-                            href={`/${program.slug}/cadastro`}
-                            className="inline-flex items-center gap-2 text-sm font-bold px-5 py-2.5 rounded-xl border-2 transition-all duration-300 hover:shadow-md"
-                            style={{
-                              borderColor: `${program.primaryColor}40`,
-                              color: program.primaryColor,
-                            }}
-                          >
-                            Inscrever-se
-                            <ArrowRight className="w-4 h-4" />
-                          </Link>
-                        </div>
                       </div>
                     </div>
-                  ))}
-                </div>
-              </section>
-            </div>
+                    <span className="text-xs font-bold text-[#43474f] bg-[#e7e8e9] px-3 py-1 rounded-full">
+                      {MOCK_ENROLLED_PROGRAMS.length} ativo
+                      {MOCK_ENROLLED_PROGRAMS.length !== 1 ? "s" : ""}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    {MOCK_ENROLLED_PROGRAMS.map((program) => (
+                      <ProgramCard key={program.slug} program={program} profile={user?.profile || ""} />
+                    ))}
+                  </div>
+                </section>
+              </div>
             )}
 
             {/* ─── Right Column: Notifications (Sidebar) ─── */}
