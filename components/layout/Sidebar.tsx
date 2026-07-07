@@ -6,7 +6,7 @@
 
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { 
@@ -26,6 +26,7 @@ import {
   Share2
 } from "lucide-react";
 import { useProgram } from "@/lib/hooks/useProgram";
+import { useUser } from "@/contexts/UserContext";
 
 interface SidebarProps {
   /** Slug do programa habitacional ativo (ex: "mcmv-far") */
@@ -45,13 +46,33 @@ interface SidebarProps {
 export function Sidebar({
   programId,
   beneficiarioLabel = "Beneficiários",
-  userName = "Ana Silva",
-  userRole = "Assistente Social",
-  userRegion = "Região Leste",
-  userAvatar = "https://lh3.googleusercontent.com/aida-public/AB6AXuDtPmbamYvNE6arXUN6VUCVWXZHn4IqHQ2GzgNaq1RVlF6MpedF8FMk4SSOA_a7nWrNk2iwWYvRWNA3eiEzNdT_Yc37uU0XaD9CIl8iFY1SvjbcQdKl99Stqbetq3GKo6A-mD50-PQjzTVdZm0uuQgvPtYFyEvN3oMgGlSkHdNImmlOwp-D4b8-6LKmvYL46cR0ucwCmIlbXmu1Jqk69GvBSpsNhIf-gpj-lWQo06koV8XZohaCisQ0965yTyiAbAhIjB4NGB5E8sk"
+  userName,
+  userRole,
+  userRegion,
+  userAvatar
 }: SidebarProps) {
   const pathname = usePathname();
   const config = useProgram();
+  const { user } = useUser();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const activeUserName = userName || (mounted && user?.name) || "Ana Silva";
+  
+  const profileLabels: Record<string, string> = {
+    gestor: "Gestor Público",
+    assistente_social: "Assistente Social",
+    agente_financeiro: "Agente Financeiro",
+    auditor: "Auditor (Controle)",
+    cidadao: "Cidadão"
+  };
+  const activeUserRole = userRole || (mounted && user ? profileLabels[user.profile] : "Assistente Social");
+  const activeUserRegion = userRegion || (mounted && user?.region) || "Região Leste";
+  const defaultAvatar = "https://lh3.googleusercontent.com/aida-public/AB6AXuDtPmbamYvNE6arXUN6VUCVWXZHn4IqHQ2GzgNaq1RVlF6MpedF8FMk4SSOA_a7nWrNk2iwWYvRWNA3eiEzNdT_Yc37uU0XaD9CIl8iFY1SvjbcQdKl99Stqbetq3GKo6A-mD50-PQjzTVdZm0uuQgvPtYFyEvN3oMgGlSkHdNImmlOwp-D4b8-6LKmvYL46cR0ucwCmIlbXmu1Jqk69GvBSpsNhIf-gpj-lWQo06koV8XZohaCisQ0965yTyiAbAhIjB4NGB5E8sk";
+  const activeUserAvatar = userAvatar || (mounted && user?.avatar) || defaultAvatar;
 
   const menuItems = [
     {
@@ -206,22 +227,28 @@ export function Sidebar({
         </span>
       </div>
 
-      {/* 2. Card de Perfil do Operador (Bento Style) */}
-      <div className="px-6 mb-10 flex items-center gap-4">
-        <div className="w-12 h-12 rounded-full overflow-hidden border border-outline-variant/35 shadow-sm">
-          <img 
-            alt={`Avatar de ${userName}`} 
-            className="w-full h-full object-cover" 
-            src={userAvatar} 
-          />
-        </div>
-        <div className="flex flex-col overflow-hidden">
-          <span className="font-bold text-primary text-sm truncate">{userName}</span>
-          <span className="text-xs text-on-surface-variant truncate">{userRole}</span>
-          <span className="text-[9px] text-outline font-extrabold uppercase tracking-wider mt-0.5">
-            {userRegion}
-          </span>
-        </div>
+      {/* 2. Card de Perfil do Operador (Bento Style Link para Perfil) */}
+      <div className="px-4 mb-8">
+        <Link 
+          href="/perfil" 
+          title={`Editar Perfil: ${activeUserName}`}
+          className="flex items-center gap-4 hover:bg-white dark:hover:bg-primary/5 p-3 rounded-2xl transition-all duration-300 group cursor-pointer shadow-[0_4px_20px_rgba(0,30,64,0.02)] hover:shadow-[0_8px_30px_rgba(0,30,64,0.06)] border border-transparent hover:border-outline-variant/10"
+        >
+          <div className="w-12 h-12 rounded-full overflow-hidden border border-outline-variant/35 shadow-sm group-hover:border-primary/50 transition-colors duration-300 shrink-0">
+            <img 
+              alt={`Avatar de ${activeUserName}`} 
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
+              src={activeUserAvatar} 
+            />
+          </div>
+          <div className="flex flex-col overflow-hidden">
+            <span className="font-bold text-primary text-sm truncate group-hover:text-secondary transition-colors duration-300">{activeUserName}</span>
+            <span className="text-xs text-on-surface-variant truncate">{activeUserRole}</span>
+            <span className="text-[9px] text-[#0059bb] font-black uppercase tracking-wider mt-0.5 bg-[#0059bb]/5 px-1.5 py-0.5 rounded-md self-start">
+              {activeUserRegion}
+            </span>
+          </div>
+        </Link>
       </div>
 
       {/* 3. Links do Menu */}
